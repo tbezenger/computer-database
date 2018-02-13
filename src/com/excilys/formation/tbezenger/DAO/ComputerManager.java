@@ -11,11 +11,14 @@ import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
 
 public class ComputerManager implements EntityManager<Computer>{
-	private static ComputerManager INSTANCE = new ComputerManager();
+	private static ComputerManager INSTANCE;
 	
 	private ComputerManager(){}
 	
 	public static ComputerManager getINSTANCE() {
+		if (INSTANCE==null) {
+			INSTANCE = new ComputerManager();
+		}
 		return INSTANCE;
 	}
 	

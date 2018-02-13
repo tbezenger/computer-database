@@ -10,12 +10,15 @@ import java.util.Optional;
 import com.excilys.formation.tbezenger.Model.Company;
 
 public class CompanyManager implements EntityManager<Company>{
-	private static CompanyManager INSTANCE = new CompanyManager();
+	private static CompanyManager INSTANCE;
 	private Connection conn;
 	
 	private CompanyManager() {}
 	
 	public static CompanyManager getINSTANCE() {
+		if (INSTANCE==null) {
+			INSTANCE = new CompanyManager();
+		}
 		return INSTANCE;
 	}
 	
