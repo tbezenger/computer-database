@@ -3,7 +3,10 @@ package com.excilys.formation.tbezenger.DAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
 
@@ -19,27 +22,58 @@ public class ComputerManager implements EntityManager<Computer>{
 	private Connection conn;
 
 	@Override
-	public Computer find(int id) throws Exception {
+	public Optional<Computer> findById(int id) throws Exception {
+		Computer computer=null;
 		this.conn = openConnection();
 		Statement stmt = this.conn.createStatement();
 		stmt.executeQuery("SELECT computer.id,computer.name,computer.introduced,computer.discontinued,"
 						+ "company.id,company.name FROM computer "
-						+ "INNER JOIN company ON computer.id=(SELECT id FROM computer WHERE id="+id+")");
+						+ "LEFT JOIN company ON company_id=company.id WHERE computer.id="+id);
+		
 		ResultSet rs = stmt.getResultSet();
-		rs.next();
-		Company company = new Company(rs.getInt("company.id"),rs.getString("company.name"));
-		Computer computer = new Computer(rs.getInt("id"),rs.getString("name"),
-								  rs.getDate("introduced"),rs.getDate("discontinued"),company);
+		if (rs.next()) {
+			Company company = new Company(rs.getInt("company.id"),rs.getString("company.name"));
+			computer = new Computer(rs.getInt("id"),rs.getString("name"),
+									  rs.getDate("introduced"),rs.getDate("discontinued"),company);
+		}
 		this.conn.close();
-		return computer;
+		return Optional.ofNullable(computer);
 	}
 
 	@Override
 	public List<Computer> findall() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<Computer> computers = new ArrayList<Computer>();
+		this.conn = openConnection();
+		Statement stmt = this.conn.createStatement();
+		stmt.executeQuery("SELECT computer.id,computer.name,computer.introduced,computer.discontinued,"
+				+ "company.id,company.name FROM computer "
+				+ "LEFT JOIN company ON company_id=company.id");
+		ResultSet rs = stmt.getResultSet();
+		while (rs.next()) {
+			Company company = new Company(rs.getInt("company.id"),rs.getString("company.name"));
+			computers.add(new Computer(rs.getInt("id"),rs.getString("name"),rs.getDate("introduced"),rs.getDate("discontinued"),company));
+		}
+		this.conn.close();
+		return computers;
 	}
 
+	public List<Computer> findPage(int numpage) throws Exception{
+		List<Computer> computers = new ArrayList<Computer>();
+		this.conn = openConnection();
+		Statement stmt = this.conn.createStatement();
+		stmt.executeQuery("SELECT computer.id,computer.name,computer.introduced,computer.discontinued,"
+				+ "company.id,company.name FROM computer "
+				+ "LEFT JOIN company ON company_id=company.id "
+				+ "LIMIT "+20*numpage+",20");
+		ResultSet rs = stmt.getResultSet();
+		while (rs.next()) {
+			Company company = new Company(rs.getInt("company.id"),rs.getString("company.name"));
+			computers.add(new Computer(rs.getInt("id"),rs.getString("name"),rs.getDate("introduced"),rs.getDate("discontinued"),company));
+		}
+		this.conn.close();
+		return computers;
+	}
+	
 	@Override
 	public Computer persist(Computer t) throws Exception {
 		this.conn = openConnection();

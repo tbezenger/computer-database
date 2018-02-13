@@ -3,7 +3,9 @@ package com.excilys.formation.tbezenger.DAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.formation.tbezenger.Model.Company;
 
@@ -18,7 +20,7 @@ public class CompanyManager implements EntityManager<Company>{
 	}
 	
 	@Override
-	public Company find(int id) throws Exception {
+	public Optional<Company> findById(int id) throws Exception {
 		this.conn = openConnection();
 		Statement stmt = this.conn.createStatement();
 		stmt.executeQuery("SELECT id,name FROM company WHERE id="+id);
@@ -26,13 +28,33 @@ public class CompanyManager implements EntityManager<Company>{
 		rs.next();
 		Company company = new Company(rs.getInt("id"),rs.getString("name"));
 		this.conn.close();
-		return company;
+		return Optional.ofNullable(company);
 	}
 
 	@Override
 	public List<Company> findall() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<Company> companies = new ArrayList<Company>();
+		this.conn = openConnection();
+		Statement stmt = this.conn.createStatement();
+		stmt.executeQuery("SELECT id,name FROM company");
+		ResultSet rs = stmt.getResultSet();
+		while(rs.next()) {
+			companies.add(new Company(rs.getInt("id"),rs.getString("name")));
+		}
+		return companies;
+	}
+	
+	@Override
+	public List<Company> findPage(int numpage) throws Exception {
+		List<Company> companies = new ArrayList<Company>();
+		this.conn = openConnection();
+		Statement stmt = this.conn.createStatement();
+		stmt.executeQuery("SELECT id,name FROM company LIMIT "+20*numpage+",20");
+		ResultSet rs = stmt.getResultSet();
+		while(rs.next()) {
+			companies.add(new Company(rs.getInt("id"),rs.getString("name")));
+		}
+		return companies;
 	}
 
 	@Override
