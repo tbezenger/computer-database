@@ -17,6 +17,14 @@ public class Computer {
 		this.company = company;
 	}
 	
+	public Computer(String name, Date introduced, Date discontinued, Company company) {
+		super();
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.company = company;
+	}
+	
 	public int getId() {
 		return id;
 	}
