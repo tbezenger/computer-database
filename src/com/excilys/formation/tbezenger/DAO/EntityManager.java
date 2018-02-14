@@ -20,7 +20,7 @@ public interface EntityManager<T> {
     List<T> findPage(int numpage) throws Exception;
     
     T persist(T t) throws Exception;
-
+    
     boolean remove(int id) throws Exception;
 
     boolean update(T t) throws Exception;
