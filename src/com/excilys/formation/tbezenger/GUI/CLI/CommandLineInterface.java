@@ -73,20 +73,22 @@ public class CommandLineInterface {
 					
 				case "update":
 					if (parsedCommand[1].equals("computer")) {
-						// parsedCommand[2] = computer.name
-						// parsedCommand[3] = computer.introduced
-						// parsedCommand[4] = computer.discontinued
-						// parsedCommand[5] = company.id
+						//parsedCommand[2] = computer.id	
+						// parsedCommand[3] = computer.name
+						// parsedCommand[4] = computer.introduced
+						// parsedCommand[5] = computer.discontinued
+						// parsedCommand[6] = company.id
 						
-						company = CompanyService.getINSTANCE().get(Integer.parseInt(parsedCommand[5])).orElse(new Company());
+						company = CompanyService.getINSTANCE().get(Integer.parseInt(parsedCommand[6])).orElse(new Company());
 						if (company.getId()==0) {
 							//TODO logger
 							System.out.println("company does not exist");
 							break;
 						}
-						if(ComputerService.getINSTANCE().update(new Computer(parsedCommand[2],
-														Date.valueOf(parsedCommand[3]),
-														parsedCommand[4].equals("null")? null : Date.valueOf(parsedCommand[4]),
+						if(ComputerService.getINSTANCE().update(new Computer(Integer.parseInt(parsedCommand[2]),
+														parsedCommand[3],
+														Date.valueOf(parsedCommand[4]),
+														parsedCommand[5].equals("null")? null : Date.valueOf(parsedCommand[5]),
 														company))) {
 						
 							System.out.println("computer updated");
