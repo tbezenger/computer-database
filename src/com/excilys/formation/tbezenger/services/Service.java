@@ -4,11 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Service<T>{
-	
-	T create(T t);
-	Optional<T> get(int id);
-	boolean update(T t);
-	boolean delete(int id);
 	List<T> getAll();
-	List<T> getPage(int numPage);	
+	Optional<T> get(int id);
 }

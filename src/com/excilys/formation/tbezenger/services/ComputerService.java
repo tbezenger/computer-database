@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.formation.tbezenger.DAO.CompanyManager;
 import com.excilys.formation.tbezenger.DAO.ComputerManager;
+import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Computer;
 
 public class ComputerService implements Service<Computer>{
@@ -18,48 +18,45 @@ public class ComputerService implements Service<Computer>{
 		}
 		return INSTANCE;
 	}
-	@Override
+	
+	
 	public Computer create(Computer computer) {
 		try {
 			computer = ComputerManager.getINSTANCE().persist(computer);
-		} catch (Exception e) {
-			// TODO logger
-			System.out.println("error");
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		return computer;
 	}
-
+	
 	@Override
-	public Optional<Computer> get(int id) {
+	public Optional<Computer> get(int id){
 		Optional<Computer> computer = Optional.ofNullable(new Computer());
 		try {
 			computer = ComputerManager.getINSTANCE().findById(id);
-		} catch (Exception e) {
-			// TODO logger
-			System.out.println("error");
+		} catch (DatabaseException e) {
+			System.out.println(e.getMessage());
 		}
 		return computer;
 	}
 
-	@Override
+	
 	public boolean update(Computer computer) {
 		try {
 			return ComputerManager.getINSTANCE().update(computer);
-		} catch (Exception e) {
-			// TODO logger
-			System.out.println("error");
+		} catch (DatabaseException e) {
+			System.out.println(e.getMessage());
 		}
 		return false;
 	}
 
 
-	@Override
 	public boolean delete(int id) {
 		try {
 			return ComputerManager.getINSTANCE().remove(id);
-		} catch (Exception e) {
-			// TODO logger
-			System.out.println("error");
+		} catch (DatabaseException e) {
+			System.out.println(e.getMessage());
 		}
 		return false;
 	}
@@ -69,21 +66,19 @@ public class ComputerService implements Service<Computer>{
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
 			computers =  ComputerManager.getINSTANCE().findall();
-		} catch (Exception e) {
-			// TODO logger
-			System.out.println("error");
+		} catch (DatabaseException e) {
+			System.out.println(e.getMessage());
 		}
 		return computers;
 	}
 
-	@Override
-	public List<Computer> getPage(int numPage) {
+
+	public List<Computer> getPage(int numPage, int rowsByPage) {
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
-			computers =  ComputerManager.getINSTANCE().findPage(numPage);
-		} catch (Exception e) {
-			// TODO logger
-			System.out.println("error");
+			computers =  ComputerManager.getINSTANCE().findPage(numPage, rowsByPage);
+		} catch (DatabaseException e) {
+			System.out.println(e.getMessage());
 		}
 		return computers;
 	}

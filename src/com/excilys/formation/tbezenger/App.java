@@ -13,6 +13,7 @@ public class App {
 	// TODO :
 	// gerer les exceptions du Integer.parseInt
 	// Loggers
-	// preparedStatements
-	// nettoyer le depot git
+			
+	//create computer lol 1999-11-11 2000-11-11 5
+
 }
