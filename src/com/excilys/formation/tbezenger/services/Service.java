@@ -7,7 +7,7 @@ public interface Service<T>{
 	
 	T create(T t);
 	Optional<T> get(int id);
-	T update(T t);
+	boolean update(T t);
 	boolean delete(int id);
 	List<T> getAll();
 	List<T> getPage(int numPage);	

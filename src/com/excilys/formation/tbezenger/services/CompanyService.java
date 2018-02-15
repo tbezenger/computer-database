@@ -1,5 +1,6 @@
 package com.excilys.formation.tbezenger.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,27 +45,52 @@ public class CompanyService implements Service<Company>{
 	}
 
 	@Override
-	public Company update(Company t) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean update(Company company) {
+		try {
+			 return CompanyManager.getINSTANCE().update(company);
+			
+		} catch (Exception e) {
+			// TODO logger
+			System.out.println("error");
+		}
+		return false;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		// TODO Auto-generated method stub
+		try {
+			 return CompanyManager.getINSTANCE().remove(id);
+			
+		} catch (Exception e) {
+			// TODO logger
+			System.out.println("error");
+		}
 		return false;
 	}
 
 	@Override
 	public List<Company> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Company> companies = new ArrayList<Company>();
+		try {
+			 companies = CompanyManager.getINSTANCE().findall();
+			
+		} catch (Exception e) {
+			// TODO logger
+			System.out.println("error");
+		}
+		return companies;
 	}
 
 	@Override
 	public List<Company> getPage(int numPage) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Company> companies = new ArrayList<Company>();
+		try {
+			 companies = CompanyManager.getINSTANCE().findPage(numPage);
+		} catch (Exception e) {
+			// TODO logger
+			System.out.println("error");
+		}
+		return companies;
 	}
 	
 }

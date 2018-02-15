@@ -1,5 +1,6 @@
 package com.excilys.formation.tbezenger.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,28 +42,49 @@ public class ComputerService implements Service<Computer>{
 	}
 
 	@Override
-	public Computer update(Computer t) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean update(Computer computer) {
+		try {
+			return ComputerManager.getINSTANCE().update(computer);
+		} catch (Exception e) {
+			// TODO logger
+			System.out.println("error");
+		}
+		return false;
 	}
+
 
 	@Override
 	public boolean delete(int id) {
-		// TODO Auto-generated method stub
+		try {
+			return ComputerManager.getINSTANCE().remove(id);
+		} catch (Exception e) {
+			// TODO logger
+			System.out.println("error");
+		}
 		return false;
 	}
 
 	@Override
 	public List<Computer> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Computer> computers = new ArrayList<Computer>();
+		try {
+			computers =  ComputerManager.getINSTANCE().findall();
+		} catch (Exception e) {
+			// TODO logger
+			System.out.println("error");
+		}
+		return computers;
 	}
 
 	@Override
 	public List<Computer> getPage(int numPage) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Computer> computers = new ArrayList<Computer>();
+		try {
+			computers =  ComputerManager.getINSTANCE().findPage(numPage);
+		} catch (Exception e) {
+			// TODO logger
+			System.out.println("error");
+		}
+		return computers;
 	}
-	
-
 }

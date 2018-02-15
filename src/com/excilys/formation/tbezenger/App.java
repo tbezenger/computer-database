@@ -11,7 +11,6 @@ public class App {
 	}
 	
 	// TODO :
-	// finir les services
 	// gerer les exceptions du Integer.parseInt
 	// Loggers
 	// preparedStatements
