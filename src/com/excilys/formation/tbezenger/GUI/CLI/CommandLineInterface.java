@@ -84,12 +84,12 @@ public class CommandLineInterface {
 							System.out.println("company does not exist");
 							break;
 						}
-						computer = ComputerService.getINSTANCE().update(new Computer(parsedCommand[2],
+						if(ComputerService.getINSTANCE().update(new Computer(parsedCommand[2],
 														Date.valueOf(parsedCommand[3]),
 														parsedCommand[4].equals("null")? null : Date.valueOf(parsedCommand[4]),
-														company));
-						if (computer.getId()!=0) {
-							System.out.println("computer updated :"+ computer.toString());
+														company))) {
+						
+							System.out.println("computer updated");
 						}
 					}
 						
