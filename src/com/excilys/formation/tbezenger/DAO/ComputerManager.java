@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
 
 public class ComputerManager implements EntityManager<Computer>{
 	private static ComputerManager INSTANCE;
+
 	
 	private final String FIND_BY_ID_QUERY = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,"
 												 + "company.id,company.name FROM computer "
@@ -135,9 +137,11 @@ public class ComputerManager implements EntityManager<Computer>{
 	public boolean remove(int id) throws DatabaseException {
 		try(Connection conn = openConnection()){
 			PreparedStatement stmt = conn.prepareStatement(DELETE_QUERY);
+			stmt.setInt(1, id);
 			stmt.executeUpdate();
 			stmt.close();
 		}catch(SQLException e) {
+			e.printStackTrace();
 			throw (new DatabaseException(DatabaseException.DELETE_FAIL));
 		}
 		return true;

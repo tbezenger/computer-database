@@ -11,9 +11,8 @@ public class App {
 	}
 	
 	// TODO :
-	// gerer les exceptions du Integer.parseInt
+	// gerer les exceptions du Integer.parseInt / dates
 	// Loggers
-			
-	//create computer lol 1999-11-11 2000-11-11 5
+	// magic strings
 
 }

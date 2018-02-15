@@ -11,7 +11,19 @@ import com.excilys.formation.tbezenger.services.CompanyService;
 import com.excilys.formation.tbezenger.services.ComputerService;
 
 public class CommandLineInterface {
+	private static final String HELPER = "commandes disponibles : \n"
+			+ "- create computer {name} {introduction date} {discontinuation date} {company id}\n"
+			+ "- get computer {id}\n"
+			+ "- getall computer\n"
+			+ "- getall company\n"
+			+ "- delete computer {id}\n"
+			+ "- update computer {id} {name} {introduction date} {discontinuation date} {company id}\n"
+			+ "- help";
+
+	
+	
 	public static void launch() {
+		System.out.println(HELPER);
 		Scanner scan = new Scanner(System.in);
 		String[] parsedCommand = scan.nextLine().split("\\s");
 		Computer computer;
@@ -19,7 +31,7 @@ public class CommandLineInterface {
 		while (!parsedCommand[0].equals("quit")) {
 			switch(parsedCommand[0]) {
 				case "create":
-					if (parsedCommand[1].equals("computer")) {
+					if (parsedCommand[1].equals("computer") && parsedCommand.length == 6) {
 						computer = createComputer(parsedCommand);
 						if (computer.getId()!=0) {
 							System.out.println("computer created :"+ computer.toString());
@@ -30,12 +42,15 @@ public class CommandLineInterface {
 					break;
 					
 					
-				case "get":						
-					if (parsedCommand[1].equals("computer")){
+				case "get":	
+					if (parsedCommand[1].equals("computer") && parsedCommand.length == 3){
 						// parsedCommand[2] = computer.id
 						computer = ComputerService.getINSTANCE().get(Integer.parseInt(parsedCommand[2])).orElse(new Computer());
 						if (computer.getId()!=0) {
 							System.out.println("computer read :"+ computer.toString());
+						}
+						else {
+							System.out.println("computer not found");
 						}
 					}	
 					else
@@ -45,7 +60,7 @@ public class CommandLineInterface {
 				
 					
 				case "delete":
-					if (parsedCommand[1].equals("computer")){
+					if (parsedCommand[1].equals("computer") && parsedCommand.length == 3){
 						// parsedCommand[2] = computer.id
 						if (ComputerService.getINSTANCE().delete(Integer.parseInt(parsedCommand[2]))) {
 							System.out.println("computer deleted");
@@ -58,7 +73,7 @@ public class CommandLineInterface {
 					
 					
 				case "update":
-					if (parsedCommand[1].equals("computer")) {
+					if (parsedCommand[1].equals("computer") && parsedCommand.length == 7) {
 						updateComputer(parsedCommand);
 					}
 						
@@ -97,7 +112,10 @@ public class CommandLineInterface {
 					}
 					break;
 					
-					
+				case "help":
+					System.out.println(HELPER);
+					break;
+
 					
 				default:
 					System.out.println("Commande non reconnue");
