@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 import com.excilys.formation.tbezenger.DAO.CompanyManager;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Company;
@@ -25,8 +26,7 @@ public class CompanyService implements Service<Company>{
 		try {
 			company = CompanyManager.getINSTANCE().findById(id);
 		} catch (DatabaseException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		return company;
 	}
@@ -38,8 +38,7 @@ public class CompanyService implements Service<Company>{
 			 companies = CompanyManager.getINSTANCE().findall();
 			
 		} catch (DatabaseException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		return companies;
 	}	

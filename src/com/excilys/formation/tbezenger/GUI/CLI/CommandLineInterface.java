@@ -18,68 +18,80 @@ public class CommandLineInterface {
 			+ "- getall company\n"
 			+ "- delete computer {id}\n"
 			+ "- update computer {id} {name} {introduction date} {discontinuation date} {company id}\n"
-			+ "- help";
+			+ "- help\n"
+			+ "- quit";
+
+	private static final String COMPUTER = "computer";
+	private static final String COMPANY = "company";
+	private static final String NOT_RECOGNIZED = "Commande non reconnue";
+	private static final String DELETED = "Suppression reussie";
+	private static final String UPDATED = "Mise a jour reussie";
+	private static final String CREATED = "Creation reussie";
+	private static final String DONT_EXIST = "L'element demande n'existe pas";
+	private static final String NULL = "null";
+	private static final String SEPARATION_CHAR = "\\s";
+
+
 
 	
-	
+
 	public static void launch() {
-		System.out.println(HELPER);
 		Scanner scan = new Scanner(System.in);
-		String[] parsedCommand = scan.nextLine().split("\\s");
+		String[] parsedCommand = scan.nextLine().split(SEPARATION_CHAR);
 		Computer computer;
 		
 		while (!parsedCommand[0].equals("quit")) {
 			switch(parsedCommand[0]) {
 				case "create":
-					if (parsedCommand[1].equals("computer") && parsedCommand.length == 6) {
+					if (parsedCommand[1].equals(COMPUTER) && parsedCommand.length == 6) {
 						computer = createComputer(parsedCommand);
 						if (computer.getId()!=0) {
-							System.out.println("computer created :"+ computer.toString());
+							System.out.println(CREATED +":"+ computer.toString());
 						}
 					}
 					else
-						System.out.println("Commande non reconnue");
+						System.out.println(NOT_RECOGNIZED);
 					break;
 					
 					
 				case "get":	
-					if (parsedCommand[1].equals("computer") && parsedCommand.length == 3){
+					if (parsedCommand[1].equals(COMPUTER) && parsedCommand.length == 3){
 						// parsedCommand[2] = computer.id
 						computer = ComputerService.getINSTANCE().get(Integer.parseInt(parsedCommand[2])).orElse(new Computer());
 						if (computer.getId()!=0) {
 							System.out.println("computer read :"+ computer.toString());
 						}
 						else {
-							System.out.println("computer not found");
+							System.out.println(DONT_EXIST);
 						}
 					}	
 					else
-						System.out.println("Commande non reconnue");
+						System.out.println(NOT_RECOGNIZED);
 					break;
 				
 				
 					
 				case "delete":
-					if (parsedCommand[1].equals("computer") && parsedCommand.length == 3){
+					if (parsedCommand[1].equals(COMPUTER) && parsedCommand.length == 3){
 						// parsedCommand[2] = computer.id
 						if (ComputerService.getINSTANCE().delete(Integer.parseInt(parsedCommand[2]))) {
-							System.out.println("computer deleted");
+							System.out.println(DELETED);
 						}
 					}	
 					else
-						System.out.println("Commande non reconnue");
+						System.out.println(NOT_RECOGNIZED);
 					break;
 					
 					
 					
 				case "update":
-					if (parsedCommand[1].equals("computer") && parsedCommand.length == 7) {
+					if (parsedCommand[1].equals(COMPUTER) && parsedCommand.length == 7) {
 						updateComputer(parsedCommand);
 					}
 						
 				
 					else
-						System.out.println("Commande non reconnue");
+						System.out.println(NOT_RECOGNIZED);
 					
 					break;
 					
@@ -87,7 +99,7 @@ public class CommandLineInterface {
 					
 				case "getall":
 					switch (parsedCommand[1]) {
-						case "computer":
+						case COMPUTER:
 							List<Computer> computers = ComputerService.getINSTANCE().getAll();
 							for (Computer c : computers) {
 								System.out.println(c);
@@ -96,7 +108,7 @@ public class CommandLineInterface {
 							
 							
 							
-						case "company":
+						case COMPANY:
 							List<Company> companies = CompanyService.getINSTANCE().getAll();
 							for (Company c : companies) {
 								System.out.println(c);
@@ -106,7 +118,7 @@ public class CommandLineInterface {
 							
 							
 						default :
-							System.out.println("Commande non reconnue");
+							System.out.println(NOT_RECOGNIZED);
 							break;
 							
 					}
@@ -118,14 +130,14 @@ public class CommandLineInterface {
 
 					
 				default:
-					System.out.println("Commande non reconnue");
+					System.out.println(NOT_RECOGNIZED);
 					break;
 					
 					
 					
 			}
 			
-			parsedCommand = scan.nextLine().split("\\s");
+			parsedCommand = scan.nextLine().split(SEPARATION_CHAR);
 		}
 		scan.close();
 	}
@@ -137,7 +149,7 @@ public class CommandLineInterface {
 		Company company = CompanyService.getINSTANCE().get(Integer.parseInt(parsedCommand[5])).orElse(new Company());
 		return ComputerService.getINSTANCE().create(new Computer(parsedCommand[2],
 															Date.valueOf(parsedCommand[3]),
-															parsedCommand[4].equals("null")? null : Date.valueOf(parsedCommand[4]),
+															parsedCommand[4].equals(NULL)? null : Date.valueOf(parsedCommand[4]),
 															company));
 	}
 	
@@ -148,17 +160,16 @@ public class CommandLineInterface {
 								
 		Company company = CompanyService.getINSTANCE().get(Integer.parseInt(parsedCommand[6])).orElse(new Company());
 		if (company.getId()==0) {
-			//TODO logger
-			System.out.println("company does not exist");
+			System.out.println(DONT_EXIST);
 			return;
 		}
 		if(ComputerService.getINSTANCE().update(new Computer(Integer.parseInt(parsedCommand[2]),
 										parsedCommand[3],
 										Date.valueOf(parsedCommand[4]),
-										parsedCommand[5].equals("null")? null : Date.valueOf(parsedCommand[5]),
+										parsedCommand[5].equals(NULL)? null : Date.valueOf(parsedCommand[5]),
 										company))) {
 		
-			System.out.println("computer updated");
+			System.out.println(UPDATED);
 		}
 	}
 }

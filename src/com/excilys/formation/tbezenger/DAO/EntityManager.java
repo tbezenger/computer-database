@@ -6,10 +6,15 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.log4j.Logger;
+
 import com.excilys.formation.tbezenger.Utils;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 
 public interface EntityManager<T> {
+	
+	static Logger logger = Logger.getLogger("roll");
+
 	
 	default Connection openConnection() throws DatabaseException{
 		Connection conn=null;

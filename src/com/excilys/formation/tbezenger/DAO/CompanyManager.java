@@ -13,6 +13,7 @@ import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Company;
 
 public class CompanyManager implements EntityManager<Company>{
+	
 	private static CompanyManager INSTANCE;
 	private final String FIND_ALL_QUERY = "SELECT id,name FROM company";
 	private final String FIND_BY_ID_QUERY = "SELECT id,name FROM company WHERE id=?";
@@ -38,6 +39,7 @@ public class CompanyManager implements EntityManager<Company>{
 				}
 			stmt.close();
 		}catch (SQLException e) {
+			logger.error(e.toString());
 			throw (new DatabaseException(DatabaseException.GET_FAIL));
 		}
 		return companies;
@@ -55,6 +57,7 @@ public class CompanyManager implements EntityManager<Company>{
 			company = new Company(rs.getInt("id"),rs.getString("name"));
 			stmt.close();
 		}catch (SQLException e) {
+			logger.error(e.toString());
 			throw (new DatabaseException(DatabaseException.GET_FAIL));
 		}
 		return Optional.ofNullable(company);

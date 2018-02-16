@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 import com.excilys.formation.tbezenger.DAO.ComputerManager;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Computer;
 
 public class ComputerService implements Service<Computer>{
+	
 	private static ComputerService INSTANCE;
 	private ComputerService() {}
 	
@@ -24,8 +26,7 @@ public class ComputerService implements Service<Computer>{
 		try {
 			computer = ComputerManager.getINSTANCE().persist(computer);
 		} catch (DatabaseException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		return computer;
 	}
@@ -36,7 +37,7 @@ public class ComputerService implements Service<Computer>{
 		try {
 			computer = ComputerManager.getINSTANCE().findById(id);
 		} catch (DatabaseException e) {
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		return computer;
 	}
@@ -46,7 +47,7 @@ public class ComputerService implements Service<Computer>{
 		try {
 			return ComputerManager.getINSTANCE().update(computer);
 		} catch (DatabaseException e) {
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		return false;
 	}
@@ -56,7 +57,7 @@ public class ComputerService implements Service<Computer>{
 		try {
 			return ComputerManager.getINSTANCE().remove(id);
 		} catch (DatabaseException e) {
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		return false;
 	}
@@ -67,7 +68,7 @@ public class ComputerService implements Service<Computer>{
 		try {
 			computers =  ComputerManager.getINSTANCE().findall();
 		} catch (DatabaseException e) {
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		return computers;
 	}
@@ -78,7 +79,7 @@ public class ComputerService implements Service<Computer>{
 		try {
 			computers =  ComputerManager.getINSTANCE().findPage(numPage, rowsByPage);
 		} catch (DatabaseException e) {
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		return computers;
 	}
