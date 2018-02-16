@@ -97,7 +97,7 @@ public class ComputerManager implements EntityManager<Computer>{
 			PreparedStatement stmt = conn.prepareStatement(FIND_PAGE_QUERY);
 			
 			stmt.setInt(1,numpage*rowsByPage);
-			stmt.setInt(1,rowsByPage);
+			stmt.setInt(2,rowsByPage);
 			
 			stmt.executeQuery();
 			ResultSet rs = stmt.getResultSet();

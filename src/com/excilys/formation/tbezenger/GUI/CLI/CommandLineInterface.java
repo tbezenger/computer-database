@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
 import com.excilys.formation.tbezenger.services.CompanyService;
+import com.excilys.formation.tbezenger.services.ComputerPage;
 import com.excilys.formation.tbezenger.services.ComputerService;
 
 public class CommandLineInterface {
@@ -35,6 +36,9 @@ public class CommandLineInterface {
 	private static final String BAD_DATE = "Mauvais format de date (utiliser aaaa-mm-jj)";
 	private static final String BYE = "Good bye\n";
 	private static final String INCOMPATIBLE_DATES = "\"introduction date\" doit etre plus ancienne que \"discontinuation date\"";
+	private static final String PAGE = "page";
+	private static final String BAD_PAGE = "La page demandée n'existe pas";
+
 
 	private static final Logger logger = Logger.getLogger("STDOUT");
 	
@@ -78,7 +82,23 @@ public class CommandLineInterface {
 						}catch (NumberFormatException e) {
 							logger.error(BAD_ID);
 						}
-					}	
+					}
+					else if (parsedCommand[1].equals(PAGE) && parsedCommand.length == 3){
+						try {
+							List<Computer> computersPage = ComputerPage.getINSTANCE().getPage(Integer.parseInt(parsedCommand[2]));
+							if (computersPage.size()!=0) {
+								for (Computer c:computersPage) {
+									logger.info(c.toString());
+								}
+							}
+							else {
+								logger.error(BAD_PAGE);
+							}
+						}catch (NumberFormatException e) {
+							logger.error(BAD_PAGE);
+						}
+					}
+
 					else
 						logger.error(NOT_RECOGNIZED);
 					break;
