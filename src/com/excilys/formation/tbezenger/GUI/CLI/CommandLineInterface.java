@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
 
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
@@ -19,20 +20,22 @@ public class CommandLineInterface {
 			+ "- delete computer {id}\n"
 			+ "- update computer {id} {name} {introduction date} {discontinuation date} {company id}\n"
 			+ "- help\n"
-			+ "- quit";
+			+ "- quit\n";
 
 	private static final String COMPUTER = "computer";
 	private static final String COMPANY = "company";
 	private static final String NOT_RECOGNIZED = "Commande non reconnue";
-	private static final String DELETED = "Suppression reussie";
-	private static final String UPDATED = "Mise a jour reussie";
-	private static final String CREATED = "Creation reussie";
-	private static final String DONT_EXIST = "L'element demande n'existe pas";
+	private static final String DELETED = "Suppression réussie";
+	private static final String UPDATED = "Mise à jour réussie";
+	private static final String CREATED = "Création réussie";
+	private static final String DONT_EXIST = "L'élément demandé n'existe pas";
 	private static final String NULL = "null";
 	private static final String SEPARATION_CHAR = "\\s";
+	private static final String BAD_ID = "L'id entré n'est pas un numéro";
+	private static final String BAD_DATE = "Mauvais format de date (utiliser aaaa-mm-jj)";
+	private static final String BYE = "Good bye\n";
 
-
-
+	private static final Logger logger = Logger.getLogger("STDOUT");
 	
 
 	public static void launch() {
@@ -44,29 +47,39 @@ public class CommandLineInterface {
 			switch(parsedCommand[0]) {
 				case "create":
 					if (parsedCommand[1].equals(COMPUTER) && parsedCommand.length == 6) {
-						computer = createComputer(parsedCommand);
-						if (computer.getId()!=0) {
-							System.out.println(CREATED +":"+ computer.toString());
+						try{
+							computer = createComputer(parsedCommand);
+							if (computer.getId()!=0) {
+								logger.info(CREATED +":"+ computer.toString());
+							}
+						}catch (NumberFormatException e) {
+							logger.error(BAD_ID);
+						}catch (IllegalArgumentException e) {
+							logger.error(BAD_DATE);
 						}
 					}
 					else
-						System.out.println(NOT_RECOGNIZED);
+						logger.error(NOT_RECOGNIZED);
 					break;
 					
 					
 				case "get":	
 					if (parsedCommand[1].equals(COMPUTER) && parsedCommand.length == 3){
 						// parsedCommand[2] = computer.id
-						computer = ComputerService.getINSTANCE().get(Integer.parseInt(parsedCommand[2])).orElse(new Computer());
-						if (computer.getId()!=0) {
-							System.out.println("computer read :"+ computer.toString());
-						}
-						else {
-							System.out.println(DONT_EXIST);
+						try {
+							computer = ComputerService.getINSTANCE().get(Integer.parseInt(parsedCommand[2])).orElse(new Computer());
+							if (computer.getId()!=0) {
+								logger.info("Read computer :"+ computer.toString());
+							}
+							else {
+								logger.error(DONT_EXIST);
+							}
+						}catch (NumberFormatException e) {
+							logger.error(BAD_ID);
 						}
 					}	
 					else
-						System.out.println(NOT_RECOGNIZED);
+						logger.error(NOT_RECOGNIZED);
 					break;
 				
 				
@@ -74,24 +87,34 @@ public class CommandLineInterface {
 				case "delete":
 					if (parsedCommand[1].equals(COMPUTER) && parsedCommand.length == 3){
 						// parsedCommand[2] = computer.id
-						if (ComputerService.getINSTANCE().delete(Integer.parseInt(parsedCommand[2]))) {
-							System.out.println(DELETED);
+						try {
+							if (ComputerService.getINSTANCE().delete(Integer.parseInt(parsedCommand[2]))) {
+								logger.info(DELETED);
+							}
+						}catch (NumberFormatException e) {
+							logger.error(BAD_ID);
 						}
 					}	
 					else
-						System.out.println(NOT_RECOGNIZED);
+						logger.error(NOT_RECOGNIZED);
 					break;
 					
 					
 					
 				case "update":
 					if (parsedCommand[1].equals(COMPUTER) && parsedCommand.length == 7) {
-						updateComputer(parsedCommand);
+						try {
+							updateComputer(parsedCommand);
+						}catch (NumberFormatException e) {
+							logger.error(BAD_ID);
+						}catch (IllegalArgumentException e) {
+							logger.error(BAD_DATE);
+						}
 					}
 						
 				
 					else
-						System.out.println(NOT_RECOGNIZED);
+						logger.error(NOT_RECOGNIZED);
 					
 					break;
 					
@@ -102,48 +125,46 @@ public class CommandLineInterface {
 						case COMPUTER:
 							List<Computer> computers = ComputerService.getINSTANCE().getAll();
 							for (Computer c : computers) {
-								System.out.println(c);
+								logger.info(c.getName());
 							}
 							break;
-							
 							
 							
 						case COMPANY:
 							List<Company> companies = CompanyService.getINSTANCE().getAll();
 							for (Company c : companies) {
-								System.out.println(c);
+								logger.info(c.getName());
 							}
 							break;
 							
 							
-							
 						default :
-							System.out.println(NOT_RECOGNIZED);
+							logger.error(NOT_RECOGNIZED);
 							break;
 							
 					}
 					break;
 					
 				case "help":
-					System.out.println(HELPER);
+					logger.info(HELPER);
 					break;
 
 					
 				default:
-					System.out.println(NOT_RECOGNIZED);
+					logger.error(NOT_RECOGNIZED);
 					break;
-					
 					
 					
 			}
 			
 			parsedCommand = scan.nextLine().split(SEPARATION_CHAR);
 		}
+		logger.info(BYE);
 		scan.close();
 	}
 	
 	
-	public static Computer createComputer(String[] parsedCommand){
+	public static Computer createComputer(String[] parsedCommand)throws NumberFormatException,IllegalArgumentException {
 		// parsedCommand[2] = computer.name         / parsedCommand[3] = computer.introduced
 		// parsedCommand[4] = computer.discontinued / parsedCommand[5] = company.id
 		Company company = CompanyService.getINSTANCE().get(Integer.parseInt(parsedCommand[5])).orElse(new Company());
@@ -154,13 +175,13 @@ public class CommandLineInterface {
 	}
 	
 	
-	public static void updateComputer(String[] parsedCommand) {
+	public static void updateComputer(String[] parsedCommand)throws NumberFormatException,IllegalArgumentException {
 		//parsedCommand[2] = computer.id / parsedCommand[3] = computer.name / parsedCommand[4] = computer.introduced
 		//parsedCommand[5] = computer.discontinued / parsedCommand[6] = company.id
 								
 		Company company = CompanyService.getINSTANCE().get(Integer.parseInt(parsedCommand[6])).orElse(new Company());
 		if (company.getId()==0) {
-			System.out.println(DONT_EXIST);
+			logger.error(DONT_EXIST);
 			return;
 		}
 		if(ComputerService.getINSTANCE().update(new Computer(Integer.parseInt(parsedCommand[2]),
@@ -169,7 +190,7 @@ public class CommandLineInterface {
 										parsedCommand[5].equals(NULL)? null : Date.valueOf(parsedCommand[5]),
 										company))) {
 		
-			System.out.println(UPDATED);
+			logger.info(UPDATED);
 		}
 	}
 }

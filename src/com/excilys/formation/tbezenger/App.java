@@ -4,10 +4,7 @@ import com.excilys.formation.tbezenger.GUI.CLI.CommandLineInterface;
 
 public class App {
 	public static void main(String[] args) {
-		System.out.println("Type your command (help for help)");
+		System.out.println("Entrez une commande (help pour afficher l'aide)");
 		CommandLineInterface.launch();		
 	}
-	
-	// TODO :
-	// gerer les exceptions du Integer.parseInt / dates
-	}
+}

@@ -54,7 +54,6 @@ public class ComputerManager implements EntityManager<Computer>{
 	public Optional<Computer> findById(int id) throws DatabaseException {
 		Computer computer=null;
 		try (Connection conn = openConnection()){
-			conn.close();
 			PreparedStatement stmt = conn.prepareStatement(FIND_BY_ID_QUERY);
 			stmt.setInt(1, id);
 			stmt.executeQuery();
