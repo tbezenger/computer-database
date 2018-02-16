@@ -20,7 +20,7 @@ public class CommandLineInterface {
 			+ "- delete computer {id}\n"
 			+ "- update computer {id} {name} {introduction date} {discontinuation date} {company id}\n"
 			+ "- help\n"
-			+ "- quit\n";
+			+ "- quit";
 
 	private static final String COMPUTER = "computer";
 	private static final String COMPANY = "company";
@@ -34,6 +34,7 @@ public class CommandLineInterface {
 	private static final String BAD_ID = "L'id entré n'est pas un numéro";
 	private static final String BAD_DATE = "Mauvais format de date (utiliser aaaa-mm-jj)";
 	private static final String BYE = "Good bye\n";
+	private static final String INCOMPATIBLE_DATES = "\"introduction date\" doit etre plus ancienne que \"discontinuation date\"";
 
 	private static final Logger logger = Logger.getLogger("STDOUT");
 	
@@ -167,30 +168,41 @@ public class CommandLineInterface {
 	public static Computer createComputer(String[] parsedCommand)throws NumberFormatException,IllegalArgumentException {
 		// parsedCommand[2] = computer.name         / parsedCommand[3] = computer.introduced
 		// parsedCommand[4] = computer.discontinued / parsedCommand[5] = company.id
-		Company company = CompanyService.getINSTANCE().get(Integer.parseInt(parsedCommand[5])).orElse(new Company());
-		return ComputerService.getINSTANCE().create(new Computer(parsedCommand[2],
-															Date.valueOf(parsedCommand[3]),
-															parsedCommand[4].equals(NULL)? null : Date.valueOf(parsedCommand[4]),
-															company));
+		if (Date.valueOf(parsedCommand[3]).before(Date.valueOf(parsedCommand[4]))) {
+			Company company = CompanyService.getINSTANCE().get(Integer.parseInt(parsedCommand[5])).orElse(new Company());
+			return ComputerService.getINSTANCE().create(new Computer(parsedCommand[2],
+																Date.valueOf(parsedCommand[3]),
+																parsedCommand[4].equals(NULL)? null : Date.valueOf(parsedCommand[4]),
+																company));
+		}
+		else {
+			logger.error(INCOMPATIBLE_DATES);
+			return new Computer();
+		}
 	}
 	
 	
 	public static void updateComputer(String[] parsedCommand)throws NumberFormatException,IllegalArgumentException {
 		//parsedCommand[2] = computer.id / parsedCommand[3] = computer.name / parsedCommand[4] = computer.introduced
 		//parsedCommand[5] = computer.discontinued / parsedCommand[6] = company.id
-								
-		Company company = CompanyService.getINSTANCE().get(Integer.parseInt(parsedCommand[6])).orElse(new Company());
-		if (company.getId()==0) {
-			logger.error(DONT_EXIST);
-			return;
+		if (Date.valueOf(parsedCommand[4]).before(Date.valueOf(parsedCommand[5]))) {
+			Company company = CompanyService.getINSTANCE().get(Integer.parseInt(parsedCommand[6])).orElse(new Company());
+			if (company.getId()==0) {
+				logger.error(DONT_EXIST);
+				return;
+			}
+			if(ComputerService.getINSTANCE().update(new Computer(Integer.parseInt(parsedCommand[2]),
+											parsedCommand[3],
+											Date.valueOf(parsedCommand[4]),
+											parsedCommand[5].equals(NULL)? null : Date.valueOf(parsedCommand[5]),
+											company))) {
+			
+				logger.info(UPDATED);
+			}
 		}
-		if(ComputerService.getINSTANCE().update(new Computer(Integer.parseInt(parsedCommand[2]),
-										parsedCommand[3],
-										Date.valueOf(parsedCommand[4]),
-										parsedCommand[5].equals(NULL)? null : Date.valueOf(parsedCommand[5]),
-										company))) {
-		
-			logger.info(UPDATED);
+		else {
+			logger.error(INCOMPATIBLE_DATES);
+			return;
 		}
 	}
 }
