@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,8 @@ public class ComputerManager implements EntityManager<Computer>{
 	
 	private final String UPDATE_QUERY = "UPDATE computer SET name=?,introduced=?,discontinued=?,company_id=?"
 											  +"WHERE id=?";
+	
+	private final String GET_PAGES_NUMBER = "SELECT count(*) FROM computers";
 	
 	private ComputerManager(){}
 	
@@ -169,6 +172,19 @@ public class ComputerManager implements EntityManager<Computer>{
 			throw (new DatabaseException(DatabaseException.UPDATE_FAIL));
 		}
 		return true;
+	}
+	
+	public int getComputersNumber() throws DatabaseException{
+		int computersNumber = 0;
+		try(Connection conn = openConnection()){
+			Statement stmt = conn.createStatement();
+			stmt.executeQuery(GET_PAGES_NUMBER);
+			stmt.close();			
+		}catch(SQLException e) {
+			logger.error(e.toString());
+			throw (new DatabaseException(DatabaseException.GET_FAIL));
+		}
+		return computersNumber;
 	}
 
 }

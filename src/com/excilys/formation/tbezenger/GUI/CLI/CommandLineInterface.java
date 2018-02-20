@@ -9,8 +9,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
+import com.excilys.formation.tbezenger.Model.ComputerPage;
 import com.excilys.formation.tbezenger.services.CompanyService;
-import com.excilys.formation.tbezenger.services.ComputerPage;
 import com.excilys.formation.tbezenger.services.ComputerService;
 
 public class CommandLineInterface {
@@ -48,6 +48,7 @@ public class CommandLineInterface {
 		Scanner scan = new Scanner(System.in);
 		String[] parsedCommand = scan.nextLine().split(SEPARATION_CHAR);
 		Computer computer;
+		ComputerPage computerPage = new ComputerPage();
 		
 		while (!parsedCommand[0].equals("quit")) {
 			switch(parsedCommand[0]) {
@@ -86,7 +87,7 @@ public class CommandLineInterface {
 					}
 					else if (parsedCommand[1].equals(PAGE) && parsedCommand.length == 3){
 						try {
-							List<Computer> computersPage = ComputerPage.getINSTANCE().getPage(Integer.parseInt(parsedCommand[2]));
+							List<Computer> computersPage = computerPage.getPage(Integer.parseInt(parsedCommand[2]));
 							if (computersPage.size()!=0) {
 								for (Computer c:computersPage) {
 									logger.info(c.toString());

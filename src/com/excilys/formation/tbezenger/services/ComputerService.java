@@ -73,4 +73,24 @@ public class ComputerService implements Service<Computer>{
 		}
 		return computers;
 	}
+	
+	public List<Computer> getPage(int numPage, int rowsByPage) {
+		List<Computer> computers = new ArrayList<Computer>();
+		try {
+			computers =  ComputerManager.getINSTANCE().findPage(numPage-1, rowsByPage);
+		} catch (DatabaseException e) {
+			logger.error(e.getMessage());
+		}
+		return computers;
+	}
+	
+	public int getComputersNumber(){
+		int computersNumber = 0;
+		try {
+			computersNumber = ComputerManager.getINSTANCE().getComputersNumber();
+		} catch (DatabaseException e) {
+			logger.error(e.getMessage());
+		}
+		return computersNumber;
+	}
 }
