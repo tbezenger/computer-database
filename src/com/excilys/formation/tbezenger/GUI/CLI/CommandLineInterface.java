@@ -4,7 +4,8 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
@@ -16,6 +17,7 @@ public class CommandLineInterface {
 	private static final String HELPER = "commandes disponibles : \n"
 			+ "- create computer {name} {introduction date} {discontinuation date} {company id}\n"
 			+ "- get computer {id}\n"
+			+ "- get page {page_number}\n"
 			+ "- getall computer\n"
 			+ "- getall company\n"
 			+ "- delete computer {id}\n"
@@ -39,10 +41,9 @@ public class CommandLineInterface {
 	private static final String PAGE = "page";
 	private static final String BAD_PAGE = "La page demandée n'existe pas";
 
-
-	private static final Logger logger = Logger.getLogger("STDOUT");
+	private static final Logger logger = LogManager.getLogger(CommandLineInterface.class);
 	
-
+	
 	public static void launch() {
 		Scanner scan = new Scanner(System.in);
 		String[] parsedCommand = scan.nextLine().split(SEPARATION_CHAR);

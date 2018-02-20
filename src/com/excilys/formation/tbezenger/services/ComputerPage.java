@@ -3,7 +3,8 @@ package com.excilys.formation.tbezenger.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.excilys.formation.tbezenger.DAO.ComputerManager;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
@@ -20,7 +21,7 @@ public class ComputerPage {
 	
 	private ComputerPage() {}
 	
-	static Logger logger = Logger.getLogger("STDOUT");
+	static Logger logger = LogManager.getLogger("STDOUT");
 		
 	private List<Computer> currentPage;
 	private int numCurrentPage;
