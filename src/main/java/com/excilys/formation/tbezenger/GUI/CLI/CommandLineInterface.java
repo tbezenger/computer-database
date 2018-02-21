@@ -36,7 +36,7 @@ public class CommandLineInterface {
 	private static final String SEPARATION_CHAR = "\\s";
 	private static final String BAD_ID = "L'id entré n'est pas un numéro";
 	private static final String BAD_DATE = "Mauvais format de date (utiliser aaaa-mm-jj)";
-	private static final String BYE = "Good bye\n";
+	private static final String BYE = "Au revoir :'(\n";
 	private static final String INCOMPATIBLE_DATES = "\"introduction date\" doit etre plus ancienne que \"discontinuation date\"";
 	private static final String PAGE = "page";
 	private static final String BAD_PAGE = "La page demandée n'existe pas";
@@ -53,7 +53,7 @@ public class CommandLineInterface {
 		while (!parsedCommand[0].equals("quit")) {
 			switch(parsedCommand[0]) {
 				case "create":
-					if (parsedCommand[1].equals(COMPUTER) && parsedCommand.length == 6) {
+					if (parsedCommand.length == 6 && parsedCommand[1].equals(COMPUTER)) {
 						try{
 							computer = createComputer(parsedCommand);
 							if (computer.getId()!=0) {
@@ -71,7 +71,7 @@ public class CommandLineInterface {
 					
 					
 				case "get":	
-					if (parsedCommand[1].equals(COMPUTER) && parsedCommand.length == 3){
+					if (parsedCommand.length == 3 && parsedCommand[1].equals(COMPUTER)){
 						// parsedCommand[2] = computer.id
 						try {
 							computer = ComputerService.getINSTANCE().get(Integer.parseInt(parsedCommand[2])).orElse(new Computer());
@@ -85,7 +85,7 @@ public class CommandLineInterface {
 							logger.error(BAD_ID);
 						}
 					}
-					else if (parsedCommand[1].equals(PAGE) && parsedCommand.length == 3){
+					else if (parsedCommand.length == 3 && parsedCommand[1].equals(PAGE)){
 						try {
 							List<Computer> computersPage = computerPage.getPage(Integer.parseInt(parsedCommand[2]));
 							if (computersPage.size()!=0) {
@@ -108,7 +108,7 @@ public class CommandLineInterface {
 				
 					
 				case "delete":
-					if (parsedCommand[1].equals(COMPUTER) && parsedCommand.length == 3){
+					if (parsedCommand.length == 3 && parsedCommand[1].equals(COMPUTER)){
 						// parsedCommand[2] = computer.id
 						try {
 							if (ComputerService.getINSTANCE().delete(Integer.parseInt(parsedCommand[2]))) {
@@ -125,7 +125,7 @@ public class CommandLineInterface {
 					
 					
 				case "update":
-					if (parsedCommand[1].equals(COMPUTER) && parsedCommand.length == 7) {
+					if (parsedCommand.length == 7 && parsedCommand[1].equals(COMPUTER)) {
 						try {
 							updateComputer(parsedCommand);
 						}catch (NumberFormatException e) {
@@ -144,29 +144,31 @@ public class CommandLineInterface {
 					
 					
 				case "getall":
-					switch (parsedCommand[1]) {
-						case COMPUTER:
-							List<Computer> computers = ComputerService.getINSTANCE().getAll();
-							for (Computer c : computers) {
-								logger.info(c.getName());
-							}
-							break;
-							
-							
-						case COMPANY:
-							List<Company> companies = CompanyService.getINSTANCE().getAll();
-							for (Company c : companies) {
-								logger.info(c.getName());
-							}
-							break;
-							
-							
-						default :
-							logger.error(NOT_RECOGNIZED);
-							break;
-							
+					if (parsedCommand.length == 2) {
+						switch (parsedCommand[1]) {
+							case COMPUTER:
+								List<Computer> computers = ComputerService.getINSTANCE().getAll();
+								for (Computer c : computers) {
+									logger.info(c.getName());
+								}
+								break;
+								
+								
+							case COMPANY:
+								List<Company> companies = CompanyService.getINSTANCE().getAll();
+								for (Company c : companies) {
+									logger.info(c.getName());
+								}
+								break;
+								
+								
+							default :
+								logger.error(NOT_RECOGNIZED);
+								break;
+								
+						}
+						break;
 					}
-					break;
 					
 				case "help":
 					logger.info(HELPER);

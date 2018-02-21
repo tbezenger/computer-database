@@ -1,4 +1,4 @@
-package test.java.com.excilys.formation.tbezenger;
+package main.test;
 
 import junit.framework.*;
 
@@ -29,8 +29,7 @@ public class AppTest
 
     /**
      * Rigourous Test :-)
-     */
-    public void testApp()
+     */    public void testApp()
     {
         assertTrue( true );
     }

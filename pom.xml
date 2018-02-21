@@ -11,7 +11,6 @@
   </properties>
   
   <build>
-    <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -41,8 +40,15 @@
 	    <groupId>junit</groupId>
 	    <artifactId>junit</artifactId>
 	    <version>3.8.1</version>
+	    <scope>test</scope>
 	</dependency>
 
+	<dependency>
+	    <groupId>org.mockito</groupId>
+	    <artifactId>mockito-all</artifactId>
+	    <version>1.10.19</version>
+	    <scope>test</scope>
+	</dependency>
 	
 	<dependency>
 	    <groupId>org.apache.logging.log4j</groupId>
