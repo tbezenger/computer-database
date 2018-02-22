@@ -3,7 +3,7 @@
   <groupId>com.excilys.formation.tbezenger.ComputerDatabase</groupId>
   <artifactId>ComputerDatabase</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,11 +21,9 @@
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
+        <artifactId>maven-war-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
-<!--           <warSourceDirectory>WebContent</warSourceDirectory> -->
-
 			<archive>
 	          <manifest>
 	            <mainClass>com.excilys.formation.tbezenger.App</mainClass>
@@ -73,5 +71,26 @@
 	    <artifactId>mysql-connector-java</artifactId>
 	    <version>6.0.6</version>
 	</dependency>
+	
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>javax.servlet-api</artifactId>
+	    <version>4.0.0</version>
+	    <scope>provided</scope>
+	</dependency>
+	
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>jstl</artifactId>
+	    <version>1.2</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>jsp-api</artifactId>
+	    <version>2.0</version>
+	    <scope>provided</scope>
+	</dependency>
+	
   </dependencies>
 </project>
