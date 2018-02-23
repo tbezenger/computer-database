@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.excilys.formation.tbezenger.DTO.ComputerDTO;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
@@ -49,6 +50,24 @@ public class ComputerManager implements EntityManager<Computer> {
 		return instance;
 	}
 
+	
+	public ComputerDTO createDTOFromBean(Computer computer) {
+		ComputerDTO computerDTO = new ComputerDTO();
+		computerDTO.setId(computer.getId());
+		computerDTO.setName(computer.getName());
+		computerDTO.setIntroduced(computer.getIntroduced());
+		computerDTO.setDiscontinued(computer.getDiscontinued());
+		computerDTO.setCompany(CompanyManager.getInstance().createDTOFromBean(computer.getCompany()));
+		return computerDTO;
+	}
+	
+	public Computer createBeanFromDTO(ComputerDTO computerDTO) {
+		return new Computer(computerDTO.getId(),computerDTO.getName(),computerDTO.getIntroduced(),
+							computerDTO.getDiscontinued(),
+							CompanyManager.getInstance().createBeanFromDTO(computerDTO.getCompany()));
+	}
+	
+	
 	@Override
 	public Optional<Computer> findById(int id) throws DatabaseException {
 		Computer computer = null;

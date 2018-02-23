@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Company;
+import com.excilys.formation.tbezenger.DTO.CompanyDTO;
 
 public class CompanyManager implements EntityManager<Company> {
 
@@ -25,6 +26,17 @@ public class CompanyManager implements EntityManager<Company> {
            instance = new CompanyManager();
         }
         return instance;
+    }
+    
+    public CompanyDTO createDTOFromBean(Company company) {
+    	CompanyDTO companyDTO = new CompanyDTO();
+    	companyDTO.setId(company.getId());
+    	companyDTO.setName(company.getName());
+    	return companyDTO;
+    }
+    
+    public Company createBeanFromDTO(CompanyDTO companyDTO) {
+    	return new Company(companyDTO.getId(),companyDTO.getName());
     }
 
     @Override
