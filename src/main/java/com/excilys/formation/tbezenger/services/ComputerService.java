@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.formation.tbezenger.DAO.ComputerManager;
+import com.excilys.formation.tbezenger.DTO.ComputerDTO;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
-import com.excilys.formation.tbezenger.Model.Computer;
 
-public class ComputerService implements Service<Computer> {
+public class ComputerService implements Service<ComputerDTO> {
 
 	private static ComputerService instance;
 
@@ -22,29 +22,29 @@ public class ComputerService implements Service<Computer> {
 		return instance;
 	}
 
-	public Computer create(Computer computer) {
+	public ComputerDTO create(ComputerDTO computerDTO) {
 		try {
-			computer = ComputerManager.getInstance().persist(computer);
+			computerDTO = ComputerManager.getInstance().persist(computerDTO);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return computer;
+		return computerDTO;
 	}
 
 	@Override
-	public Optional<Computer> get(int id) {
-		Optional<Computer> computer = Optional.ofNullable(new Computer());
+	public Optional<ComputerDTO> get(int id) {
+		Optional<ComputerDTO> computerDTO = Optional.ofNullable(new ComputerDTO());
 		try {
-			computer = ComputerManager.getInstance().findById(id);
+			computerDTO = ComputerManager.getInstance().findById(id);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return computer;
+		return computerDTO;
 	}
 
-	public boolean update(Computer computer) {
+	public boolean update(ComputerDTO computerDTO) {
 		try {
-			return ComputerManager.getInstance().update(computer);
+			return ComputerManager.getInstance().update(computerDTO);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -61,24 +61,24 @@ public class ComputerService implements Service<Computer> {
 	}
 
 	@Override
-	public List<Computer> getAll() {
-		List<Computer> computers = new ArrayList<Computer>();
+	public List<ComputerDTO> getAll() {
+		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 		try {
-			computers = ComputerManager.getInstance().findall();
+			computersDTO = ComputerManager.getInstance().findall();
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return computers;
+		return computersDTO;
 	}
 
-	public List<Computer> getPage(int numPage, int rowsByPage) {
-		List<Computer> computers = new ArrayList<Computer>();
+	public List<ComputerDTO> getPage(int numPage, int rowsByPage) {
+		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 		try {
-			computers = ComputerManager.getInstance().findPage(numPage - 1, rowsByPage);
+			computersDTO = ComputerManager.getInstance().findPage(numPage - 1, rowsByPage);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return computers;
+		return computersDTO;
 	}
 
 	public int getComputersNumber() {

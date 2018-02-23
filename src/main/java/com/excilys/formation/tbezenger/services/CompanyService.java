@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.formation.tbezenger.DAO.CompanyManager;
+import com.excilys.formation.tbezenger.DTO.CompanyDTO;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
-import com.excilys.formation.tbezenger.Model.Company;
 
-public class CompanyService implements Service<Company> {
+public class CompanyService implements Service<CompanyDTO> {
 	private static CompanyService instance;
 
 	private CompanyService() {
@@ -22,25 +22,25 @@ public class CompanyService implements Service<Company> {
 	}
 
 	@Override
-	public Optional<Company> get(int id) {
-		Optional<Company> company = Optional.ofNullable(new Company());
+	public Optional<CompanyDTO> get(int id) {
+		Optional<CompanyDTO> companyDTO = Optional.ofNullable(new CompanyDTO());
 		try {
-			company = CompanyManager.getInstance().findById(id);
+			companyDTO = CompanyManager.getInstance().findById(id);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return company;
+		return companyDTO;
 	}
 
 	@Override
-	public List<Company> getAll() {
-		List<Company> companies = new ArrayList<Company>();
+	public List<CompanyDTO> getAll() {
+		List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
 		try {
-			companies = CompanyManager.getInstance().findall();
+			companiesDTO = CompanyManager.getInstance().findall();
 
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return companies;
+		return companiesDTO;
 	}
 }
