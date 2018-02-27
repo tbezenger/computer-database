@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-import com.excilys.formation.tbezenger.DTO.ComputerDTO;
 import com.excilys.formation.tbezenger.services.ComputerService;
 
 public class ComputerPage {
@@ -15,12 +14,12 @@ public class ComputerPage {
 
 	static Logger logger = LogManager.getLogger("STDOUT");
 
-	private List<ComputerDTO> currentPage;
+	private List<Computer> currentPage;
 	private int numCurrentPage;
 	private int rowsByPage = 20;
 	private int pagesNumber;
 
-	public List<ComputerDTO> getCurrentPage() {
+	public List<Computer> getCurrentPage() {
 		return currentPage;
 	}
 
@@ -45,7 +44,7 @@ public class ComputerPage {
 
 	}
 
-	public List<ComputerDTO> getPage(int numPage) {
+	public List<Computer> getPage(int numPage) {
 		this.currentPage = ComputerService.getInstance().getPage(numPage, rowsByPage);
 		this.numCurrentPage = numPage;
 		return this.currentPage;

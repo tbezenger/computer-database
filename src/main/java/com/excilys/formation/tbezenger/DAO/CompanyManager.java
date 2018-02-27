@@ -11,9 +11,8 @@ import java.util.Optional;
 
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Company;
-import com.excilys.formation.tbezenger.DTO.CompanyDTO;
 
-public class CompanyManager implements EntityManager<CompanyDTO> {
+public class CompanyManager implements EntityManager<Company> {
 
     private static CompanyManager instance;
     private final String FIND_ALL_QUERY = "SELECT id,name FROM company";
@@ -28,56 +27,40 @@ public class CompanyManager implements EntityManager<CompanyDTO> {
         return instance;
     }
 
-    public CompanyDTO createDTOFromBean(Company company) {
-    	CompanyDTO companyDTO = new CompanyDTO();
-    	companyDTO.setId(company.getId());
-    	companyDTO.setName(company.getName());
-    	return companyDTO;
-    }
-
-    public Company createBeanFromDTO(CompanyDTO companyDTO) {
-    	return new Company(companyDTO.getId(), companyDTO.getName());
-    }
-
     @Override
-    public List<CompanyDTO> findall() throws DatabaseException {
-        List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
+    public List<Company> findall() throws DatabaseException {
+        List<Company> companies = new ArrayList<Company>();
         try (Connection conn = openConnection()) {
             Statement stmt = conn.createStatement();
 			stmt.executeQuery(FIND_ALL_QUERY);
 			ResultSet rs = stmt.getResultSet();
 			while (rs.next()) {
-				CompanyDTO companyDTO = new CompanyDTO();
-				companyDTO.setId(rs.getInt("id"));
-				companyDTO.setName(rs.getString("name"));
-				companiesDTO.add(companyDTO);
+				companies.add(new Company(rs.getInt("id"), rs.getString("name")));
 			}
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
 			throw (new DatabaseException(DatabaseException.GET_FAIL));
 		}
-		return companiesDTO;
+		return companies;
 	}
 
 	@Override
-	public Optional<CompanyDTO> findById(int id) throws DatabaseException {
-		CompanyDTO companyDTO = null;
+	public Optional<Company> findById(int id) throws DatabaseException {
+		Company company = null;
 		try (Connection conn = openConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(FIND_BY_ID_QUERY);
 			stmt.setInt(1, id);
 			stmt.executeQuery();
 			ResultSet rs = stmt.getResultSet();
 			rs.next();
-			companyDTO = new CompanyDTO();
-			companyDTO.setId(rs.getInt("id"));
-			companyDTO.setName(rs.getString("name"));
+			company = new Company(rs.getInt("id"), rs.getString("name"));
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
 			throw (new DatabaseException(DatabaseException.GET_FAIL));
 		}
-		return Optional.ofNullable(companyDTO);
+		return Optional.ofNullable(company);
 	}
 
 }

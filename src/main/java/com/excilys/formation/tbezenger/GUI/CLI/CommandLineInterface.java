@@ -7,8 +7,8 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.excilys.formation.tbezenger.DTO.CompanyDTO;
-import com.excilys.formation.tbezenger.DTO.ComputerDTO;
+import com.excilys.formation.tbezenger.Model.Company;
+import com.excilys.formation.tbezenger.Model.Computer;
 import com.excilys.formation.tbezenger.Model.ComputerPage;
 import com.excilys.formation.tbezenger.services.CompanyService;
 import com.excilys.formation.tbezenger.services.ComputerService;
@@ -42,7 +42,7 @@ public class CommandLineInterface {
 	public static void launch() {
 		Scanner scan = new Scanner(System.in);
 		String[] parsedCommand = scan.nextLine().split(SEPARATION_CHAR);
-		ComputerDTO computerDTO;
+		Computer computer;
 		ComputerPage computerPage = new ComputerPage();
 
 		while (!parsedCommand[0].equals("quit")) {
@@ -50,9 +50,9 @@ public class CommandLineInterface {
 			case "create":
 				if (parsedCommand.length == 6 && parsedCommand[1].equals(COMPUTER)) {
 					try {
-						computerDTO = createComputer(parsedCommand);
-						if (computerDTO.getId() != 0) {
-							LOGGER.info(CREATED + " : " + computerDTO.getName());
+						computer = createComputer(parsedCommand);
+						if (computer.getId() != 0) {
+							LOGGER.info(CREATED + ":" + computer.toString());
 						}
 					} catch (NumberFormatException e) {
 						LOGGER.error(BAD_ID);
@@ -68,10 +68,10 @@ public class CommandLineInterface {
 				if (parsedCommand.length == 3 && parsedCommand[1].equals(COMPUTER)) {
 					// parsedCommand[2] = computer.id
 					try {
-						computerDTO = ComputerService.getInstance().get(Integer.parseInt(parsedCommand[2]))
-								.orElse(new ComputerDTO());
-						if (computerDTO.getId() != 0) {
-							LOGGER.info("Read computer : " + computerDTO.getName());
+						computer = ComputerService.getInstance().get(Integer.parseInt(parsedCommand[2]))
+								.orElse(new Computer());
+						if (computer.getId() != 0) {
+							LOGGER.info("Read computer :" + computer.toString());
 						} else {
 							LOGGER.error(DONT_EXIST);
 						}
@@ -80,10 +80,10 @@ public class CommandLineInterface {
 					}
 				} else if (parsedCommand.length == 3 && parsedCommand[1].equals(PAGE)) {
 					try {
-						List<ComputerDTO> computersPage = computerPage.getPage(Integer.parseInt(parsedCommand[2]));
+						List<Computer> computersPage = computerPage.getPage(Integer.parseInt(parsedCommand[2]));
 						if (computersPage.size() != 0) {
-							for (ComputerDTO c : computersPage) {
-								LOGGER.info(c.getName());
+							for (Computer c : computersPage) {
+								LOGGER.info(c.toString());
 							}
 						} else {
 							LOGGER.error(BAD_PAGE);
@@ -130,15 +130,15 @@ public class CommandLineInterface {
 				if (parsedCommand.length == 2) {
 					switch (parsedCommand[1]) {
 					case COMPUTER:
-						List<ComputerDTO> computersDTO = ComputerService.getInstance().getAll();
-						for (ComputerDTO c : computersDTO) {
+						List<Computer> computers = ComputerService.getInstance().getAll();
+						for (Computer c : computers) {
 							LOGGER.info(c.getName());
 						}
 						break;
 
 					case COMPANY:
-						List<CompanyDTO> companiesDTO = CompanyService.getInstance().getAll();
-						for (CompanyDTO c : companiesDTO) {
+						List<Company> companies = CompanyService.getInstance().getAll();
+						for (Company c : companies) {
 							LOGGER.info(c.getName());
 						}
 						break;
@@ -167,24 +167,18 @@ public class CommandLineInterface {
 		scan.close();
 	}
 
-	public static ComputerDTO createComputer(String[] parsedCommand)
+	public static Computer createComputer(String[] parsedCommand)
 			throws NumberFormatException, IllegalArgumentException {
 		// parsedCommand[2] = computer.name / parsedCommand[3] = computer.introduced
 		// parsedCommand[4] = computer.discontinued / parsedCommand[5] = company.id
 		if (Date.valueOf(parsedCommand[3]).before(Date.valueOf(parsedCommand[4]))) {
-			CompanyDTO companyDTO = CompanyService.getInstance().get(Integer.parseInt(parsedCommand[5]))
-					.orElse(new CompanyDTO());
-
-			ComputerDTO computerDTO = new ComputerDTO();
-			computerDTO.setName(parsedCommand[2]);
-			computerDTO.setIntroduced(Date.valueOf(parsedCommand[3]));
-			computerDTO.setDiscontinued(parsedCommand[4].equals(NULL) ? null : Date.valueOf(parsedCommand[4]));
-			computerDTO.setCompany(companyDTO);
-
-			return ComputerService.getInstance().create(computerDTO);
+			Company company = CompanyService.getInstance().get(Integer.parseInt(parsedCommand[5]))
+					.orElse(new Company());
+			return ComputerService.getInstance().create(new Computer(parsedCommand[2], Date.valueOf(parsedCommand[3]),
+					parsedCommand[4].equals(NULL) ? null : Date.valueOf(parsedCommand[4]), company));
 		} else {
 			LOGGER.error(INCOMPATIBLE_DATES);
-			return new ComputerDTO();
+			return new Computer();
 		}
 	}
 
@@ -193,19 +187,17 @@ public class CommandLineInterface {
 		// parsedCommand[4] = computer.introduced
 		// parsedCommand[5] = computer.discontinued / parsedCommand[6] = company.id
 		if (Date.valueOf(parsedCommand[4]).before(Date.valueOf(parsedCommand[5]))) {
-			CompanyDTO companyDTO = CompanyService.getInstance().get(Integer.parseInt(parsedCommand[6]))
-					.orElse(new CompanyDTO());
-			if (companyDTO.getId() == 0) {
+			Company company = CompanyService.getInstance().get(Integer.parseInt(parsedCommand[6]))
+					.orElse(new Company());
+			if (company.getId() == 0) {
 				LOGGER.error(DONT_EXIST);
 				return;
 			}
-			ComputerDTO computerDTO = new ComputerDTO();
-			computerDTO.setName(parsedCommand[2]);
-			computerDTO.setIntroduced(Date.valueOf(parsedCommand[3]));
-			computerDTO.setDiscontinued(parsedCommand[4].equals(NULL) ? null : Date.valueOf(parsedCommand[4]));
-			computerDTO.setCompany(companyDTO);
+			if (ComputerService.getInstance()
+					.update(new Computer(Integer.parseInt(parsedCommand[2]), parsedCommand[3],
+							Date.valueOf(parsedCommand[4]),
+							parsedCommand[5].equals(NULL) ? null : Date.valueOf(parsedCommand[5]), company))) {
 
-			if (ComputerService.getInstance().update(computerDTO)) {
 				LOGGER.info(UPDATED);
 			}
 		} else {

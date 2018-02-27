@@ -7,8 +7,9 @@ import java.util.Optional;
 import com.excilys.formation.tbezenger.DAO.CompanyManager;
 import com.excilys.formation.tbezenger.DTO.CompanyDTO;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
+import com.excilys.formation.tbezenger.Model.Company;
 
-public class CompanyService implements Service<CompanyDTO> {
+public class CompanyService implements Service<Company> {
 	private static CompanyService instance;
 
 	private CompanyService() {
@@ -22,25 +23,36 @@ public class CompanyService implements Service<CompanyDTO> {
 	}
 
 	@Override
-	public Optional<CompanyDTO> get(int id) {
-		Optional<CompanyDTO> companyDTO = Optional.ofNullable(new CompanyDTO());
+	public Optional<Company> get(int id) {
+		Optional<Company> company = Optional.ofNullable(new Company());
 		try {
-			companyDTO = CompanyManager.getInstance().findById(id);
+			company = CompanyManager.getInstance().findById(id);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return companyDTO;
+		return company;
 	}
 
 	@Override
-	public List<CompanyDTO> getAll() {
-		List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
+	public List<Company> getAll() {
+		List<Company> companies = new ArrayList<Company>();
 		try {
-			companiesDTO = CompanyManager.getInstance().findall();
+			companies = CompanyManager.getInstance().findall();
 
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return companiesDTO;
+		return companies;
+	}
+
+	public CompanyDTO companyToDTO(Company company) {
+		CompanyDTO companyDTO = new CompanyDTO();
+		companyDTO.setId(company.getId());
+		companyDTO.setName(company.getName());
+		return companyDTO;
+	}
+
+	public Company DTOToCompany(CompanyDTO companyDTO) {
+		return new Company(companyDTO.getId(), companyDTO.getName());
 	}
 }

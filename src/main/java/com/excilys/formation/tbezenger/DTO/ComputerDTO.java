@@ -5,8 +5,8 @@ import java.sql.Date;
 public class ComputerDTO {
 	private int id;
 	private String name;
-	private Date introduced;
-	private Date discontinued;
+	private String introduced;
+	private String discontinued;
 	private CompanyDTO company;
 
 	public int getId() {
@@ -21,16 +21,16 @@ public class ComputerDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getIntroduced() {
+	public String getIntroduced() {
 		return introduced;
 	}
-	public void setIntroduced(Date introduced) {
+	public void setIntroduced(String introduced) {
 		this.introduced = introduced;
 	}
-	public Date getDiscontinued() {
+	public String getDiscontinued() {
 		return discontinued;
 	}
-	public void setDiscontinued(Date discontinued) {
+	public void setDiscontinued(String discontinued) {
 		this.discontinued = discontinued;
 	}
 	public CompanyDTO getCompany() {

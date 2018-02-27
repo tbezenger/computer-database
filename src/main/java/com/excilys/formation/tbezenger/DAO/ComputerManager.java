@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.formation.tbezenger.DTO.CompanyDTO;
-import com.excilys.formation.tbezenger.DTO.ComputerDTO;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
+import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
 
-public class ComputerManager implements EntityManager<ComputerDTO> {
+public class ComputerManager implements EntityManager<Computer> {
 
 	private static ComputerManager instance;
 
@@ -50,80 +49,49 @@ public class ComputerManager implements EntityManager<ComputerDTO> {
 		return instance;
 	}
 
-
-	public ComputerDTO createDTOFromBean(Computer computer) {
-		ComputerDTO computerDTO = new ComputerDTO();
-		computerDTO.setId(computer.getId());
-		computerDTO.setName(computer.getName());
-		computerDTO.setIntroduced(computer.getIntroduced());
-		computerDTO.setDiscontinued(computer.getDiscontinued());
-		computerDTO.setCompany(CompanyManager.getInstance().createDTOFromBean(computer.getCompany()));
-		return computerDTO;
-	}
-
-	public Computer createBeanFromDTO(ComputerDTO computerDTO) {
-		return new Computer(computerDTO.getId(),computerDTO.getName(),computerDTO.getIntroduced(),
-							computerDTO.getDiscontinued(),
-							CompanyManager.getInstance().createBeanFromDTO(computerDTO.getCompany()));
-	}
-
-
 	@Override
-	public Optional<ComputerDTO> findById(int id) throws DatabaseException {
-		ComputerDTO computerDTO = null;
+	public Optional<Computer> findById(int id) throws DatabaseException {
+		Computer computer = null;
 		try (Connection conn = openConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(FIND_BY_ID_QUERY);
 			stmt.setInt(1, id);
 			stmt.executeQuery();
 			ResultSet rs = stmt.getResultSet();
 			if (rs.next()) {
-				CompanyDTO companyDTO = new CompanyDTO();
-				companyDTO.setId(rs.getInt("company.id"));
-				companyDTO.setName(rs.getString("company.name"));
-				computerDTO = new ComputerDTO();
-				computerDTO.setId(rs.getInt("id"));
-				computerDTO.setName(rs.getString("name"));
-				computerDTO.setIntroduced(rs.getDate("introduced"));
-				computerDTO.setDiscontinued(rs.getDate("discontinued"));
-				computerDTO.setCompany(companyDTO);
+				Company company = new Company(rs.getInt("company.id"), rs.getString("company.name"));
+				computer = new Computer(rs.getInt("id"), rs.getString("name"), rs.getDate("introduced"),
+						rs.getDate("discontinued"), company);
 			}
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
 			throw (new DatabaseException(DatabaseException.GET_FAIL));
 		}
-		return Optional.ofNullable(computerDTO);
+		return Optional.ofNullable(computer);
 	}
 
 	@Override
-	public List<ComputerDTO> findall() throws DatabaseException {
-		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
+	public List<Computer> findall() throws DatabaseException {
+		List<Computer> computers = new ArrayList<Computer>();
 		try (Connection conn = openConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(FIND_ALL_QUERY);
 			stmt.executeQuery();
 			ResultSet rs = stmt.getResultSet();
 			while (rs.next()) {
-				CompanyDTO companyDTO = new CompanyDTO();
-				companyDTO.setId(rs.getInt("company.id"));
-				companyDTO.setName(rs.getString("company.name"));
-				ComputerDTO computerDTO = new ComputerDTO();
-				computerDTO.setId(rs.getInt("id"));
-				computerDTO.setName(rs.getString("name"));
-				computerDTO.setIntroduced(rs.getDate("introduced"));
-				computerDTO.setDiscontinued(rs.getDate("discontinued"));
-				computerDTO.setCompany(companyDTO);
-				computersDTO.add(computerDTO);
+				Company company = new Company(rs.getInt("company.id"), rs.getString("company.name"));
+				computers.add(new Computer(rs.getInt("id"), rs.getString("name"), rs.getDate("introduced"),
+						rs.getDate("discontinued"), company));
 			}
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
 			throw (new DatabaseException(DatabaseException.GET_FAIL));
 		}
-		return computersDTO;
+		return computers;
 	}
 
-	public List<ComputerDTO> findPage(int numpage, int rowsByPage) throws DatabaseException {
-		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
+	public List<Computer> findPage(int numpage, int rowsByPage) throws DatabaseException {
+		List<Computer> computers = new ArrayList<Computer>();
 		try (Connection conn = openConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(FIND_PAGE_QUERY);
 
@@ -133,46 +101,39 @@ public class ComputerManager implements EntityManager<ComputerDTO> {
 			stmt.executeQuery();
 			ResultSet rs = stmt.getResultSet();
 			while (rs.next()) {
-				CompanyDTO companyDTO = new CompanyDTO();
-				companyDTO.setId(rs.getInt("company.id"));
-				companyDTO.setName(rs.getString("company.name"));
-				ComputerDTO computerDTO = new ComputerDTO();
-				computerDTO.setId(rs.getInt("id"));
-				computerDTO.setName(rs.getString("name"));
-				computerDTO.setIntroduced(rs.getDate("introduced"));
-				computerDTO.setDiscontinued(rs.getDate("discontinued"));
-				computerDTO.setCompany(companyDTO);
-				computersDTO.add(computerDTO);
+				Company company = new Company(rs.getInt("company.id"), rs.getString("company.name"));
+				computers.add(new Computer(rs.getInt("id"), rs.getString("name"), rs.getDate("introduced"),
+						rs.getDate("discontinued"), company));
 			}
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
 			throw (new DatabaseException(DatabaseException.GET_FAIL));
 		}
-		return computersDTO;
+		return computers;
 	}
 
-	public ComputerDTO persist(ComputerDTO computerDTO) throws DatabaseException {
+	public Computer persist(Computer t) throws DatabaseException {
 		try (Connection conn = openConnection()) {
 			conn.setAutoCommit(false);
 			PreparedStatement stmt = conn.prepareStatement(PERSIST_QUERY);
 
-			stmt.setString(1, computerDTO.getName());
-			stmt.setDate(2, computerDTO.getIntroduced());
-			stmt.setDate(3, computerDTO.getDiscontinued());
-			stmt.setInt(4, computerDTO.getCompany().getId());
+			stmt.setString(1, t.getName());
+			stmt.setDate(2, t.getIntroduced());
+			stmt.setDate(3, t.getDiscontinued());
+			stmt.setInt(4, t.getCompany().getId());
 
 			stmt.executeUpdate();
 			stmt.executeQuery(GET_LAST_ID_QUERY);
 			stmt.getResultSet().next();
-			computerDTO.setId(stmt.getResultSet().getInt("max(id)"));
+			t.setId(stmt.getResultSet().getInt("max(id)"));
 			conn.commit();
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
 			throw (new DatabaseException(DatabaseException.PERSISTENCE_FAIL));
 		}
-		return computerDTO;
+		return t;
 	}
 
 	public boolean remove(int id) throws DatabaseException {
@@ -188,15 +149,15 @@ public class ComputerManager implements EntityManager<ComputerDTO> {
 		return true;
 	}
 
-	public boolean update(ComputerDTO computerDTO) throws DatabaseException {
+	public boolean update(Computer t) throws DatabaseException {
 		try (Connection conn = openConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(UPDATE_QUERY);
 
-			stmt.setString(1, computerDTO.getName());
-			stmt.setDate(2, computerDTO.getIntroduced());
-			stmt.setDate(3, computerDTO.getDiscontinued());
-			stmt.setInt(4, computerDTO.getCompany().getId());
-			stmt.setInt(5, computerDTO.getId());
+			stmt.setString(1, t.getName());
+			stmt.setDate(2, t.getIntroduced());
+			stmt.setDate(3, t.getDiscontinued());
+			stmt.setInt(4, t.getCompany().getId());
+			stmt.setInt(5, t.getId());
 
 			stmt.close();
 		} catch (SQLException e) {
