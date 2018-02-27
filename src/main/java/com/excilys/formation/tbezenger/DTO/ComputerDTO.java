@@ -8,7 +8,7 @@ public class ComputerDTO {
 	private Date introduced;
 	private Date discontinued;
 	private CompanyDTO company;
-	
+
 	public int getId() {
 		return id;
 	}

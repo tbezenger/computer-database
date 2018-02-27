@@ -12,14 +12,15 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard.jsp"> Application - Computer Database </a>
+            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
         </div>
     </header>
-
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
                 121 Computers found
+                ${returnlol}
+                ${testt}
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -31,7 +32,7 @@
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="addComputer.jsp">Add Computer</a>
+                    <a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a>
                     <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
                 </div>
             </div>
@@ -80,7 +81,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.jsp" onclick="">MacBook Pro</a>
+                            <a href="editComputer" onclick="">MacBook Pro</a>
                         </td>
                         <td>2006-01-10</td>
                         <td></td>
@@ -92,7 +93,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.jsp" onclick="">Connection Machine</a>
+                            <a href="editComputer" onclick="">Connection Machine</a>
                         </td>
                         <td>1987-01-01</td>
                         <td></td>
@@ -104,7 +105,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.jsp" onclick="">PowerBook</a>
+                            <a href="editComputer" onclick="">PowerBook</a>
                         </td>
                         <td>1991-01-01</td>
                         <td>2006-01-01</td>
@@ -116,7 +117,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.jsp" onclick="">Commodore 64</a>
+                            <a href="editComputer" onclick="">Commodore 64</a>
                         </td>
                         <td>1982-08-01</td>
                         <td>1994-01-01</td>
@@ -128,7 +129,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.jsp" onclick="">Altair 8800</a>
+                            <a href="editComputer" onclick="">Altair 8800</a>
                         </td>
                         <td>1974-12-19</td>
                         <td></td>
@@ -140,7 +141,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.jsp" onclick="">Canon Cat</a>
+                            <a href="editComputer" onclick="">Canon Cat</a>
                         </td>
                         <td>1987-01-01</td>
                         <td></td>
@@ -152,7 +153,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.jsp" onclick="">Nokia 770</a>
+                            <a href="editComputer" onclick="">Nokia 770</a>
                         </td>
                         <td></td>
                         <td></td>
@@ -164,7 +165,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.jsp" onclick="">NeXTcube</a>
+                            <a href="editComputer" onclick="">NeXTcube</a>
                         </td>
                         <td>1988-01-01</td>
                         <td>1993-01-01</td>
@@ -176,7 +177,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.jsp" onclick="">IBM 650</a>
+                            <a href="editComputer" onclick="">IBM 650</a>
                         </td>
                         <td>1953-01-01</td>
                         <td>1962-01-01</td>
@@ -188,7 +189,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.jsp" onclick="">PlayStation 2</a>
+                            <a href="editComputer" onclick="">PlayStation 2</a>
                         </td>
                         <td>2000-03-24</td>
                         <td></td>
@@ -200,7 +201,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.jsp" onclick="">Archos 101</a>
+                            <a href="editComputer" onclick="">Archos 101</a>
                         </td>
                         <td></td>
                         <td></td>
@@ -212,7 +213,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.jsp" onclick="">Nintendo 3DS</a>
+                            <a href="editComputer" onclick="">Nintendo 3DS</a>
                         </td>
                         <td>2010-03-23</td>
                         <td></td>

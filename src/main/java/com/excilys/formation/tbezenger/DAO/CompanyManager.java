@@ -36,7 +36,7 @@ public class CompanyManager implements EntityManager<CompanyDTO> {
     }
 
     public Company createBeanFromDTO(CompanyDTO companyDTO) {
-    	return new Company(companyDTO.getId(),companyDTO.getName());
+    	return new Company(companyDTO.getId(), companyDTO.getName());
     }
 
     @Override
