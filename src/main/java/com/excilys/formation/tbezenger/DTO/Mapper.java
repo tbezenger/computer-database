@@ -6,7 +6,7 @@ import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
 
 public class Mapper {
-	
+
 	public static CompanyDTO toDTO(Company company) {
 		CompanyDTO companyDTO = new CompanyDTO();
 		companyDTO.setId(company.getId());
@@ -23,14 +23,14 @@ public class Mapper {
 		ComputerDTO computerDTO = new ComputerDTO();
 		computerDTO.setId(computer.getId());
 		computerDTO.setName(computer.getName());
-		computerDTO.setIntroduced(computer.getIntroduced().toString());
-		computerDTO.setDiscontinued(computer.getDiscontinued().toString());
+		computerDTO.setIntroduced((computer.getIntroduced() != null) ? computer.getIntroduced().toString() : null);
+		computerDTO.setDiscontinued((computer.getDiscontinued() != null) ? computer.getDiscontinued().toString() : null);
 		computerDTO.setCompany(toDTO(computer.getCompany()));
 		return computerDTO;
 	}
 
 	public static Computer toComputer(ComputerDTO computerDTO) {
 		return new Computer(computerDTO.getId(), computerDTO.getName(), Date.valueOf(computerDTO.getIntroduced()),
-							Date.valueOf(computerDTO.getDiscontinued()),toCompany(computerDTO.getCompany()));
+							Date.valueOf(computerDTO.getDiscontinued()), toCompany(computerDTO.getCompany()));
 	}
 }

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,9 +19,8 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                121 Computers found
+                ${computerCount} Computers found
             </h1>
-			<p>test : ${testt} </p><p>company : ${company}</p>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="#" method="GET" class="form-inline">
@@ -75,150 +75,16 @@
                 </thead>
                 <!-- Browse attribute computers -->
                 <tbody id="results">
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer" onclick="">MacBook Pro</a>
-                        </td>
-                        <td>2006-01-10</td>
-                        <td></td>
-                        <td>Apple Inc.</td>
-
-                    </tr>
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer" onclick="">Connection Machine</a>
-                        </td>
-                        <td>1987-01-01</td>
-                        <td></td>
-                        <td>Thinking Machines</td>
-
-                    </tr>
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer" onclick="">PowerBook</a>
-                        </td>
-                        <td>1991-01-01</td>
-                        <td>2006-01-01</td>
-                        <td>Apple Inc.</td>
-
-                    </tr>
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer" onclick="">Commodore 64</a>
-                        </td>
-                        <td>1982-08-01</td>
-                        <td>1994-01-01</td>
-                        <td>Commodore International</td>
-
-                    </tr>
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer" onclick="">Altair 8800</a>
-                        </td>
-                        <td>1974-12-19</td>
-                        <td></td>
-                        <td>Micro Instrumentation and Telemetry Systems</td>
-
-                    </tr>
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer" onclick="">Canon Cat</a>
-                        </td>
-                        <td>1987-01-01</td>
-                        <td></td>
-                        <td>Canon</td>
-
-                    </tr>
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer" onclick="">Nokia 770</a>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td>Nokia</td>
-
-                    </tr>
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer" onclick="">NeXTcube</a>
-                        </td>
-                        <td>1988-01-01</td>
-                        <td>1993-01-01</td>
-                        <td>NeXT</td>
-
-                    </tr>
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer" onclick="">IBM 650</a>
-                        </td>
-                        <td>1953-01-01</td>
-                        <td>1962-01-01</td>
-                        <td>IBM</td>
-
-                    </tr>
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer" onclick="">PlayStation 2</a>
-                        </td>
-                        <td>2000-03-24</td>
-                        <td></td>
-                        <td>Sony</td>
-
-                    </tr>
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer" onclick="">Archos 101</a>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-
-                    </tr>
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer" onclick="">Nintendo 3DS</a>
-                        </td>
-                        <td>2010-03-23</td>
-                        <td></td>
-                        <td>Nintendo</td>
-
-                    </tr>
+                	<c:forEach items="${computerPage}" var="computer">
+                        <tr>
+                            <td class="editMode"><input type="checkbox" name="cb"
+                                class="cb" value="0"></td>
+                            <td><a href="editComputer" onclick="">${computer.name}</a></td>
+                            <td>${computer.introduced}</td>
+                            <td>${computer.discontinued}</td>
+                            <td>${computer.company.name}</td>
+                        </tr>
+                      </c:forEach>
                 </tbody>
             </table>
         </div>

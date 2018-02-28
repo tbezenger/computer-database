@@ -37,7 +37,7 @@ public class ComputerManager implements EntityManager<Computer> {
 	private final String UPDATE_QUERY = "UPDATE computer SET name=?,introduced=?,discontinued=?,company_id=?"
 			+ "WHERE id=?";
 
-	private final String GET_PAGES_NUMBER = "SELECT count(*) FROM computers";
+	private final String GET_PAGES_NUMBER = "SELECT count(*) FROM computer";
 
 	private ComputerManager() {
 	}
@@ -172,6 +172,8 @@ public class ComputerManager implements EntityManager<Computer> {
 		try (Connection conn = openConnection()) {
 			Statement stmt = conn.createStatement();
 			stmt.executeQuery(GET_PAGES_NUMBER);
+			stmt.getResultSet().next();
+			computersNumber = stmt.getResultSet().getInt("count(*)");
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());

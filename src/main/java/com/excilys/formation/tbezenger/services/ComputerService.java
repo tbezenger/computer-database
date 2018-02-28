@@ -1,12 +1,10 @@
 package com.excilys.formation.tbezenger.services;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.excilys.formation.tbezenger.DAO.ComputerManager;
-import com.excilys.formation.tbezenger.DTO.ComputerDTO;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Computer;
 
