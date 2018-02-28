@@ -44,15 +44,4 @@ public class CompanyService implements Service<Company> {
 		}
 		return companies;
 	}
-
-	public CompanyDTO companyToDTO(Company company) {
-		CompanyDTO companyDTO = new CompanyDTO();
-		companyDTO.setId(company.getId());
-		companyDTO.setName(company.getName());
-		return companyDTO;
-	}
-
-	public Company DTOToCompany(CompanyDTO companyDTO) {
-		return new Company(companyDTO.getId(), companyDTO.getName());
-	}
 }

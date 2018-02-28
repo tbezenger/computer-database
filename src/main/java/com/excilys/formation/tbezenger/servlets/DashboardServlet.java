@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.formation.tbezenger.Model.Company;
+import com.excilys.formation.tbezenger.Model.ComputerPage;
+import com.excilys.formation.tbezenger.services.CompanyService;
+
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
 	/**
@@ -15,16 +19,14 @@ public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public String test = "testaj";
-	public String lol = "lol";
 
-	public String returnLol() {
-		return "lol";
+	public Company getCompany() {
+		return CompanyService.getInstance().get(1).orElse(new Company());
 	}
-	
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("returnlol", lol);
+		request.setAttribute("company", new ComputerPage().getPage(1));
 		request.setAttribute("testt", test);
-		
 	    this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}
 }

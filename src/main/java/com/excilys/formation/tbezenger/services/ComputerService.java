@@ -92,20 +92,4 @@ public class ComputerService implements Service<Computer> {
 		}
 		return computersNumber;
 	}
-
-	public ComputerDTO computerToDTO(Computer computer) {
-		ComputerDTO computerDTO = new ComputerDTO();
-		computerDTO.setId(computer.getId());
-		computerDTO.setName(computer.getName());
-		computerDTO.setIntroduced(computer.getIntroduced().toString());
-		computerDTO.setDiscontinued(computer.getDiscontinued().toString());
-		computerDTO.setCompany(CompanyService.getInstance().companyToDTO(computer.getCompany()));
-		return computerDTO;
-	}
-
-	public Computer DTOToComputer(ComputerDTO computerDTO) {
-		return new Computer(computerDTO.getId(), computerDTO.getName(), Date.valueOf(computerDTO.getIntroduced()),
-							Date.valueOf(computerDTO.getDiscontinued()), CompanyService.getInstance().DTOToCompany(computerDTO.getCompany()));
-	}
-
 }

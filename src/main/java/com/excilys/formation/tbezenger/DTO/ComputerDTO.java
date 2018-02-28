@@ -1,6 +1,5 @@
 package com.excilys.formation.tbezenger.DTO;
 
-import java.sql.Date;
 
 public class ComputerDTO {
 	private int id;

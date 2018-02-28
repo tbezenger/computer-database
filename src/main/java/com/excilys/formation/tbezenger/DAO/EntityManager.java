@@ -6,21 +6,24 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.excilys.formation.tbezenger.Utils;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 
 public interface EntityManager<T> {
 
-	Logger LOGGER = LogManager.getLogger("roll");
+    Logger LOGGER = LogManager.getLogger("roll");
 
 	default Connection openConnection() throws DatabaseException {
 		Connection conn = null;
 		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(Utils.url, Utils.dbName, Utils.dbPassword);
 		} catch (SQLException e) {
+			throw (new DatabaseException(DatabaseException.CONNECTION_FAIL));
+		} catch (ClassNotFoundException e) {
 			throw (new DatabaseException(DatabaseException.CONNECTION_FAIL));
 		}
 		return conn;
