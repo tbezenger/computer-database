@@ -19,9 +19,8 @@
         <div class="container">
             <h1 id="homeTitle">
                 121 Computers found
-                ${returnlol}
-                ${testt}
             </h1>
+			<p>test : ${testt} </p><p>company : ${company}</p>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="#" method="GET" class="form-inline">
