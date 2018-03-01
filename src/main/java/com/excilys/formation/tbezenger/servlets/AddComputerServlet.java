@@ -19,4 +19,10 @@ public class AddComputerServlet extends HttpServlet {
 		request.setAttribute("companies", model.getCompanies());
 	    this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
+	
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		model.createComputer(request.getParameter("computerName"), request.getParameter("introduced"),
+				request.getParameter("discontinued"), Integer.parseInt(request.getParameter("companyId")));
+		response.sendRedirect("dashboard");
+	}
 }

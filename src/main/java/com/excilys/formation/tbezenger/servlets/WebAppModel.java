@@ -55,8 +55,13 @@ public class WebAppModel {
 		return computers;
 	}
 
-	public void createComputer(String name, String discontinued, String introduced, CompanyDTO company) {
-
+	public void createComputer(String name, String discontinued, String introduced, int companyId) {
+		ComputerDTO computerDTO = new ComputerDTO();
+		computerDTO.setName(name);
+		computerDTO.setDiscontinued(discontinued);
+		computerDTO.setIntroduced(introduced);
+		computerDTO.setCompany(Mapper.toDTO(companyService.get(companyId).orElse(new Company())));
+		computerService.create(Mapper.toComputer(computerDTO));
 	}
 
 	public void editComputer(int id, String name, String discontinued, String introduced, int companyId) {

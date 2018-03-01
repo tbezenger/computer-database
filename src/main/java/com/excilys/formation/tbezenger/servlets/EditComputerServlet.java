@@ -26,7 +26,7 @@ public class EditComputerServlet extends HttpServlet {
 		model.editComputer(Integer.parseInt(request.getParameter("id")), request.getParameter("computerName"),
 						   request.getParameter("introduced"), request.getParameter("discontinued"),
 						   Integer.parseInt(request.getParameter("companyId")));
-
+		response.sendRedirect("dashboard");
 	}
 
 }
