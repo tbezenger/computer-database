@@ -13,23 +13,16 @@ import com.excilys.formation.tbezenger.services.CompanyService;
 import com.excilys.formation.tbezenger.services.ComputerService;
 
 public class WebAppModel {
-	private ComputerDTO currentComputer;
-	private List<ComputerDTO> computersDTO;
+	private ComputerPage page;
 	private List<CompanyDTO> companiesDTO;
 	private CompanyService companyService = CompanyService.getInstance();
 	private ComputerService computerService = ComputerService.getInstance();
 
-	public ComputerDTO getCurrentComputer() {
-		return currentComputer;
+	public ComputerPage getPage() {
+		return page;
 	}
-	public void setCurrentComputer(ComputerDTO currentComputer) {
-		this.currentComputer = currentComputer;
-	}
-	public List<ComputerDTO> getComputersDTO() {
-		return computersDTO;
-	}
-	public void setComputersDTO(List<ComputerDTO> computersDTO) {
-		this.computersDTO = computersDTO;
+	public void setPage(ComputerPage page) {
+		this.page = page;
 	}
 	public List<CompanyDTO> getCompaniesDTO() {
 		return companiesDTO;
@@ -46,13 +39,11 @@ public class WebAppModel {
 		return companies;
 	}
 
-	public List<ComputerDTO> getComputersPage(int numPage, int rowsByPage) {
-		ComputerPage computerPage =  new ComputerPage();
-		List<ComputerDTO> computers = new ArrayList<>();
-		for (Computer computer : computerPage.getPage(1)) {
-			computers.add(Mapper.toDTO(computer));
-		}
-		return computers;
+	public List<ComputerDTO> getComputersFromNewPage(int numPage, int rowsByPage) {
+		page = new ComputerPage();
+		page.setComputers(ComputerService.getInstance().getPage(numPage, page.getRowsByPage()));
+		page.setNumPage(numPage);
+		return getComputers();
 	}
 
 	public void createComputer(String name, String discontinued, String introduced, int companyId) {
@@ -75,11 +66,19 @@ public class WebAppModel {
 	}
 
 	public void deleteComputer(int id) {
-
+		computerService.delete(id);
 	}
 
+	//TODO prendre le pc dans la page plutot que faire une requete (faire aussi un getCompany pour create/edit)
 	public ComputerDTO getComputer(int id) {
-		setCurrentComputer(Mapper.toDTO(computerService.get(id).orElse(new Computer())));
-		return currentComputer;
+		return Mapper.toDTO(computerService.get(id).orElse(new Computer()));
+	}
+
+	public List<ComputerDTO> getComputers() {
+		List<ComputerDTO> computers = new ArrayList<>();
+		for (Computer computer : page.getComputers()) {
+			computers.add(Mapper.toDTO(computer));
+		}
+		return computers;
 	}
 }

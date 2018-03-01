@@ -41,14 +41,22 @@ public class DashboardServlet extends HttpServlet {
 		this.rowsByPage = rowsByPage;
 	}
 
-	public List<ComputerDTO> getComputerPage() {
-		return model.getComputersPage(numPage, rowsByPage);
+	public List<ComputerDTO> getComputersFromNewPage() {
+		return model.getComputersFromNewPage(numPage, rowsByPage);
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("computerPage", getComputerPage());
+		request.setAttribute("computerPage", getComputersFromNewPage());
 		request.setAttribute("computerCount", ComputerService.getInstance().getComputersNumber());
 
 	    this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		for (String s : request.getParameter("selection").split(",")) {
+			model.deleteComputer(Integer.parseInt(s));
+		}
+		response.sendRedirect("dashboard");
+	}
+
 }

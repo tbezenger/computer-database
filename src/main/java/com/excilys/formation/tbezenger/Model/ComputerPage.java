@@ -9,22 +9,25 @@ import com.excilys.formation.tbezenger.services.ComputerService;
 
 public class ComputerPage {
 
-	public ComputerPage() {
-	}
-
 	static Logger logger = LogManager.getLogger("STDOUT");
 
-	private List<Computer> currentPage;
-	private int numCurrentPage;
+	private List<Computer> computers;
+	private int numPage;
 	private int rowsByPage = 20;
 	private int pagesNumber;
 
-	public List<Computer> getCurrentPage() {
-		return currentPage;
+	public List<Computer> getComputers() {
+		return computers;
+	}
+	public void setComputers(List<Computer> computers) {
+		this.computers = computers;
 	}
 
-	public int getNumCurrentPage() {
-		return numCurrentPage;
+	public int getNumPage() {
+		return numPage;
+	}
+	public void setNumPage(int numPage) {
+		this.numPage = numPage;
 	}
 
 	public int getRowsByPage() {
@@ -39,15 +42,4 @@ public class ComputerPage {
 		this.pagesNumber = ComputerService.getInstance().getComputersNumber() / rowsByPage;
 		return this.pagesNumber;
 	}
-
-	public void setPagesNumber() {
-
-	}
-
-	public List<Computer> getPage(int numPage) {
-		this.currentPage = ComputerService.getInstance().getPage(numPage, rowsByPage);
-		this.numCurrentPage = numPage;
-		return this.currentPage;
-	}
-
 }
