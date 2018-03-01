@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.formation.tbezenger.DAO.CompanyManager;
-import com.excilys.formation.tbezenger.DTO.CompanyDTO;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Company;
 

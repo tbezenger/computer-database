@@ -10,15 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/addComputer")
 public class AddComputerServlet extends HttpServlet {
-
+	private WebAppModel model = new WebAppModel();
 	/**
 	 */
 	private static final long serialVersionUID = 1L;
-	public String test = "testaj2";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("testt", test);
+		request.setAttribute("companies", model.getCompanies());
 	    this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
-
 }

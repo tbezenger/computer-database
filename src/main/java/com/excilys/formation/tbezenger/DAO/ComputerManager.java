@@ -34,7 +34,7 @@ public class ComputerManager implements EntityManager<Computer> {
 
 	private final String DELETE_QUERY = "DELETE FROM computer WHERE id=?";
 
-	private final String UPDATE_QUERY = "UPDATE computer SET name=?,introduced=?,discontinued=?,company_id=?"
+	private final String UPDATE_QUERY = "UPDATE computer SET name=?,introduced=?,discontinued=?,company_id=? "
 			+ "WHERE id=?";
 
 	private final String GET_PAGES_NUMBER = "SELECT count(*) FROM computer";
@@ -158,9 +158,11 @@ public class ComputerManager implements EntityManager<Computer> {
 			stmt.setDate(3, t.getDiscontinued());
 			stmt.setInt(4, t.getCompany().getId());
 			stmt.setInt(5, t.getId());
+			stmt.executeUpdate();
 
 			stmt.close();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			LOGGER.error(e.toString());
 			throw (new DatabaseException(DatabaseException.UPDATE_FAIL));
 		}
