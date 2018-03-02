@@ -41,7 +41,7 @@ public class WebAppModel {
 
 	public List<ComputerDTO> getComputersFromNewPage(int numPage, int rowsByPage) {
 		page = new ComputerPage();
-		page.setComputers(ComputerService.getInstance().getPage(numPage, page.getRowsByPage()));
+		page.setComputers(ComputerService.getInstance().getPage(numPage, rowsByPage));
 		page.setNumPage(numPage);
 		return getComputers();
 	}
@@ -51,7 +51,7 @@ public class WebAppModel {
 		computerDTO.setName(name);
 		computerDTO.setDiscontinued(discontinued);
 		computerDTO.setIntroduced(introduced);
-		computerDTO.setCompany(Mapper.toDTO(companyService.get(companyId).orElse(new Company())));
+		computerDTO.setCompany(getCompany(companyId));
 		computerService.create(Mapper.toComputer(computerDTO));
 	}
 
@@ -61,7 +61,7 @@ public class WebAppModel {
 		computerDTO.setName(name);
 		computerDTO.setDiscontinued(discontinued);
 		computerDTO.setIntroduced(introduced);
-		computerDTO.setCompany(Mapper.toDTO(companyService.get(companyId).orElse(new Company())));
+		computerDTO.setCompany(getCompany(companyId));
 		computerService.update(Mapper.toComputer(computerDTO));
 	}
 
@@ -69,7 +69,10 @@ public class WebAppModel {
 		computerService.delete(id);
 	}
 
-	//TODO prendre le pc dans la page plutot que faire une requete (faire aussi un getCompany pour create/edit)
+	private CompanyDTO getCompany(int id) {
+		return Mapper.toDTO(companyService.get(id).orElse(new Company()));
+	}
+
 	public ComputerDTO getComputer(int id) {
 		return Mapper.toDTO(computerService.get(id).orElse(new Computer()));
 	}

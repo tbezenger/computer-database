@@ -1,6 +1,7 @@
 package com.excilys.formation.tbezenger.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -20,18 +21,8 @@ public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private WebAppModel model = new WebAppModel();
-
-	private int numPage = 1;
+	private int maxPages;
 	private int rowsByPage = 10;
-
-
-	public int getNumPage() {
-		return numPage;
-	}
-
-	public void setNumPage(int numPage) {
-		this.numPage = numPage;
-	}
 
 	public int getRowsByPage() {
 		return rowsByPage;
@@ -41,14 +32,36 @@ public class DashboardServlet extends HttpServlet {
 		this.rowsByPage = rowsByPage;
 	}
 
-	public List<ComputerDTO> getComputersFromNewPage() {
+	public List<ComputerDTO> getComputersFromNewPage(int numPage) {
 		return model.getComputersFromNewPage(numPage, rowsByPage);
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("computerPage", getComputersFromNewPage());
-		request.setAttribute("computerCount", ComputerService.getInstance().getComputersNumber());
+	public List<Integer> initLinkPages(int numPage) {
+		List<Integer> linkPages = new ArrayList<Integer>();
+		linkPages.add(1);
+		for (int i = -2; i < 3; i++) {
+			if (numPage + i > 1 && numPage + i < maxPages) {
+				linkPages.add(numPage + i);
+			}
+		}
+		linkPages.add(maxPages);
+		return linkPages;
+	}
 
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("computerCount", ComputerService.getInstance().getComputersNumber());
+		maxPages = ComputerService.getInstance().getComputersNumber() / rowsByPage;
+
+		if (request.getParameter("page") != null) {
+			model.getComputersFromNewPage(Integer.parseInt(request.getParameter("page")), rowsByPage);
+		} else {
+			model.getComputersFromNewPage(1, rowsByPage);
+		}
+		List<Integer> links = initLinkPages(model.getPage().getNumPage());
+		System.out.println(links);
+		request.setAttribute("links", links);
+		request.setAttribute("computerPage", model.getPage());
+		request.setAttribute("computerCount", ComputerService.getInstance().getComputersNumber());
 	    this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}
 

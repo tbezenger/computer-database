@@ -13,8 +13,7 @@ public class ComputerPage {
 
 	private List<Computer> computers;
 	private int numPage;
-	private int rowsByPage = 20;
-	private int pagesNumber;
+
 
 	public List<Computer> getComputers() {
 		return computers;
@@ -28,18 +27,5 @@ public class ComputerPage {
 	}
 	public void setNumPage(int numPage) {
 		this.numPage = numPage;
-	}
-
-	public int getRowsByPage() {
-		return rowsByPage;
-	}
-
-	public void setRowsByPage(int rowsByPage) {
-		this.rowsByPage = rowsByPage;
-	}
-
-	public int getPagesNumber() {
-		this.pagesNumber = ComputerService.getInstance().getComputersNumber() / rowsByPage;
-		return this.pagesNumber;
 	}
 }
