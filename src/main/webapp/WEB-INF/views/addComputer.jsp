@@ -25,7 +25,7 @@
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name">
+                                <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name (only letters or numbers, max = 30)" pattern="[A-Za-z0-9]{1,30}">
                                 <span  style="color: #900">${errors['computerName']}</span>
                             </div>
                             <div class="form-group">

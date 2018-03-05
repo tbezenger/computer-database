@@ -9,7 +9,7 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.excilys.formation.tbezenger.Utils;
+import com.excilys.formation.tbezenger.Strings;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 
 public interface EntityManager<T> {
@@ -20,7 +20,7 @@ public interface EntityManager<T> {
 		Connection conn = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection(Utils.url, Utils.dbName, Utils.dbPassword);
+			conn = DriverManager.getConnection(Strings.url, Strings.dbName, Strings.dbPassword);
 		} catch (SQLException e) {
 			throw (new DatabaseException(DatabaseException.CONNECTION_FAIL));
 		} catch (ClassNotFoundException e) {

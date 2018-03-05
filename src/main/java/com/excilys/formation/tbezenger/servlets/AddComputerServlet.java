@@ -2,6 +2,7 @@ package com.excilys.formation.tbezenger.servlets;
 
 import java.io.IOException;
 import java.util.Map;
+import static com.excilys.formation.tbezenger.Strings.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,15 +16,12 @@ public class AddComputerServlet extends HttpServlet {
 	/**
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final String NAME_FIELD = "computerName";
-	private static final String INTRODUCED_FIELD = "introduced";
-	private static final String DISCONTINUED_FIELD = "discontinued";
-	private static final String COMPANY_FIELD = "companyId";
+
 
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("companies", model.getCompanies());
-	    this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
+		request.setAttribute(COMPANIES, model.getCompanies());
+	    this.getServletContext().getRequestDispatcher(ADD_COMPUTER_VIEW).forward(request, response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,12 +30,11 @@ public class AddComputerServlet extends HttpServlet {
 		if (erreurs.isEmpty()) {
 			model.createComputer(request.getParameter(NAME_FIELD), request.getParameter(INTRODUCED_FIELD),
 					request.getParameter(DISCONTINUED_FIELD), Integer.parseInt(request.getParameter(COMPANY_FIELD)));
-			response.sendRedirect("dashboard");
+			response.sendRedirect(DASHBOARD);
 
 		} else {
-			request.setAttribute("errors", erreurs);
-			request.setAttribute("companies", model.getCompanies());
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
+			request.setAttribute(ERRORS, erreurs);
+			doGet(request, response);
 		}
 
 	}

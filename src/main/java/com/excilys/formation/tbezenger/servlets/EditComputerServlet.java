@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import static com.excilys.formation.tbezenger.Strings.*;
 
 @WebServlet("/editComputer")
 public class EditComputerServlet extends HttpServlet {
@@ -18,22 +19,22 @@ public class EditComputerServlet extends HttpServlet {
 	private WebAppModel model = new WebAppModel();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		request.setAttribute("computer", model.getComputer(id));
-		request.setAttribute("companies", model.getCompanies());
-	    this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
+		int id = Integer.parseInt(request.getParameter(ID));
+		request.setAttribute(COMPUTER, model.getComputer(id));
+		request.setAttribute(COMPANIES, model.getCompanies());
+	    this.getServletContext().getRequestDispatcher(EDIT_COMPUTER_VIEW).forward(request, response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Map<String, String> erreurs = Validator.validation(request);
+		Map<String, String> errors = Validator.validation(request);
 
-		if (erreurs.isEmpty()) {
-			model.editComputer(Integer.parseInt(request.getParameter("id")), request.getParameter("computerName"),
-							   request.getParameter("introduced"), request.getParameter("discontinued"),
-							   Integer.parseInt(request.getParameter("companyId")));
-			response.sendRedirect("dashboard");
+		if (errors.isEmpty()) {
+			model.editComputer(Integer.parseInt(request.getParameter(ID)), request.getParameter(NAME_FIELD),
+							   request.getParameter(INTRODUCED_FIELD), request.getParameter(DISCONTINUED_FIELD),
+							   Integer.parseInt(request.getParameter(COMPANY_FIELD)));
+			response.sendRedirect(DASHBOARD);
 		} else {
-			request.setAttribute("errors", erreurs);
+			request.setAttribute(ERRORS, errors);
 			doGet(request, response);
 		}
 	}

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.excilys.formation.tbezenger.Strings.*;
 import com.excilys.formation.tbezenger.DTO.ComputerDTO;
 import com.excilys.formation.tbezenger.services.ComputerService;
 
@@ -50,32 +51,32 @@ public class DashboardServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("computerCount", ComputerService.getInstance().getComputersNumber());
-		if (request.getParameter("rows") != null) {
-			rowsByPage = Integer.parseInt(request.getParameter("rows"));
+		request.setAttribute(COMPUTER_COUNT, ComputerService.getInstance().getComputersNumber());
+		if (request.getParameter(ROWS) != null) {
+			rowsByPage = Integer.parseInt(request.getParameter(ROWS));
 		}
 		maxPages = ComputerService.getInstance().getComputersNumber() / rowsByPage + 1;
 
-		if (request.getParameter("page") != null) {
-			numPage = Integer.parseInt(request.getParameter("page"));
+		if (request.getParameter(PAGE) != null) {
+			numPage = Integer.parseInt(request.getParameter(PAGE));
 			model.getComputersFromNewPage(numPage, rowsByPage);
 		} else {
 			numPage = 1;
 			model.getComputersFromNewPage(numPage, rowsByPage);
 		}
-		request.setAttribute("page", numPage);
+		request.setAttribute(PAGE, numPage);
 		List<Integer> links = initLinkPages(model.getPage().getNumPage());
-		request.setAttribute("links", links);
-		request.setAttribute("computerPage", model.getPage().getComputers());
-		request.setAttribute("computerCount", ComputerService.getInstance().getComputersNumber());
-	    this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
+		request.setAttribute(LINKS, links);
+		request.setAttribute(COMPUTER_PAGE, model.getPage().getComputers());
+		request.setAttribute(COMPUTER_COUNT, ComputerService.getInstance().getComputersNumber());
+	    this.getServletContext().getRequestDispatcher(DASHBOARD_VIEW).forward(request, response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		for (String s : request.getParameter("selection").split(",")) {
+		for (String s : request.getParameter(SELECTION).split(SELECTION_SEPARATOR)) {
 			model.deleteComputer(Integer.parseInt(s));
 		}
-		response.sendRedirect("dashboard");
+		response.sendRedirect(DASHBOARD);
 	}
 
 }
