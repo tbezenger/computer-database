@@ -23,6 +23,7 @@ public class DashboardServlet extends HttpServlet {
 	private WebAppModel model = new WebAppModel();
 	private int maxPages;
 	private int rowsByPage = 10;
+	private int numPage;
 
 	public int getRowsByPage() {
 		return rowsByPage;
@@ -50,17 +51,19 @@ public class DashboardServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("computerCount", ComputerService.getInstance().getComputersNumber());
-		maxPages = ComputerService.getInstance().getComputersNumber() / rowsByPage;
+		maxPages = ComputerService.getInstance().getComputersNumber() / rowsByPage + 1;
 
 		if (request.getParameter("page") != null) {
-			model.getComputersFromNewPage(Integer.parseInt(request.getParameter("page")), rowsByPage);
+			numPage = Integer.parseInt(request.getParameter("page"));
+			model.getComputersFromNewPage(numPage, rowsByPage);
 		} else {
-			model.getComputersFromNewPage(1, rowsByPage);
+			numPage = 1;
+			model.getComputersFromNewPage(numPage, rowsByPage);
 		}
+		request.setAttribute("page", numPage);
 		List<Integer> links = initLinkPages(model.getPage().getNumPage());
-		System.out.println(links);
 		request.setAttribute("links", links);
-		request.setAttribute("computerPage", model.getPage());
+		request.setAttribute("computerPage", model.getPage().getComputers());
 		request.setAttribute("computerCount", ComputerService.getInstance().getComputersNumber());
 	    this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}

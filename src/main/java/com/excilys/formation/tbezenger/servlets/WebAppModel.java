@@ -40,13 +40,11 @@ public class WebAppModel {
 	}
 
 	public List<ComputerDTO> getComputersFromNewPage(int numPage, int rowsByPage) {
-		page = new ComputerPage();
-		page.setComputers(ComputerService.getInstance().getPage(numPage, rowsByPage));
-		page.setNumPage(numPage);
+		page = ComputerService.getInstance().getPage(numPage, rowsByPage);
 		return getComputers();
 	}
 
-	public void createComputer(String name, String discontinued, String introduced, int companyId) {
+	public void createComputer(String name, String introduced, String discontinued, int companyId) {
 		ComputerDTO computerDTO = new ComputerDTO();
 		computerDTO.setName(name);
 		computerDTO.setDiscontinued(discontinued);
@@ -55,7 +53,7 @@ public class WebAppModel {
 		computerService.create(Mapper.toComputer(computerDTO));
 	}
 
-	public void editComputer(int id, String name, String discontinued, String introduced, int companyId) {
+	public void editComputer(int id, String name, String introduced, String discontinued, int companyId) {
 		ComputerDTO computerDTO = new ComputerDTO();
 		computerDTO.setId(id);
 		computerDTO.setName(name);

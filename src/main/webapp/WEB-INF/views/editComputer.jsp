@@ -33,11 +33,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.discontinued}">
+                                <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.introduced}">
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.introduced}">
+                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.discontinued}">
                             </div>
                             <div class="form-group">
 								<label for="companyId">Company Id</label>

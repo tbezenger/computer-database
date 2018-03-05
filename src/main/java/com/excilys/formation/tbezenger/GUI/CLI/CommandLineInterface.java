@@ -21,6 +21,7 @@ public class CommandLineInterface {
 			+ "- update computer {id} {name} {introduction date} {discontinuation date} {company id}\n" + "- help\n"
 			+ "- quit";
 
+	private static final int ROWSBYPAGE = 20;
 	private static final String COMPUTER = "computer";
 	private static final String COMPANY = "company";
 	private static final String NOT_RECOGNIZED = "Commande non reconnue";
@@ -43,7 +44,7 @@ public class CommandLineInterface {
 		Scanner scan = new Scanner(System.in);
 		String[] parsedCommand = scan.nextLine().split(SEPARATION_CHAR);
 		Computer computer;
-		ComputerPage computerPage = new ComputerPage();
+		ComputerPage computerPage;
 
 		while (!parsedCommand[0].equals("quit")) {
 			switch (parsedCommand[0]) {
@@ -80,9 +81,10 @@ public class CommandLineInterface {
 					}
 				} else if (parsedCommand.length == 3 && parsedCommand[1].equals(PAGE)) {
 					try {
-						List<Computer> computersPage = computerPage.getPage(Integer.parseInt(parsedCommand[2]));
-						if (computersPage.size() != 0) {
-							for (Computer c : computersPage) {
+						computerPage = ComputerService.getInstance().getPage(Integer.parseInt(parsedCommand[2]), ROWSBYPAGE);
+						List<Computer> computers = computerPage.getComputers();
+						if (computers.size() != 0) {
+							for (Computer c : computers) {
 								LOGGER.info(c.toString());
 							}
 						} else {

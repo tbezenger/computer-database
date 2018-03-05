@@ -5,8 +5,6 @@ import java.util.List;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-import com.excilys.formation.tbezenger.services.ComputerService;
-
 public class ComputerPage {
 
 	static Logger logger = LogManager.getLogger("STDOUT");
@@ -14,7 +12,13 @@ public class ComputerPage {
 	private List<Computer> computers;
 	private int numPage;
 
+	public ComputerPage() {}
 
+	public ComputerPage(List<Computer> computers, int numPage) {
+		super();
+		this.computers = computers;
+		this.numPage = numPage;
+	}
 	public List<Computer> getComputers() {
 		return computers;
 	}

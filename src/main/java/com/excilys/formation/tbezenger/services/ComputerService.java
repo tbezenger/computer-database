@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.excilys.formation.tbezenger.DAO.ComputerManager;
 import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Computer;
+import com.excilys.formation.tbezenger.Model.ComputerPage;
 
 public class ComputerService implements Service<Computer> {
 
@@ -71,14 +72,14 @@ public class ComputerService implements Service<Computer> {
 		return computers;
 	}
 
-	public List<Computer> getPage(int numPage, int rowsByPage) {
-		List<Computer> computers = new ArrayList<Computer>();
+	public ComputerPage getPage(int numPage, int rowsByPage) {
+		ComputerPage computerPage = new ComputerPage();
 		try {
-			computers = ComputerManager.getInstance().findPage(numPage - 1, rowsByPage);
+			computerPage = new ComputerPage(ComputerManager.getInstance().findPage(numPage - 1, rowsByPage), numPage);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return computers;
+		return computerPage;
 	}
 
 	public int getComputersNumber() {

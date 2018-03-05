@@ -85,13 +85,22 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="#" aria-label="Previous"> <span
-						aria-hidden="true">&laquo;</span>
-				</a></li>
-				<c:forEach items="${links}" var="numPage">
-					<li><a href="dashboard?page=${numPage}">${numPage}</a></li>
+				<c:if test="${page > 1}">
+					<li><a href="dashboard?page=${page-1}" aria-label="Previous"> <span
+							aria-hidden="true">&laquo;</span>
+					</a></li>
+				</c:if>
+				<c:forEach items="${links}" var="link">
+					<c:choose>
+						<c:when test="${link == page}">
+							<li><a href="dashboard?page=${link}"><b><i>${link}</i></b></a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="dashboard?page=${link}">${link}</a></li>
+						</c:otherwise>
+					</c:choose>
 				</c:forEach>
-				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				<li><a href="dashboard?page=${page+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 		</div>
