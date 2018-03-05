@@ -105,16 +105,10 @@
 				</a></li>
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button type="button" class="btn btn-default">10</button>
-				<button type="button" class="btn btn-default">50</button>
-				<button type="button" class="btn btn-default">100</button>
+				<a href=dashboard?page=${page}&rows=10><button type="button" class="btn btn-default">10</button></a>
+				<a href=dashboard?page=${page}&rows=50><button type="button" class="btn btn-default">50</button></a>
+				<a href=dashboard?page=${page}&rows=100><button type="button" class="btn btn-default">100</button></a>
 			</div>
-		</div>
-
-		<div class="btn-group btn-group-sm pull-right" role="group">
-			<button type="button" class="btn btn-default">10</button>
-			<button type="button" class="btn btn-default">50</button>
-			<button type="button" class="btn btn-default">100</button>
 		</div>
 
 	</footer>

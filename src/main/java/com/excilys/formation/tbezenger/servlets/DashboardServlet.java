@@ -51,6 +51,9 @@ public class DashboardServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("computerCount", ComputerService.getInstance().getComputersNumber());
+		if (request.getParameter("rows") != null) {
+			rowsByPage = Integer.parseInt(request.getParameter("rows"));
+		}
 		maxPages = ComputerService.getInstance().getComputersNumber() / rowsByPage + 1;
 
 		if (request.getParameter("page") != null) {
