@@ -26,14 +26,17 @@
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
                                 <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name">
+                                <span  style="color: #900">${errors['computerName']}</span>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
                                 <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date">
+                                <span  style="color: #900">${errors['introduced']}</span>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
                                 <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date">
+                                <span  style="color: #900">${errors['discontinued']}</span>
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
@@ -43,6 +46,7 @@
 										<option value="${company.id}">${company.name}</option>
 									</c:forEach>
                                 </select>
+                                <span  style="color: #900">${errors['companyId']}</span>
                             </div>
                         </fieldset>
                         <div class="actions pull-right">

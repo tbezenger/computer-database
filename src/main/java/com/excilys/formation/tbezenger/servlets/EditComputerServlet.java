@@ -1,6 +1,7 @@
 package com.excilys.formation.tbezenger.servlets;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ public class EditComputerServlet extends HttpServlet {
 	/**
 	 */
 	private static final long serialVersionUID = 1L;
+
 	private WebAppModel model = new WebAppModel();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -23,10 +25,17 @@ public class EditComputerServlet extends HttpServlet {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		model.editComputer(Integer.parseInt(request.getParameter("id")), request.getParameter("computerName"),
-						   request.getParameter("introduced"), request.getParameter("discontinued"),
-						   Integer.parseInt(request.getParameter("companyId")));
-		response.sendRedirect("dashboard");
+		Map<String, String> erreurs = Validator.validation(request);
+
+		if (erreurs.isEmpty()) {
+			model.editComputer(Integer.parseInt(request.getParameter("id")), request.getParameter("computerName"),
+							   request.getParameter("introduced"), request.getParameter("discontinued"),
+							   Integer.parseInt(request.getParameter("companyId")));
+			response.sendRedirect("dashboard");
+		} else {
+			request.setAttribute("errors", erreurs);
+			doGet(request, response);
+		}
 	}
 
 }

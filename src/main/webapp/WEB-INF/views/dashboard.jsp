@@ -19,7 +19,7 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${computerCount} Computers found</h1>
+			<h1 id="homeTitle">${computerCount}Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -86,8 +86,8 @@
 		<div class="container text-center">
 			<ul class="pagination">
 				<c:if test="${page > 1}">
-					<li><a href="dashboard?page=${page-1}" aria-label="Previous"> <span
-							aria-hidden="true">&laquo;</span>
+					<li><a href="dashboard?page=${page-1}" aria-label="Previous">
+							<span aria-hidden="true">&laquo;</span>
 					</a></li>
 				</c:if>
 				<c:forEach items="${links}" var="link">
@@ -100,9 +100,15 @@
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
-				<li><a href="dashboard?page=${page+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				<li><a href="dashboard?page=${page+1}" aria-label="Next"> <span
+						aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
+			<div class="btn-group btn-group-sm pull-right" role="group">
+				<button type="button" class="btn btn-default">10</button>
+				<button type="button" class="btn btn-default">50</button>
+				<button type="button" class="btn btn-default">100</button>
+			</div>
 		</div>
 
 		<div class="btn-group btn-group-sm pull-right" role="group">
