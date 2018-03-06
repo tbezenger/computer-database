@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="custom" uri="/WEB-INF/taglib.tld"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +20,7 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${computerCount}Computers found</h1>
+			<h1 id="homeTitle">${computerCount}Computersfound</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -85,29 +86,44 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
+				<%-- 				<c:if test="${page > 1}"> --%>
+				<%-- 					<li><a href="dashboard?page=${page-1}" aria-label="Previous"> --%>
+				<!-- 							<span aria-hidden="true">&laquo;</span> -->
+				<!-- 					</a></li> -->
+				<%-- 				</c:if> --%>
+				<%-- 				<c:forEach items="${links}" var="link"> --%>
+				<%-- 					<c:choose> --%>
+				<%-- 						<c:when test="${link == page}"> --%>
+				<%-- 							<li><a href="dashboard?page=${link}"><b><i>${link}</i></b></a></li> --%>
+				<%-- 						</c:when> --%>
+				<%-- 						<c:otherwise> --%>
+				<%-- 							<li><a href="dashboard?page=${link}">${link}</a></li> --%>
+				<%-- 						</c:otherwise> --%>
+				<%-- 					</c:choose> --%>
+				<%-- 				</c:forEach> --%>
+				<%-- 				<li><a href="dashboard?page=${page+1}" aria-label="Next"> <span --%>
+				<!-- 						aria-hidden="true">&raquo;</span> -->
+				<!-- 				</a></li> -->
+
 				<c:if test="${page > 1}">
 					<li><a href="dashboard?page=${page-1}" aria-label="Previous">
 							<span aria-hidden="true">&laquo;</span>
 					</a></li>
 				</c:if>
-				<c:forEach items="${links}" var="link">
-					<c:choose>
-						<c:when test="${link == page}">
-							<li><a href="dashboard?page=${link}"><b><i>${link}</i></b></a></li>
-						</c:when>
-						<c:otherwise>
-							<li><a href="dashboard?page=${link}">${link}</a></li>
-						</c:otherwise>
-					</c:choose>
-				</c:forEach>
-				<li><a href="dashboard?page=${page+1}" aria-label="Next"> <span
-						aria-hidden="true">&raquo;</span>
-				</a></li>
+				<custom:Pagination minPage="1" maxPage="${maxPage}" current="${page}" />
+				<c:if test="${page < maxPage}">
+					<li><a href="dashboard?page=${page+1}" aria-label="Previous">
+							<span aria-hidden="true">&raquo;</span>
+					</a></li>
+				</c:if>
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a href=dashboard?page=${page}&rows=10><button type="button" class="btn btn-default">10</button></a>
-				<a href=dashboard?page=${page}&rows=50><button type="button" class="btn btn-default">50</button></a>
-				<a href=dashboard?page=${page}&rows=100><button type="button" class="btn btn-default">100</button></a>
+				<a href=dashboard?page=${page}&rows=10><button type="button"
+						class="btn btn-default">10</button></a> <a
+					href=dashboard?page=${page}&rows=50><button type="button"
+						class="btn btn-default">50</button></a> <a
+					href=dashboard?page=${page}&rows=100><button type="button"
+						class="btn btn-default">100</button></a>
 			</div>
 		</div>
 

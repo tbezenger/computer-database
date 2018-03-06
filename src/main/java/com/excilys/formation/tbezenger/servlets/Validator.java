@@ -36,10 +36,8 @@ public class Validator {
 		if (introduced == "") {
 			return;
 		}
-		if (discontinued != "") {
-			if (Date.valueOf(discontinued).after(Date.valueOf(introduced))) {
-				return;
-			}
+		if (Date.valueOf(discontinued).after(Date.valueOf(introduced))) {
+			return;
 		}
 		throw new DiscontinuedFieldException();
 	}

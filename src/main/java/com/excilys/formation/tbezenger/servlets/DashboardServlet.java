@@ -31,7 +31,7 @@ public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private WebAppModel model = new WebAppModel();
-	private int maxPages;
+	private int maxPage;
 	private int rowsByPage = 10;
 	private int numPage;
 
@@ -47,24 +47,12 @@ public class DashboardServlet extends HttpServlet {
 		return model.getComputersFromNewPage(numPage, rowsByPage);
 	}
 
-	public List<Integer> initLinkPages(int numPage) {
-		List<Integer> linkPages = new ArrayList<Integer>();
-		linkPages.add(1);
-		for (int i = -2; i < 3; i++) {
-			if (numPage + i > 1 && numPage + i < maxPages) {
-				linkPages.add(numPage + i);
-			}
-		}
-		linkPages.add(maxPages);
-		return linkPages;
-	}
-
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute(COMPUTER_COUNT, ComputerService.getInstance().getComputersNumber());
 		if (request.getParameter(ROWS) != null) {
 			rowsByPage = Integer.parseInt(request.getParameter(ROWS));
 		}
-		maxPages = ComputerService.getInstance().getComputersNumber() / rowsByPage + 1;
+		maxPage = ComputerService.getInstance().getComputersNumber() / rowsByPage + 1;
 
 		if (request.getParameter(PAGE) != null) {
 			numPage = Integer.parseInt(request.getParameter(PAGE));
@@ -73,9 +61,8 @@ public class DashboardServlet extends HttpServlet {
 			numPage = 1;
 			model.getComputersFromNewPage(numPage, rowsByPage);
 		}
+		request.setAttribute("maxPage", maxPage);
 		request.setAttribute(PAGE, numPage);
-		List<Integer> links = initLinkPages(model.getPage().getNumPage());
-		request.setAttribute(LINKS, links);
 		request.setAttribute(COMPUTER_PAGE, model.getPage().getComputers());
 		request.setAttribute(COMPUTER_COUNT, ComputerService.getInstance().getComputersNumber());
 	    this.getServletContext().getRequestDispatcher(DASHBOARD_VIEW).forward(request, response);
