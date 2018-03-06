@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.formation.tbezenger.DAO.CompanyManager;
-import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Company;
+import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
 
 public class CompanyService implements Service<Company> {
 	private static CompanyService instance;

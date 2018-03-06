@@ -12,7 +12,7 @@ public class ComputerPage {
 	private List<Computer> computers;
 	private int numPage;
 
-	public ComputerPage() {}
+	public ComputerPage() { }
 
 	public ComputerPage(List<Computer> computers, int numPage) {
 		super();

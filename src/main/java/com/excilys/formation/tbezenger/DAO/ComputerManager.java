@@ -9,9 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
+import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
+import com.excilys.formation.tbezenger.exceptions.DAO.DeleteException;
+import com.excilys.formation.tbezenger.exceptions.DAO.GetException;
+import com.excilys.formation.tbezenger.exceptions.DAO.PersistException;
+import com.excilys.formation.tbezenger.exceptions.DAO.UpdateException;
 
 public class ComputerManager implements EntityManager<Computer> {
 
@@ -65,7 +69,7 @@ public class ComputerManager implements EntityManager<Computer> {
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
-			throw (new DatabaseException(DatabaseException.GET_FAIL));
+			throw (new GetException());
 		}
 		return Optional.ofNullable(computer);
 	}
@@ -85,7 +89,7 @@ public class ComputerManager implements EntityManager<Computer> {
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
-			throw (new DatabaseException(DatabaseException.GET_FAIL));
+			throw (new GetException());
 		}
 		return computers;
 	}
@@ -108,7 +112,7 @@ public class ComputerManager implements EntityManager<Computer> {
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
-			throw (new DatabaseException(DatabaseException.GET_FAIL));
+			throw (new GetException());
 		}
 		return computers;
 	}
@@ -131,7 +135,7 @@ public class ComputerManager implements EntityManager<Computer> {
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
-			throw (new DatabaseException(DatabaseException.PERSISTENCE_FAIL));
+			throw (new PersistException());
 		}
 		return t;
 	}
@@ -144,7 +148,7 @@ public class ComputerManager implements EntityManager<Computer> {
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
-			throw (new DatabaseException(DatabaseException.DELETE_FAIL));
+			throw (new DeleteException());
 		}
 		return true;
 	}
@@ -164,7 +168,7 @@ public class ComputerManager implements EntityManager<Computer> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			LOGGER.error(e.toString());
-			throw (new DatabaseException(DatabaseException.UPDATE_FAIL));
+			throw (new UpdateException());
 		}
 		return true;
 	}
@@ -179,7 +183,7 @@ public class ComputerManager implements EntityManager<Computer> {
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
-			throw (new DatabaseException(DatabaseException.GET_FAIL));
+			throw (new GetException());
 		}
 		return computersNumber;
 	}

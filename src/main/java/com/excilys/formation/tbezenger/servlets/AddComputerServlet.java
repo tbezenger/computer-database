@@ -2,7 +2,14 @@ package com.excilys.formation.tbezenger.servlets;
 
 import java.io.IOException;
 import java.util.Map;
-import static com.excilys.formation.tbezenger.Strings.*;
+import static com.excilys.formation.tbezenger.Strings.ADD_COMPUTER_VIEW;
+import static com.excilys.formation.tbezenger.Strings.COMPANIES;
+import static com.excilys.formation.tbezenger.Strings.NAME_FIELD;
+import static com.excilys.formation.tbezenger.Strings.DISCONTINUED_FIELD;
+import static com.excilys.formation.tbezenger.Strings.INTRODUCED_FIELD;
+import static com.excilys.formation.tbezenger.Strings.COMPANY_FIELD;
+import static com.excilys.formation.tbezenger.Strings.DASHBOARD;
+import static com.excilys.formation.tbezenger.Strings.ERRORS;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

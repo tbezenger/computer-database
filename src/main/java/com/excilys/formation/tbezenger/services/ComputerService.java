@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.formation.tbezenger.DAO.ComputerManager;
-import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Computer;
 import com.excilys.formation.tbezenger.Model.ComputerPage;
+import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
 
 public class ComputerService implements Service<Computer> {
 

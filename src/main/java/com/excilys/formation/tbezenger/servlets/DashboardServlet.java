@@ -10,7 +10,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.excilys.formation.tbezenger.Strings.*;
+import static com.excilys.formation.tbezenger.Strings.COMPUTER_COUNT;
+import static com.excilys.formation.tbezenger.Strings.ROWS;
+import static com.excilys.formation.tbezenger.Strings.PAGE;
+import static com.excilys.formation.tbezenger.Strings.LINKS;
+import static com.excilys.formation.tbezenger.Strings.COMPUTER_PAGE;
+import static com.excilys.formation.tbezenger.Strings.DASHBOARD_VIEW;
+import static com.excilys.formation.tbezenger.Strings.SELECTION;
+import static com.excilys.formation.tbezenger.Strings.SELECTION_SEPARATOR;
+import static com.excilys.formation.tbezenger.Strings.DASHBOARD;
+
 import com.excilys.formation.tbezenger.DTO.ComputerDTO;
 import com.excilys.formation.tbezenger.services.ComputerService;
 

@@ -31,4 +31,16 @@ public class Strings {
 	public static final String ADD_COMPUTER_VIEW = "/WEB-INF/views/addComputer.jsp";
 	public static final String DASHBOARD_VIEW = "/WEB-INF/views/dashboard.jsp";
 
+	// EXCEPTIONS
+	public static final String CONNECTION_FAIL = "Connection failure";
+	public static final String PERSISTENCE_FAIL = "Persistence failure";
+	public static final String UPDATE_FAIL = "Update failure";
+	public static final String GET_FAIL = "Get failure";
+	public static final String DELETE_FAIL = "Delete failure";
+	public static final String INVALID_COMPANY = "Invalid company";
+	public static final String INVALID_DISCONTINUED = "Invalid discontinuation date";
+	public static final String INVALID_INTRODUCED = "Invalid introduction date";
+	public static final String INVALID_NAME = "Invalid name";
+
+
 }

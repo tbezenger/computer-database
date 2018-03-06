@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
 import com.excilys.formation.tbezenger.Model.Company;
+import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
+import com.excilys.formation.tbezenger.exceptions.DAO.GetException;
 
 public class CompanyManager implements EntityManager<Company> {
 
@@ -40,7 +41,7 @@ public class CompanyManager implements EntityManager<Company> {
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
-			throw (new DatabaseException(DatabaseException.GET_FAIL));
+			throw (new GetException());
 		}
 		return companies;
 	}
@@ -58,7 +59,7 @@ public class CompanyManager implements EntityManager<Company> {
 			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
-			throw (new DatabaseException(DatabaseException.GET_FAIL));
+			throw (new GetException());
 		}
 		return Optional.ofNullable(company);
 	}

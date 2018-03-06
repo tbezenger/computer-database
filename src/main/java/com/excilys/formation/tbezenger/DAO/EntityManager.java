@@ -10,7 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.excilys.formation.tbezenger.Strings;
-import com.excilys.formation.tbezenger.Exceptions.DatabaseException;
+import com.excilys.formation.tbezenger.exceptions.DAO.ConnectionException;
+import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
 
 public interface EntityManager<T> {
 
@@ -22,9 +23,9 @@ public interface EntityManager<T> {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(Strings.url, Strings.dbName, Strings.dbPassword);
 		} catch (SQLException e) {
-			throw (new DatabaseException(DatabaseException.CONNECTION_FAIL));
+			throw (new ConnectionException());
 		} catch (ClassNotFoundException e) {
-			throw (new DatabaseException(DatabaseException.CONNECTION_FAIL));
+			throw (new ConnectionException());
 		}
 		return conn;
 	}

@@ -8,7 +8,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static com.excilys.formation.tbezenger.Strings.*;
+
+import static com.excilys.formation.tbezenger.Strings.COMPUTER;
+import static com.excilys.formation.tbezenger.Strings.ID;
+import static com.excilys.formation.tbezenger.Strings.COMPANIES;
+import static com.excilys.formation.tbezenger.Strings.EDIT_COMPUTER_VIEW;
+import static com.excilys.formation.tbezenger.Strings.NAME_FIELD;
+import static com.excilys.formation.tbezenger.Strings.DISCONTINUED_FIELD;
+import static com.excilys.formation.tbezenger.Strings.INTRODUCED_FIELD;
+import static com.excilys.formation.tbezenger.Strings.COMPANY_FIELD;
+import static com.excilys.formation.tbezenger.Strings.DASHBOARD;
+import static com.excilys.formation.tbezenger.Strings.ERRORS;
 
 @WebServlet("/editComputer")
 public class EditComputerServlet extends HttpServlet {
