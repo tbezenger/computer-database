@@ -20,7 +20,7 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${computerCount}Computersfound</h1>
+			<h1 id="homeTitle">${computerCount} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -71,7 +71,7 @@
 					<c:forEach items="${computerPage.computers}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								value="${computer.id}" class="cb" value="0"></td>
+								value="${computer.id}" class="cb"></td>
 							<td><a href="editComputer?id=${computer.id}" onclick="">${computer.name}</a></td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinued}</td>
@@ -86,24 +86,6 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<%-- 				<c:if test="${page > 1}"> --%>
-				<%-- 					<li><a href="dashboard?page=${page-1}" aria-label="Previous"> --%>
-				<!-- 							<span aria-hidden="true">&laquo;</span> -->
-				<!-- 					</a></li> -->
-				<%-- 				</c:if> --%>
-				<%-- 				<c:forEach items="${links}" var="link"> --%>
-				<%-- 					<c:choose> --%>
-				<%-- 						<c:when test="${link == page}"> --%>
-				<%-- 							<li><a href="dashboard?page=${link}"><b><i>${link}</i></b></a></li> --%>
-				<%-- 						</c:when> --%>
-				<%-- 						<c:otherwise> --%>
-				<%-- 							<li><a href="dashboard?page=${link}">${link}</a></li> --%>
-				<%-- 						</c:otherwise> --%>
-				<%-- 					</c:choose> --%>
-				<%-- 				</c:forEach> --%>
-				<%-- 				<li><a href="dashboard?page=${page+1}" aria-label="Next"> <span --%>
-				<!-- 						aria-hidden="true">&raquo;</span> -->
-				<!-- 				</a></li> -->
 
 				<c:if test="${computerPage.numPage > 1}">
 					<li><a href="dashboard?page=${computerPage.numPage-1}" aria-label="Previous">

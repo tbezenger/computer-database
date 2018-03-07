@@ -27,13 +27,13 @@ public class Validator {
 	}
 
 	private static void validIntroduced(String introduced) throws IntroducedFieldException {
-		if (introduced == "") {
+		if (introduced.equals("")) {
 			throw new IntroducedFieldException();
 		}
 	}
 
 	private static void validDiscontinued(String introduced, String discontinued) throws DiscontinuedFieldException {
-		if (introduced == "") {
+		if (introduced.equals("")) {
 			return;
 		}
 		if (Date.valueOf(discontinued).after(Date.valueOf(introduced))) {

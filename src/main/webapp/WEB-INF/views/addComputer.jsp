@@ -8,6 +8,9 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
+<script src="js/jquery.min.js"></script>
+<script src="js/validation.js"></script>
+
 </head>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
@@ -15,7 +18,6 @@
             <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
         </div>
     </header>
-
     <section id="main">
         <div class="container">
             <div class="row">
@@ -26,7 +28,7 @@
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
                                 <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name (only letters or numbers, max = 30)" pattern="[A-Za-z0-9]{1,30}">
-                                <span  style="color: #900">${errors['computerName']}</span>
+                                <span style="color: #900">${errors['computerName']}</span>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
@@ -50,7 +52,7 @@
                             </div>
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Add" class="btn btn-primary">
+                            <input id="addButton" type="submit" value="Add" class="btn btn-primary">
                             or
                             <a href="dashboard" class="btn btn-default">Cancel</a>
                         </div>
