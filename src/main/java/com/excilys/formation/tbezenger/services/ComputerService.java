@@ -72,10 +72,10 @@ public class ComputerService implements Service<Computer> {
 		return computers;
 	}
 
-	public ComputerPage getPage(int numPage, int rowsByPage) {
+	public ComputerPage getPage(int numPage, int maxPage, int rowsByPage) {
 		ComputerPage computerPage = new ComputerPage();
 		try {
-			computerPage = new ComputerPage(ComputerManager.getInstance().findPage(numPage - 1, rowsByPage), numPage);
+			computerPage = new ComputerPage(ComputerManager.getInstance().findPage(numPage - 1, rowsByPage), numPage, maxPage, rowsByPage);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}

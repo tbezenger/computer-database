@@ -68,7 +68,7 @@
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach items="${computerPage}" var="computer">
+					<c:forEach items="${computerPage.computers}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								value="${computer.id}" class="cb" value="0"></td>
@@ -105,24 +105,24 @@
 				<!-- 						aria-hidden="true">&raquo;</span> -->
 				<!-- 				</a></li> -->
 
-				<c:if test="${page > 1}">
-					<li><a href="dashboard?page=${page-1}" aria-label="Previous">
+				<c:if test="${computerPage.numPage > 1}">
+					<li><a href="dashboard?page=${computerPage.numPage-1}" aria-label="Previous">
 							<span aria-hidden="true">&laquo;</span>
 					</a></li>
 				</c:if>
-				<custom:Pagination minPage="1" maxPage="${maxPage}" current="${page}" />
-				<c:if test="${page < maxPage}">
-					<li><a href="dashboard?page=${page+1}" aria-label="Previous">
+				<custom:Pagination minPage="1" maxPage="${computerPage.maxPage}" current="${computerPage.numPage}" />
+				<c:if test="${computerPage.numPage < computerPage.maxPage}">
+					<li><a href="dashboard?page=${computerPage.numPage+1}" aria-label="Previous">
 							<span aria-hidden="true">&raquo;</span>
 					</a></li>
 				</c:if>
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a href=dashboard?page=${page}&rows=10><button type="button"
+				<a href=dashboard?page=${computerPage.numPage}&rows=10><button type="button"
 						class="btn btn-default">10</button></a> <a
-					href=dashboard?page=${page}&rows=50><button type="button"
+					href=dashboard?page=${computerPage.numPage}&rows=50><button type="button"
 						class="btn btn-default">50</button></a> <a
-					href=dashboard?page=${page}&rows=100><button type="button"
+					href=dashboard?page=${computerPage.numPage}&rows=100><button type="button"
 						class="btn btn-default">100</button></a>
 			</div>
 		</div>

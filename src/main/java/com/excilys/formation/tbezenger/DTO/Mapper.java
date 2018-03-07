@@ -1,6 +1,8 @@
 package com.excilys.formation.tbezenger.DTO;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
@@ -32,5 +34,21 @@ public class Mapper {
 	public static Computer toComputer(ComputerDTO computerDTO) {
 		return new Computer(computerDTO.getId(), computerDTO.getName(), Date.valueOf(computerDTO.getIntroduced()),
 							Date.valueOf(computerDTO.getDiscontinued()), toCompany(computerDTO.getCompany()));
+	}
+
+	public static List<CompanyDTO> toCompanyDTOList(List<Company> companies) {
+		List<CompanyDTO> companiesDTO = new ArrayList<>();
+		for (Company company : companies) {
+			companiesDTO.add(Mapper.toDTO(company));
+		}
+		return companiesDTO;
+	}
+
+	public static List<ComputerDTO> toComputerDTOList(List<Computer> computers) {
+		List<ComputerDTO> computersDTO = new ArrayList<>();
+		for (Computer computer : computers) {
+			computersDTO.add(Mapper.toDTO(computer));
+		}
+		return computersDTO;
 	}
 }

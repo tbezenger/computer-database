@@ -20,7 +20,6 @@ public class Strings {
 	public static final String COMPUTER_COUNT = "computerCount";
 	public static final String ROWS = "rows";
 	public static final String PAGE = "page";
-	public static final String LINKS = "links";
 	public static final String COMPUTER_PAGE = "computerPage";
 	public static final String SELECTION = "selection";
 	public static final String SELECTION_SEPARATOR = ",";

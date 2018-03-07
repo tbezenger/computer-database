@@ -1,8 +1,6 @@
 package com.excilys.formation.tbezenger.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,14 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import static com.excilys.formation.tbezenger.Strings.COMPUTER_COUNT;
 import static com.excilys.formation.tbezenger.Strings.ROWS;
 import static com.excilys.formation.tbezenger.Strings.PAGE;
-import static com.excilys.formation.tbezenger.Strings.LINKS;
 import static com.excilys.formation.tbezenger.Strings.COMPUTER_PAGE;
 import static com.excilys.formation.tbezenger.Strings.DASHBOARD_VIEW;
 import static com.excilys.formation.tbezenger.Strings.SELECTION;
 import static com.excilys.formation.tbezenger.Strings.SELECTION_SEPARATOR;
 import static com.excilys.formation.tbezenger.Strings.DASHBOARD;
 
-import com.excilys.formation.tbezenger.DTO.ComputerDTO;
+import com.excilys.formation.tbezenger.Model.ComputerPage;
 import com.excilys.formation.tbezenger.services.ComputerService;
 
 
@@ -30,47 +27,36 @@ public class DashboardServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private WebAppModel model = new WebAppModel();
-	private int maxPage;
+	private ComputerPage page;
 	private int rowsByPage = 10;
-	private int numPage;
+	private ComputerService computerService = ComputerService.getInstance();
 
-	public int getRowsByPage() {
-		return rowsByPage;
-	}
-
-	public void setRowsByPage(int rowsByPage) {
-		this.rowsByPage = rowsByPage;
-	}
-
-	public List<ComputerDTO> getComputersFromNewPage(int numPage) {
-		return model.getComputersFromNewPage(numPage, rowsByPage);
-	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute(COMPUTER_COUNT, ComputerService.getInstance().getComputersNumber());
+		int numPage;
+		int computerCount = computerService.getComputersNumber();
 		if (request.getParameter(ROWS) != null) {
 			rowsByPage = Integer.parseInt(request.getParameter(ROWS));
 		}
-		maxPage = ComputerService.getInstance().getComputersNumber() / rowsByPage + 1;
-
+		int maxPage = computerCount / rowsByPage + 1;
 		if (request.getParameter(PAGE) != null) {
 			numPage = Integer.parseInt(request.getParameter(PAGE));
-			model.getComputersFromNewPage(numPage, rowsByPage);
+			if (numPage > maxPage) {
+				numPage = maxPage;
+			}
+			page = computerService.getPage(numPage, maxPage, rowsByPage);
 		} else {
 			numPage = 1;
-			model.getComputersFromNewPage(numPage, rowsByPage);
+			page = computerService.getPage(numPage, maxPage, rowsByPage);
 		}
-		request.setAttribute("maxPage", maxPage);
-		request.setAttribute(PAGE, numPage);
-		request.setAttribute(COMPUTER_PAGE, model.getPage().getComputers());
-		request.setAttribute(COMPUTER_COUNT, ComputerService.getInstance().getComputersNumber());
+		request.setAttribute(COMPUTER_PAGE, page);
+		request.setAttribute(COMPUTER_COUNT, computerCount);
 	    this.getServletContext().getRequestDispatcher(DASHBOARD_VIEW).forward(request, response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		for (String s : request.getParameter(SELECTION).split(SELECTION_SEPARATOR)) {
-			model.deleteComputer(Integer.parseInt(s));
+			computerService.delete(Integer.parseInt(s));
 		}
 		response.sendRedirect(DASHBOARD);
 	}

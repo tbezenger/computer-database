@@ -17,17 +17,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.formation.tbezenger.DTO.ComputerDTO;
+import com.excilys.formation.tbezenger.DTO.Mapper;
+import com.excilys.formation.tbezenger.Model.Company;
+import com.excilys.formation.tbezenger.services.CompanyService;
+import com.excilys.formation.tbezenger.services.ComputerService;
+
 @WebServlet("/addComputer")
 public class AddComputerServlet extends HttpServlet {
-	private WebAppModel model = new WebAppModel();
+	private CompanyService companyService = CompanyService.getInstance();
+	private ComputerService computerService = ComputerService.getInstance();
+
 	/**
 	 */
 	private static final long serialVersionUID = 1L;
 
-
-
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute(COMPANIES, model.getCompanies());
+		request.setAttribute(COMPANIES, Mapper.toCompanyDTOList(companyService.getAll()));
 	    this.getServletContext().getRequestDispatcher(ADD_COMPUTER_VIEW).forward(request, response);
 	}
 
@@ -35,7 +41,7 @@ public class AddComputerServlet extends HttpServlet {
 		Map<String, String> erreurs = Validator.validation(request);
 
 		if (erreurs.isEmpty()) {
-			model.createComputer(request.getParameter(NAME_FIELD), request.getParameter(INTRODUCED_FIELD),
+			createComputer(request.getParameter(NAME_FIELD), request.getParameter(INTRODUCED_FIELD),
 					request.getParameter(DISCONTINUED_FIELD), Integer.parseInt(request.getParameter(COMPANY_FIELD)));
 			response.sendRedirect(DASHBOARD);
 
@@ -44,5 +50,14 @@ public class AddComputerServlet extends HttpServlet {
 			doGet(request, response);
 		}
 
+	}
+
+	public void createComputer(String name, String introduced, String discontinued, int companyId) {
+		ComputerDTO computerDTO = new ComputerDTO();
+		computerDTO.setName(name);
+		computerDTO.setDiscontinued(discontinued);
+		computerDTO.setIntroduced(introduced);
+		computerDTO.setCompany(Mapper.toDTO(companyService.get(companyId).orElse(new Company())));
+		computerService.create(Mapper.toComputer(computerDTO));
 	}
 }
