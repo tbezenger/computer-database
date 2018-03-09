@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.excilys.formation.tbezenger.Strings.COMPUTER_COUNT;
 import static com.excilys.formation.tbezenger.Strings.ROWS;
 import static com.excilys.formation.tbezenger.Strings.PAGE;
 import static com.excilys.formation.tbezenger.Strings.COMPUTER_PAGE;
@@ -27,30 +26,57 @@ public class DashboardServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private ComputerPage page;
-	private int rowsByPage = 10;
+	private ComputerPage page = new ComputerPage();;
 	private ComputerService computerService = ComputerService.getInstance();
-
+	private String search = "";
+	private String orderBy = "";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int numPage;
-		int computerCount = computerService.getComputersNumber();
+
+
 		if (request.getParameter(ROWS) != null) {
-			rowsByPage = Integer.parseInt(request.getParameter(ROWS));
+			page.setRows(Integer.parseInt(request.getParameter(ROWS)));
 		}
-		int maxPage = computerCount / rowsByPage + 1;
 		if (request.getParameter(PAGE) != null) {
-			numPage = Integer.parseInt(request.getParameter(PAGE));
-			if (numPage > maxPage) {
-				numPage = maxPage;
+			page.setNumPage(Integer.parseInt(request.getParameter(PAGE)));
+
+			if (page.getNumPage() > page.getTotalResults() / page.getRows() + 1) {
+				page.setNumPage(page.getTotalResults() / page.getRows() + 1);
 			}
-			page = computerService.getPage(numPage, maxPage, rowsByPage);
+			page.setNumPage(page.getNumPage());
+			if (!search.equals("")) {
+				if (!orderBy.equals("")) {
+					page = computerService.getOrderedPage(page, orderBy, search);
+				} else {
+					page = computerService.getComputersPagebySearch(search, page.getRows(), page.getNumPage());
+				}
+
+			} else {
+				if (!orderBy.equals("")) {
+					page = computerService.getOrderedPage(page, orderBy, search);
+				} else {
+					page = computerService.getPage(page.getNumPage(), page.getRows());
+				}
+			}
+
+		} else if (request.getParameter("search") != null) {
+			page.setNumPage(1);
+			search = request.getParameter("search");
+			page = computerService.getComputersPagebySearch(search, page.getRows(), page.getNumPage());
+
+		} else if (request.getParameter("orderBy") != null) {
+			orderBy = request.getParameter("orderBy");
+			System.out.println("orderby : " + orderBy);
+			page = computerService.getOrderedPage(page, orderBy, search);
+
 		} else {
-			numPage = 1;
-			page = computerService.getPage(numPage, maxPage, rowsByPage);
+			page.setNumPage(1);
+			page = computerService.getPage(page.getNumPage(), page.getRows());
+			search = "";
+			orderBy = "";
+
 		}
 		request.setAttribute(COMPUTER_PAGE, page);
-		request.setAttribute(COMPUTER_COUNT, computerCount);
 	    this.getServletContext().getRequestDispatcher(DASHBOARD_VIEW).forward(request, response);
 	}
 

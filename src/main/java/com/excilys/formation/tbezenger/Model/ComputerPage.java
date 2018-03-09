@@ -1,5 +1,6 @@
 package com.excilys.formation.tbezenger.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
@@ -9,10 +10,11 @@ public class ComputerPage {
 
 	static Logger logger = LogManager.getLogger("STDOUT");
 
-	private List<Computer> computers;
-	private int numPage;
+	private List<Computer> computers = new ArrayList<Computer>();
+	private int numPage = 1;
 	private int maxPage;
-	private int rows;
+	private int rows = 10;
+	private int totalResults;
 
 	public ComputerPage() { }
 
@@ -22,7 +24,6 @@ public class ComputerPage {
 		this.maxPage = maxPage;
 		this.rows = rows;
 	}
-
 
 	public List<Computer> getComputers() {
 		return computers;
@@ -48,5 +49,11 @@ public class ComputerPage {
 	}
 	public void setRows(int rows) {
 		this.rows = rows;
+	}
+	public int getTotalResults() {
+		return totalResults;
+	}
+	public void setTotalResults(int totalResults) {
+		this.totalResults = totalResults;
 	}
 }

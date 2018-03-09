@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
+import com.excilys.formation.tbezenger.Model.ComputerPage;
 import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
 import com.excilys.formation.tbezenger.exceptions.DAO.DeleteException;
 import com.excilys.formation.tbezenger.exceptions.DAO.GetException;
@@ -41,7 +42,24 @@ public class ComputerManager implements EntityManager<Computer> {
 	private final String UPDATE_QUERY = "UPDATE computer SET name=?,introduced=?,discontinued=?,company_id=? "
 			+ "WHERE id=?";
 
-	private final String GET_PAGES_NUMBER = "SELECT count(*) FROM computer";
+	private final String GET_COMPUTERS_NUMBER = "SELECT count(*) FROM computer";
+
+	private final String GET_COMPUTERS_BY_SEARCH = "SELECT * FROM computer LEFT JOIN company ON company_id=company.id "
+												 + "WHERE computer.name LIKE ? OR company.name LIKE ?  LIMIT ?,?";
+
+	private final String GET_TOTAL_COMPUTERS_BY_SEARCH = "SELECT count(*) FROM computer LEFT JOIN company ON company_id=company.id "
+													   + "WHERE computer.name LIKE ? OR company.name LIKE ?";
+
+//	private final String GET_ORDERED_BY_COMPUTER_NAME_PAGE = "SELECT * FROM computer LEFT JOIN company ON company_id=company.id"
+//														  + " ORDER BY computer.name LIMIT ?,?";
+
+	private final String GET_ORDERED_BY_COMPUTER_NAME_SEARCH_PAGE = "SELECT * FROM computer LEFT JOIN company ON company_id=company.id "
+																  + "WHERE computer.name LIKE ? OR company.name LIKE ?"
+																  + "ORDER BY computer.name LIMIT ?,?";
+
+	private final String GET_ORDERED_BY_COMPANY_NAME_SEARCH_PAGE = "SELECT * FROM computer LEFT JOIN company ON company_id=company.id "
+																 + "WHERE computer.name LIKE ? OR company.name LIKE ?"
+																 + "ORDER BY company.name LIMIT ?,?";
 
 	private ComputerManager() {
 	}
@@ -53,10 +71,12 @@ public class ComputerManager implements EntityManager<Computer> {
 		return instance;
 	}
 
+    ConnectionManager connectionManager = ConnectionManager.getInstance();
+
 	@Override
 	public Optional<Computer> findById(int id) throws DatabaseException {
 		Computer computer = null;
-		try (Connection conn = openConnection()) {
+		try (Connection conn = connectionManager.openConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(FIND_BY_ID_QUERY);
 			stmt.setInt(1, id);
 			stmt.executeQuery();
@@ -77,7 +97,7 @@ public class ComputerManager implements EntityManager<Computer> {
 	@Override
 	public List<Computer> findall() throws DatabaseException {
 		List<Computer> computers = new ArrayList<Computer>();
-		try (Connection conn = openConnection()) {
+		try (Connection conn = connectionManager.openConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(FIND_ALL_QUERY);
 			stmt.executeQuery();
 			ResultSet rs = stmt.getResultSet();
@@ -94,31 +114,35 @@ public class ComputerManager implements EntityManager<Computer> {
 		return computers;
 	}
 
-	public List<Computer> findPage(int numpage, int rowsByPage) throws DatabaseException {
-		List<Computer> computers = new ArrayList<Computer>();
-		try (Connection conn = openConnection()) {
+	public ComputerPage findPage(int numpage, int rowsByPage) throws DatabaseException {
+		ComputerPage page = new ComputerPage();
+		try (Connection conn = connectionManager.openConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(FIND_PAGE_QUERY);
 
-			stmt.setInt(1, numpage * rowsByPage);
+			stmt.setInt(1, (numpage - 1) * rowsByPage);
 			stmt.setInt(2, rowsByPage);
 
 			stmt.executeQuery();
 			ResultSet rs = stmt.getResultSet();
 			while (rs.next()) {
 				Company company = new Company(rs.getInt("company.id"), rs.getString("company.name"));
-				computers.add(new Computer(rs.getInt("id"), rs.getString("name"), rs.getDate("introduced"),
+				page.getComputers().add(new Computer(rs.getInt("id"), rs.getString("name"), rs.getDate("introduced"),
 						rs.getDate("discontinued"), company));
 			}
 			stmt.close();
+			page.setTotalResults(getComputersNumber());
+			page.setRows(rowsByPage);
+			page.setMaxPage(page.getTotalResults() / rowsByPage + 1);
+			page.setNumPage(numpage);
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
 			throw (new GetException());
 		}
-		return computers;
+		return page;
 	}
 
 	public Computer persist(Computer t) throws DatabaseException {
-		try (Connection conn = openConnection()) {
+		try (Connection conn = connectionManager.openConnection()) {
 			conn.setAutoCommit(false);
 			PreparedStatement stmt = conn.prepareStatement(PERSIST_QUERY);
 
@@ -141,7 +165,7 @@ public class ComputerManager implements EntityManager<Computer> {
 	}
 
 	public boolean remove(int id) throws DatabaseException {
-		try (Connection conn = openConnection()) {
+		try (Connection conn = connectionManager.openConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(DELETE_QUERY);
 			stmt.setInt(1, id);
 			stmt.executeUpdate();
@@ -154,7 +178,7 @@ public class ComputerManager implements EntityManager<Computer> {
 	}
 
 	public boolean update(Computer t) throws DatabaseException {
-		try (Connection conn = openConnection()) {
+		try (Connection conn = connectionManager.openConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(UPDATE_QUERY);
 
 			stmt.setString(1, t.getName());
@@ -175,9 +199,9 @@ public class ComputerManager implements EntityManager<Computer> {
 
 	public int getComputersNumber() throws DatabaseException {
 		int computersNumber = 0;
-		try (Connection conn = openConnection()) {
+		try (Connection conn = connectionManager.openConnection()) {
 			Statement stmt = conn.createStatement();
-			stmt.executeQuery(GET_PAGES_NUMBER);
+			stmt.executeQuery(GET_COMPUTERS_NUMBER);
 			stmt.getResultSet().next();
 			computersNumber = stmt.getResultSet().getInt("count(*)");
 			stmt.close();
@@ -186,6 +210,104 @@ public class ComputerManager implements EntityManager<Computer> {
 			throw (new GetException());
 		}
 		return computersNumber;
+	}
+
+	public ComputerPage getComputersPageBySearch(String search, int rowsByPage, int numpage) throws DatabaseException {
+		ComputerPage page = new ComputerPage();
+		page.setRows(rowsByPage);
+		try (Connection conn = connectionManager.openConnection()) {
+			PreparedStatement stmt = conn.prepareStatement(GET_COMPUTERS_BY_SEARCH);
+			stmt.setString(1, "%" + search + "%");
+			stmt.setString(2, "%" + search + "%");
+			stmt.setInt(3, rowsByPage * (numpage - 1));
+			stmt.setInt(4, rowsByPage);
+			stmt.executeQuery();
+			ResultSet rs = stmt.getResultSet();
+			while (rs.next()) {
+				Company company = new Company(rs.getInt("company.id"), rs.getString("company.name"));
+				page.getComputers().add(new Computer(rs.getInt("id"), rs.getString("name"), rs.getDate("introduced"),
+						rs.getDate("discontinued"), company));
+			}
+			stmt.close();
+			page.setTotalResults(getTotalRelevantRows(search));
+			page.setMaxPage(page.getTotalResults() / rowsByPage + 1);
+			page.setNumPage(numpage);
+		} catch (SQLException e) {
+			LOGGER.error(e.toString());
+			throw (new GetException());
+		}
+		return page;
+	}
+
+	public int getTotalRelevantRows(String search) throws DatabaseException {
+		int total = 0;
+		PreparedStatement stmt = null;
+		try (Connection conn = connectionManager.openConnection()) {
+			stmt = conn.prepareStatement(GET_TOTAL_COMPUTERS_BY_SEARCH);
+			stmt.setString(1, "%" + search + "%");
+			stmt.setString(2, "%" + search + "%");
+			stmt.executeQuery();
+			ResultSet rs = stmt.getResultSet();
+			rs.next();
+			total = rs.getInt("count(*)");
+		} catch (SQLException e) {
+			LOGGER.error(e.toString());
+			throw (new GetException());
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					LOGGER.error(e.toString());
+					throw (new GetException());
+				}
+			}
+		}
+		return total;
+	}
+
+	public ComputerPage getOrderedPage(ComputerPage page, String orderBy, String search) throws DatabaseException {
+		PreparedStatement stmt = null;
+		page.getComputers().clear();
+		try (Connection conn = connectionManager.openConnection()) {
+			switch (orderBy) {
+			case "computer.name" :
+				stmt = conn.prepareStatement(GET_ORDERED_BY_COMPUTER_NAME_SEARCH_PAGE);
+				break;
+			case "company.name" :
+				stmt = conn.prepareStatement(GET_ORDERED_BY_COMPANY_NAME_SEARCH_PAGE);
+				break;
+			default :
+				stmt = conn.prepareStatement(GET_ORDERED_BY_COMPUTER_NAME_SEARCH_PAGE);
+				break;
+			}
+			stmt.setString(1, "%" + search + "%");
+			stmt.setString(2, "%" + search + "%");
+			stmt.setInt(3, (page.getNumPage() - 1) * page.getRows());
+			stmt.setInt(4, page.getRows());
+			stmt.executeQuery();
+			ResultSet rs = stmt.getResultSet();
+			while (rs.next()) {
+				Company company = new Company(rs.getInt("company.id"), rs.getString("company.name"));
+				page.getComputers().add(new Computer(rs.getInt("id"), rs.getString("name"), rs.getDate("introduced"),
+						rs.getDate("discontinued"), company));
+			}
+			page.setTotalResults(getTotalRelevantRows(search));
+			page.setMaxPage(page.getTotalResults() / page.getRows() + 1);
+		} catch (SQLException e) {
+			LOGGER.error(e.toString());
+			throw (new GetException());
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					LOGGER.error(e.toString());
+					throw (new GetException());
+				}
+			}
+		}
+		return page;
 	}
 
 }

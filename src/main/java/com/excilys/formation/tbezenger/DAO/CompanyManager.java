@@ -28,10 +28,12 @@ public class CompanyManager implements EntityManager<Company> {
         return instance;
     }
 
+    ConnectionManager connectionManager = ConnectionManager.getInstance();
+
     @Override
     public List<Company> findall() throws DatabaseException {
         List<Company> companies = new ArrayList<Company>();
-        try (Connection conn = openConnection()) {
+        try (Connection conn = connectionManager.openConnection()) {
             Statement stmt = conn.createStatement();
 			stmt.executeQuery(FIND_ALL_QUERY);
 			ResultSet rs = stmt.getResultSet();
@@ -49,7 +51,7 @@ public class CompanyManager implements EntityManager<Company> {
 	@Override
 	public Optional<Company> findById(int id) throws DatabaseException {
 		Company company = null;
-		try (Connection conn = openConnection()) {
+		try (Connection conn = connectionManager.openConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(FIND_BY_ID_QUERY);
 			stmt.setInt(1, id);
 			stmt.executeQuery();

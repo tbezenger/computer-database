@@ -72,10 +72,10 @@ public class ComputerService implements Service<Computer> {
 		return computers;
 	}
 
-	public ComputerPage getPage(int numPage, int maxPage, int rowsByPage) {
+	public ComputerPage getPage(int numPage, int rowsByPage) {
 		ComputerPage computerPage = new ComputerPage();
 		try {
-			computerPage = new ComputerPage(ComputerManager.getInstance().findPage(numPage - 1, rowsByPage), numPage, maxPage, rowsByPage);
+			computerPage = ComputerManager.getInstance().findPage(numPage, rowsByPage);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -90,5 +90,24 @@ public class ComputerService implements Service<Computer> {
 			LOGGER.error(e.getMessage());
 		}
 		return computersNumber;
+	}
+
+	public ComputerPage getComputersPagebySearch(String search, int rowsByPage, int numPage) {
+		ComputerPage page = null;
+		try {
+			page = ComputerManager.getInstance().getComputersPageBySearch(search, rowsByPage, numPage);
+		} catch (DatabaseException e) {
+			LOGGER.error(e.getMessage());
+		}
+		return page;
+	}
+
+	public ComputerPage getOrderedPage(ComputerPage page, String orderBy, String search) {
+		try {
+			page = ComputerManager.getInstance().getOrderedPage(page, orderBy, search);
+		} catch (DatabaseException e) {
+			LOGGER.error(e.getMessage());
+		}
+		return page;
 	}
 }

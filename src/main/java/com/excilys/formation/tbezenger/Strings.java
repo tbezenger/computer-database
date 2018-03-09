@@ -17,7 +17,6 @@ public class Strings {
 	public static final String ID = "id";
 	public static final String DASHBOARD = "dashboard";
 	public static final String ERRORS = "errors";
-	public static final String COMPUTER_COUNT = "computerCount";
 	public static final String ROWS = "rows";
 	public static final String PAGE = "page";
 	public static final String COMPUTER_PAGE = "computerPage";

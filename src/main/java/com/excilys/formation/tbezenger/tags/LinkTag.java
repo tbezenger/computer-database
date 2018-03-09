@@ -20,25 +20,29 @@ public class LinkTag extends TagSupport {
 	public int doStartTag() throws JspException {
 
 		StringBuilder listPages = new StringBuilder();
-		if (current == 1) {
+		if (maxPage == 1) {
 			listPages.append("<li><a href=\"dashboard?page=1\"><b><i>" + minPage + "</b></i></a></li>\n");
 		} else {
-			listPages.append("<li><a href=\"dashboard?page=1\">" + minPage + "</a></li>\n");
-		}
-		for (int i = -2; i < 3; i++) {
-			if (current + i > 1 && current + i < maxPage) {
-				if (i == 0) {
-					listPages.append("<li><a href=\"dashboard?page=" + (current + i) + " \"><b><i>" + (current + i) + "</i></b></a></li>\n");
-				} else {
-				listPages.append("<li><a href=\"dashboard?page=" + (current + i) + " \">" + (current + i) + "</a></li>\n");
+			if (current == 1) {
+				listPages.append("<li><a href=\"dashboard?page=1\"><b><i>" + minPage + "</b></i></a></li>\n");
+			} else {
+				listPages.append("<li><a href=\"dashboard?page=1\">" + minPage + "</a></li>\n");
+			}
+			for (int i = -2; i < 3; i++) {
+				if (current + i > 1 && current + i < maxPage) {
+					if (i == 0 && current != 1) {
+						listPages.append("<li><a href=\"dashboard?page=" + (current + i) + " \"><b><i>" + (current + i) + "</i></b></a></li>\n");
+					} else {
+					listPages.append("<li><a href=\"dashboard?page=" + (current + i) + " \">" + (current + i) + "</a></li>\n");
+					}
 				}
 			}
-		}
-		if (current == maxPage) {
-			listPages.append("<li><a href=\"dashboard?page=" + (maxPage) + "\"><b><i>" + maxPage + "</b></i></a></li>\n");
+			if (current == maxPage) {
+				listPages.append("<li><a href=\"dashboard?page=" + (maxPage) + "\"><b><i>" + maxPage + "</b></i></a></li>\n");
 
-		} else {
-			listPages.append("<li><a href=\"dashboard?page=" + (maxPage) + "\">" + maxPage + "</a></li>\n");
+			} else {
+				listPages.append("<li><a href=\"dashboard?page=" + (maxPage) + "\">" + maxPage + "</a></li>\n");
+			}
 		}
 		try {
 			pageContext.getOut().print(listPages.toString());

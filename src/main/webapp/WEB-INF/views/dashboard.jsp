@@ -20,15 +20,16 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${computerCount} Computers found</h1>
+			<h1 id="homeTitle">${computerPage.totalResults} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
-
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
-							class="btn btn-primary" />
+							class="form-control" placeholder="Search name" />
+						<a href="dashboard?search=lol">
+							<input	type="submit" id="searchsubmit" value="Filter by name"
+									class="btn btn-primary" />
+						</a>
 					</form>
 				</div>
 				<div class="pull-right">
@@ -57,12 +58,12 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
+						<th><a href ="dashboard?orderBy=computer.name">Computer name</a></th>
 						<th>Introduced date</th>
 						<!-- Table header for Discontinued Date -->
 						<th>Discontinued date</th>
 						<!-- Table header for Company -->
-						<th>Company</th>
+						<th><a href="dashboard?orderBy=company.name">Company</a></th>
 
 					</tr>
 				</thead>
