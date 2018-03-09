@@ -39,6 +39,8 @@ public class ComputerManager implements EntityManager<Computer> {
 
 	private final String DELETE_QUERY = "DELETE FROM computer WHERE id=?";
 
+	private final String DELETE_QUERY_BY_COMPANY_ID = "DELETE FROM computer WHERE company_id=?";
+
 	private final String UPDATE_QUERY = "UPDATE computer SET name=?,introduced=?,discontinued=?,company_id=? "
 			+ "WHERE id=?";
 
@@ -168,6 +170,19 @@ public class ComputerManager implements EntityManager<Computer> {
 		try (Connection conn = connectionManager.openConnection()) {
 			PreparedStatement stmt = conn.prepareStatement(DELETE_QUERY);
 			stmt.setInt(1, id);
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			LOGGER.error(e.toString());
+			throw (new DeleteException());
+		}
+		return true;
+	}
+
+	public boolean removeByCompanyId(int companyId) throws DatabaseException {
+		try (Connection conn = connectionManager.openConnection()) {
+			PreparedStatement stmt = conn.prepareStatement(DELETE_QUERY_BY_COMPANY_ID);
+			stmt.setInt(1, companyId);
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (SQLException e) {
