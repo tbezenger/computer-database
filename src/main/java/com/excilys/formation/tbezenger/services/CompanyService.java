@@ -12,6 +12,7 @@ public class CompanyService implements Service<Company> {
 	private static CompanyService instance;
 
 	private CompanyService() {
+
 	}
 
 	public static CompanyService getInstance() {
@@ -42,5 +43,15 @@ public class CompanyService implements Service<Company> {
 			LOGGER.error(e.getMessage());
 		}
 		return companies;
+	}
+
+	public boolean delete(int id) {
+		try {
+			return CompanyManager.getInstance().remove(id);
+
+		} catch (DatabaseException e) {
+			LOGGER.error(e.getMessage());
+			return false;
+		}
 	}
 }

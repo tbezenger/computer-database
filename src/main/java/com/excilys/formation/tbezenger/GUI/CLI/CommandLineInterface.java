@@ -18,6 +18,7 @@ public class CommandLineInterface {
 			+ "- create computer {name} {introduction date} {discontinuation date} {company id}\n"
 			+ "- get computer {id}\n" + "- get page {page_number}\n" + "- getall computer\n" + "- getall company\n"
 			+ "- delete computer {id}\n"
+			+ "- delete company {id}"
 			+ "- update computer {id} {name} {introduction date} {discontinuation date} {company id}\n" + "- help\n"
 			+ "- quit";
 
@@ -108,6 +109,15 @@ public class CommandLineInterface {
 					} catch (NumberFormatException e) {
 						LOGGER.error(BAD_ID);
 					}
+				} else if (parsedCommand.length == 3 && parsedCommand[1].equals(COMPANY)) {
+					// parsedCommand[2] = computer.id
+					try {
+						if (CompanyService.getInstance().delete(Integer.parseInt(parsedCommand[2]))) {
+							LOGGER.info(DELETED);
+						}
+					} catch (NumberFormatException e) {
+						LOGGER.error(BAD_ID);
+					}
 				} else {
 					LOGGER.error(NOT_RECOGNIZED);
 				}
@@ -134,14 +144,14 @@ public class CommandLineInterface {
 					case COMPUTER:
 						List<Computer> computers = ComputerService.getInstance().getAll();
 						for (Computer c : computers) {
-							LOGGER.info(c.getName());
+							LOGGER.info(c.getName() + " id : " + Integer.toString(c.getId()));
 						}
 						break;
 
 					case COMPANY:
 						List<Company> companies = CompanyService.getInstance().getAll();
 						for (Company c : companies) {
-							LOGGER.info(c.getName());
+							LOGGER.info(c.getName() + " id : " + Integer.toString(c.getId()));
 						}
 						break;
 

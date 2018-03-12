@@ -144,7 +144,9 @@ public class ComputerManager implements EntityManager<Computer> {
 	}
 
 	public Computer persist(Computer t) throws DatabaseException {
-		try (Connection conn = connectionManager.openConnection()) {
+		Connection conn = null;
+		try {
+			conn = connectionManager.openConnection();
 			conn.setAutoCommit(false);
 			PreparedStatement stmt = conn.prepareStatement(PERSIST_QUERY);
 
@@ -160,6 +162,14 @@ public class ComputerManager implements EntityManager<Computer> {
 			conn.commit();
 			stmt.close();
 		} catch (SQLException e) {
+			if (conn != null) {
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					LOGGER.error(e.toString());
+					throw (new PersistException());
+				}
+			}
 			LOGGER.error(e.toString());
 			throw (new PersistException());
 		}
@@ -179,12 +189,10 @@ public class ComputerManager implements EntityManager<Computer> {
 		return true;
 	}
 
-	public boolean removeByCompanyId(int companyId) throws DatabaseException {
-		try (Connection conn = connectionManager.openConnection()) {
-			PreparedStatement stmt = conn.prepareStatement(DELETE_QUERY_BY_COMPANY_ID);
+	public boolean removeByCompanyId(int companyId, Connection conn) throws DatabaseException {
+		try (PreparedStatement stmt = conn.prepareStatement(DELETE_QUERY_BY_COMPANY_ID)) {
 			stmt.setInt(1, companyId);
 			stmt.executeUpdate();
-			stmt.close();
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
 			throw (new DeleteException());

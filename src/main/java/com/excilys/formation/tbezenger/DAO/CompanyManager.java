@@ -18,6 +18,7 @@ public class CompanyManager implements EntityManager<Company> {
     private static CompanyManager instance;
     private final String FIND_ALL_QUERY = "SELECT id,name FROM company";
     private final String FIND_BY_ID_QUERY = "SELECT id,name FROM company WHERE id=?";
+    private final String DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE id=?";
 
     private CompanyManager() { }
 
@@ -66,4 +67,37 @@ public class CompanyManager implements EntityManager<Company> {
 		return Optional.ofNullable(company);
 	}
 
+	public boolean remove(int id) throws DatabaseException {
+		PreparedStatement stmt = null;
+		Connection conn = null;
+		try {
+			conn = connectionManager.openConnection();
+			conn.setAutoCommit(false);
+			ComputerManager.getInstance().removeByCompanyId(id, conn);
+			stmt = conn.prepareStatement(DELETE_COMPANY_BY_ID);
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+			conn.commit();
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				LOGGER.error(e.toString());
+				throw (new GetException());
+			}
+			LOGGER.error(e.toString());
+			throw (new GetException());
+		} finally {
+			try {
+				if (stmt != null && conn != null) {
+					stmt.close();
+					conn.close();
+				}
+			} catch (SQLException e) {
+				LOGGER.error(e.toString());
+				throw (new GetException());
+			}
+		}
+		return true;
+	}
 }
