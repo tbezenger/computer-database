@@ -4,29 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.formation.tbezenger.DAO.CompanyManager;
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
 
-public class CompanyService implements Service<Company> {
-	private static CompanyService instance;
+@Service
+public class CompanyService implements IService<Company> {
 
-	private CompanyService() {
-
+	private CompanyManager companyManager;
+	@Autowired
+	public CompanyService(CompanyManager companyManager) {
+		this.companyManager = companyManager;
 	}
 
-	public static CompanyService getInstance() {
-		if (instance == null) {
-			instance = new CompanyService();
-		}
-		return instance;
-	}
 
 	@Override
 	public Optional<Company> get(int id) {
 		Optional<Company> company = Optional.ofNullable(new Company());
 		try {
-			company = CompanyManager.getInstance().findById(id);
+			company = companyManager.findById(id);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -37,7 +36,7 @@ public class CompanyService implements Service<Company> {
 	public List<Company> getAll() {
 		List<Company> companies = new ArrayList<Company>();
 		try {
-			companies = CompanyManager.getInstance().findall();
+			companies = companyManager.findall();
 
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
@@ -47,7 +46,7 @@ public class CompanyService implements Service<Company> {
 
 	public boolean delete(int id) {
 		try {
-			return CompanyManager.getInstance().remove(id);
+			return companyManager.remove(id);
 
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());

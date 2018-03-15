@@ -3,11 +3,18 @@ package com.excilys.formation.tbezenger.servlets;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.excilys.formation.tbezenger.DTO.ComputerDTO;
 import com.excilys.formation.tbezenger.DTO.Mapper;
@@ -32,9 +39,11 @@ public class EditComputerServlet extends HttpServlet {
 	/**
 	 */
 	private static final long serialVersionUID = 1L;
-	private CompanyService companyService = CompanyService.getInstance();
-	private ComputerService computerService = ComputerService.getInstance();
 
+	@Autowired
+	private CompanyService companyService;
+	@Autowired
+	private ComputerService computerService;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter(ID));
@@ -65,6 +74,15 @@ public class EditComputerServlet extends HttpServlet {
 		computerDTO.setIntroduced(introduced);
 		computerDTO.setCompany(Mapper.toDTO(companyService.get(companyId).orElse(new Company())));
 		computerService.update(Mapper.toComputer(computerDTO));
+	}
+
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		ServletContext servletContext = config.getServletContext();
+		WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+	    AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
+	    autowireCapableBeanFactory.autowireBean(this);
 	}
 
 }

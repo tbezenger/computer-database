@@ -4,39 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.formation.tbezenger.DAO.ComputerManager;
 import com.excilys.formation.tbezenger.Model.Computer;
 import com.excilys.formation.tbezenger.Model.ComputerPage;
 import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
 
-public class ComputerService implements Service<Computer> {
+@Service
+public class ComputerService implements IService<Computer> {
 
-	private static ComputerService instance;
 
-	private ComputerService() {
+	private ComputerManager computerManager;
+	@Autowired
+	public ComputerService(ComputerManager computerManager) {
+		this.computerManager = computerManager;
 	}
 
-	public static ComputerService getInstance() {
-		if (instance == null) {
-			instance = new ComputerService();
-		}
-		return instance;
-	}
 
-	public Computer create(Computer computer) {
+	public boolean create(Computer computer) {
 		try {
-			computer = ComputerManager.getInstance().persist(computer);
+			computerManager.persist(computer);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return computer;
+		return true;
 	}
 
 	@Override
 	public Optional<Computer> get(int id) {
 		Optional<Computer> computer = Optional.ofNullable(new Computer());
 		try {
-			computer = ComputerManager.getInstance().findById(id);
+			computer = computerManager.findById(id);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -45,7 +45,7 @@ public class ComputerService implements Service<Computer> {
 
 	public boolean update(Computer computer) {
 		try {
-			return ComputerManager.getInstance().update(computer);
+			return computerManager.update(computer);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -54,7 +54,7 @@ public class ComputerService implements Service<Computer> {
 
 	public boolean delete(int id) {
 		try {
-			return ComputerManager.getInstance().remove(id);
+			return computerManager.remove(id);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -65,7 +65,7 @@ public class ComputerService implements Service<Computer> {
 	public List<Computer> getAll() {
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
-			computers = ComputerManager.getInstance().findall();
+			computers = computerManager.findall();
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -75,7 +75,7 @@ public class ComputerService implements Service<Computer> {
 	public ComputerPage getPage(int numPage, int rowsByPage) {
 		ComputerPage computerPage = new ComputerPage();
 		try {
-			computerPage = ComputerManager.getInstance().findPage(numPage, rowsByPage);
+			computerPage = computerManager.findPage(numPage, rowsByPage);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -85,7 +85,7 @@ public class ComputerService implements Service<Computer> {
 	public int getComputersNumber() {
 		int computersNumber = 0;
 		try {
-			computersNumber = ComputerManager.getInstance().getComputersNumber();
+			computersNumber = computerManager.getComputersNumber();
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -95,7 +95,7 @@ public class ComputerService implements Service<Computer> {
 	public ComputerPage getComputersPagebySearch(String search, int rowsByPage, int numPage) {
 		ComputerPage page = null;
 		try {
-			page = ComputerManager.getInstance().getComputersPageBySearch(search, rowsByPage, numPage);
+			page = computerManager.getComputersPageBySearch(search, rowsByPage, numPage);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -104,7 +104,7 @@ public class ComputerService implements Service<Computer> {
 
 	public ComputerPage getOrderedPage(ComputerPage page, String orderBy, String search) {
 		try {
-			page = ComputerManager.getInstance().getOrderedPage(page, orderBy, search);
+			page = computerManager.getOrderedPage(page, orderBy, search);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}

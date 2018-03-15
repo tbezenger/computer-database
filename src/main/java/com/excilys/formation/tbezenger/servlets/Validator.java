@@ -11,6 +11,8 @@ import static com.excilys.formation.tbezenger.Strings.COMPANY_FIELD;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.exceptions.validator.CompanyFieldException;
 import com.excilys.formation.tbezenger.exceptions.validator.DiscontinuedFieldException;
@@ -19,6 +21,9 @@ import com.excilys.formation.tbezenger.exceptions.validator.NameFieldException;
 import com.excilys.formation.tbezenger.services.CompanyService;
 
 public class Validator {
+
+	@Autowired
+	public static CompanyService companyService;
 
 	private static void validName(String name) throws NameFieldException {
 		if (name.length() > 30) {
@@ -43,7 +48,7 @@ public class Validator {
 	}
 
 	private static void validCompany(String companyId) throws CompanyFieldException {
-		Company company = CompanyService.getInstance().get(Integer.parseInt(companyId)).orElse(new Company());
+		Company company = companyService.get(Integer.parseInt(companyId)).orElse(new Company());
 		if (company.getId() == 0) {
 			throw new CompanyFieldException();
 		}

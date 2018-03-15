@@ -2,11 +2,18 @@ package com.excilys.formation.tbezenger.servlets;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import static com.excilys.formation.tbezenger.Strings.ROWS;
 import static com.excilys.formation.tbezenger.Strings.PAGE;
@@ -15,6 +22,8 @@ import static com.excilys.formation.tbezenger.Strings.DASHBOARD_VIEW;
 import static com.excilys.formation.tbezenger.Strings.SELECTION;
 import static com.excilys.formation.tbezenger.Strings.SELECTION_SEPARATOR;
 import static com.excilys.formation.tbezenger.Strings.DASHBOARD;
+import static com.excilys.formation.tbezenger.Strings.SEARCH;
+import static com.excilys.formation.tbezenger.Strings.ORDERBY;
 
 import com.excilys.formation.tbezenger.Model.ComputerPage;
 import com.excilys.formation.tbezenger.services.ComputerService;
@@ -26,8 +35,10 @@ public class DashboardServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private ComputerPage page = new ComputerPage();;
-	private ComputerService computerService = ComputerService.getInstance();
+	private ComputerPage page = new ComputerPage();
+
+	@Autowired
+	private ComputerService computerService;
 	private String search = "";
 	private String orderBy = "";
 
@@ -59,14 +70,13 @@ public class DashboardServlet extends HttpServlet {
 				}
 			}
 
-		} else if (request.getParameter("search") != null) {
+		} else if (request.getParameter(SEARCH) != null) {
 			page.setNumPage(1);
-			search = request.getParameter("search");
+			search = request.getParameter(SEARCH);
 			page = computerService.getComputersPagebySearch(search, page.getRows(), page.getNumPage());
 
-		} else if (request.getParameter("orderBy") != null) {
-			orderBy = request.getParameter("orderBy");
-			System.out.println("orderby : " + orderBy);
+		} else if (request.getParameter(ORDERBY) != null) {
+			orderBy = request.getParameter(ORDERBY);
 			page = computerService.getOrderedPage(page, orderBy, search);
 
 		} else {
@@ -85,6 +95,15 @@ public class DashboardServlet extends HttpServlet {
 			computerService.delete(Integer.parseInt(s));
 		}
 		response.sendRedirect(DASHBOARD);
+	}
+
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		ServletContext servletContext = config.getServletContext();
+		WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+	    AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
+	    autowireCapableBeanFactory.autowireBean(this);
 	}
 
 }

@@ -6,19 +6,24 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
 import com.excilys.formation.tbezenger.Model.ComputerPage;
 import com.excilys.formation.tbezenger.services.CompanyService;
 import com.excilys.formation.tbezenger.services.ComputerService;
+import com.excilys.formation.tbezenger.springConfig.ApplicationConfig;
 
+@Repository
 public class CommandLineInterface {
 	private static final String HELPER = "commandes disponibles : \n"
 			+ "- create computer {name} {introduction date} {discontinuation date} {company id}\n"
 			+ "- get computer {id}\n" + "- get page {page_number}\n" + "- getall computer\n" + "- getall company\n"
 			+ "- delete computer {id}\n"
-			+ "- delete company {id}"
+			+ "- delete company {id}\n"
 			+ "- update computer {id} {name} {introduction date} {discontinuation date} {company id}\n" + "- help\n"
 			+ "- quit";
 
@@ -41,7 +46,16 @@ public class CommandLineInterface {
 
 	private static final Logger LOGGER = LogManager.getLogger(CommandLineInterface.class);
 
+	private static ComputerService computerService;
+	private static CompanyService companyService;
+
 	public static void launch() {
+	    AbstractApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+
+	    computerService = context.getBean(ComputerService.class);
+	    companyService = context.getBean(CompanyService.class);
+
+
 		Scanner scan = new Scanner(System.in);
 		String[] parsedCommand = scan.nextLine().split(SEPARATION_CHAR);
 		Computer computer;
@@ -52,9 +66,8 @@ public class CommandLineInterface {
 			case "create":
 				if (parsedCommand.length == 6 && parsedCommand[1].equals(COMPUTER)) {
 					try {
-						computer = createComputer(parsedCommand);
-						if (computer.getId() != 0) {
-							LOGGER.info(CREATED + ":" + computer.toString());
+						if (createComputer(parsedCommand)) {
+							LOGGER.info(CREATED);
 						}
 					} catch (NumberFormatException e) {
 						LOGGER.error(BAD_ID);
@@ -70,10 +83,10 @@ public class CommandLineInterface {
 				if (parsedCommand.length == 3 && parsedCommand[1].equals(COMPUTER)) {
 					// parsedCommand[2] = computer.id
 					try {
-						computer = ComputerService.getInstance().get(Integer.parseInt(parsedCommand[2]))
+						computer = computerService.get(Integer.parseInt(parsedCommand[2]))
 								.orElse(new Computer());
 						if (computer.getId() != 0) {
-							LOGGER.info("Read computer :" + computer.toString());
+							LOGGER.info("Read computer : " + computer.toString());
 						} else {
 							LOGGER.error(DONT_EXIST);
 						}
@@ -82,7 +95,7 @@ public class CommandLineInterface {
 					}
 				} else if (parsedCommand.length == 3 && parsedCommand[1].equals(PAGE)) {
 					try {
-						computerPage = ComputerService.getInstance().getPage(Integer.parseInt(parsedCommand[2]), ROWSBYPAGE);
+						computerPage = computerService.getPage(Integer.parseInt(parsedCommand[2]), ROWSBYPAGE);
 						List<Computer> computers = computerPage.getComputers();
 						if (computers.size() != 0) {
 							for (Computer c : computers) {
@@ -103,16 +116,16 @@ public class CommandLineInterface {
 				if (parsedCommand.length == 3 && parsedCommand[1].equals(COMPUTER)) {
 					// parsedCommand[2] = computer.id
 					try {
-						if (ComputerService.getInstance().delete(Integer.parseInt(parsedCommand[2]))) {
+						if (computerService.delete(Integer.parseInt(parsedCommand[2]))) {
 							LOGGER.info(DELETED);
 						}
 					} catch (NumberFormatException e) {
 						LOGGER.error(BAD_ID);
 					}
-				} else if (parsedCommand.length == 3 && parsedCommand[1].equals(COMPANY)) {
+				} else if (parsedCommand[1].equals(COMPANY)) {
 					// parsedCommand[2] = computer.id
 					try {
-						if (CompanyService.getInstance().delete(Integer.parseInt(parsedCommand[2]))) {
+						if (companyService.delete(Integer.parseInt(parsedCommand[2]))) {
 							LOGGER.info(DELETED);
 						}
 					} catch (NumberFormatException e) {
@@ -142,14 +155,14 @@ public class CommandLineInterface {
 				if (parsedCommand.length == 2) {
 					switch (parsedCommand[1]) {
 					case COMPUTER:
-						List<Computer> computers = ComputerService.getInstance().getAll();
+						List<Computer> computers = computerService.getAll();
 						for (Computer c : computers) {
 							LOGGER.info(c.getName() + " id : " + Integer.toString(c.getId()));
 						}
 						break;
 
 					case COMPANY:
-						List<Company> companies = CompanyService.getInstance().getAll();
+						List<Company> companies = companyService.getAll();
 						for (Company c : companies) {
 							LOGGER.info(c.getName() + " id : " + Integer.toString(c.getId()));
 						}
@@ -177,20 +190,21 @@ public class CommandLineInterface {
 		}
 		LOGGER.info(BYE);
 		scan.close();
+		context.close();
 	}
 
-	public static Computer createComputer(String[] parsedCommand)
+	public static boolean createComputer(String[] parsedCommand)
 			throws NumberFormatException, IllegalArgumentException {
 		// parsedCommand[2] = computer.name / parsedCommand[3] = computer.introduced
 		// parsedCommand[4] = computer.discontinued / parsedCommand[5] = company.id
 		if (Date.valueOf(parsedCommand[3]).before(Date.valueOf(parsedCommand[4]))) {
-			Company company = CompanyService.getInstance().get(Integer.parseInt(parsedCommand[5]))
+			Company company = companyService.get(Integer.parseInt(parsedCommand[5]))
 					.orElse(new Company());
-			return ComputerService.getInstance().create(new Computer(parsedCommand[2], Date.valueOf(parsedCommand[3]),
+			return computerService.create(new Computer(parsedCommand[2], Date.valueOf(parsedCommand[3]),
 					parsedCommand[4].equals(NULL) ? null : Date.valueOf(parsedCommand[4]), company));
 		} else {
 			LOGGER.error(INCOMPATIBLE_DATES);
-			return new Computer();
+			return false;
 		}
 	}
 
@@ -199,14 +213,13 @@ public class CommandLineInterface {
 		// parsedCommand[4] = computer.introduced
 		// parsedCommand[5] = computer.discontinued / parsedCommand[6] = company.id
 		if (Date.valueOf(parsedCommand[4]).before(Date.valueOf(parsedCommand[5]))) {
-			Company company = CompanyService.getInstance().get(Integer.parseInt(parsedCommand[6]))
+			Company company = companyService.get(Integer.parseInt(parsedCommand[6]))
 					.orElse(new Company());
 			if (company.getId() == 0) {
 				LOGGER.error(DONT_EXIST);
 				return;
 			}
-			if (ComputerService.getInstance()
-					.update(new Computer(Integer.parseInt(parsedCommand[2]), parsedCommand[3],
+			if (computerService.update(new Computer(Integer.parseInt(parsedCommand[2]), parsedCommand[3],
 							Date.valueOf(parsedCommand[4]),
 							parsedCommand[5].equals(NULL) ? null : Date.valueOf(parsedCommand[5]), company))) {
 

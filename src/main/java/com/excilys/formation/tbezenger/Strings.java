@@ -22,7 +22,8 @@ public class Strings {
 	public static final String COMPUTER_PAGE = "computerPage";
 	public static final String SELECTION = "selection";
 	public static final String SELECTION_SEPARATOR = ",";
-
+	public static final String SEARCH = "search";
+	public static final String ORDERBY = "orderBy";
 
 	// JSP VIEWS
 	public static final String EDIT_COMPUTER_VIEW = "/WEB-INF/views/editComputer.jsp";
@@ -39,6 +40,15 @@ public class Strings {
 	public static final String INVALID_DISCONTINUED = "Invalid discontinuation date";
 	public static final String INVALID_INTRODUCED = "Invalid introduction date";
 	public static final String INVALID_NAME = "Invalid name";
+
+	// SQL COLUMNS
+	public static final String COMPANY_ID = "company.id";
+	public static final String COMPANY_NAME = "company.name";
+	public static final String COMPUTER_ID = "computer.id";
+	public static final String COMPUTER_NAME = "computer.name";
+	public static final String COMPUTER_INTRODUCED = "computer.introduced";
+	public static final String COMPUTER_DISCONTINUED = "computer.discontinued";
+
 
 
 }

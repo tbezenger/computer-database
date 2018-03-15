@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public interface Service<T> {
+public interface IService<T> {
 	Logger LOGGER = LogManager.getLogger("STDOUT");
 
 	List<T> getAll();
