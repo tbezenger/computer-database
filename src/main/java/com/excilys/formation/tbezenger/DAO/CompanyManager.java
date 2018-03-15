@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.tbezenger.Model.Company;
@@ -20,7 +21,7 @@ import com.excilys.formation.tbezenger.exceptions.DAO.GetException;
 import static com.excilys.formation.tbezenger.Strings.COMPANY_ID;
 import static com.excilys.formation.tbezenger.Strings.COMPANY_NAME;
 
-@Component
+@Repository
 public class CompanyManager implements EntityManager<Company> {
 
     private JdbcTemplate jdbcTemplate;

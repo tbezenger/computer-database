@@ -11,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
@@ -29,7 +30,7 @@ import static com.excilys.formation.tbezenger.Strings.COMPUTER_DISCONTINUED;
 import static com.excilys.formation.tbezenger.Strings.COMPUTER_INTRODUCED;
 
 
-@Component
+@Repository
 public class ComputerManager implements EntityManager<Computer> {
 
 

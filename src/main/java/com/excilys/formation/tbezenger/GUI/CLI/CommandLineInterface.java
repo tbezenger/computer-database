@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.Model.Computer;
@@ -17,7 +17,7 @@ import com.excilys.formation.tbezenger.services.CompanyService;
 import com.excilys.formation.tbezenger.services.ComputerService;
 import com.excilys.formation.tbezenger.springConfig.ApplicationConfig;
 
-@Repository
+@Component
 public class CommandLineInterface {
 	private static final String HELPER = "commandes disponibles : \n"
 			+ "- create computer {name} {introduction date} {discontinuation date} {company id}\n"
@@ -46,6 +46,7 @@ public class CommandLineInterface {
 
 	private static final Logger LOGGER = LogManager.getLogger(CommandLineInterface.class);
 
+
 	private static ComputerService computerService;
 	private static CompanyService companyService;
 
@@ -54,7 +55,6 @@ public class CommandLineInterface {
 
 	    computerService = context.getBean(ComputerService.class);
 	    companyService = context.getBean(CompanyService.class);
-
 
 		Scanner scan = new Scanner(System.in);
 		String[] parsedCommand = scan.nextLine().split(SEPARATION_CHAR);

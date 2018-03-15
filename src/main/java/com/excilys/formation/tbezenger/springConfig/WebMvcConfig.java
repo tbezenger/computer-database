@@ -22,6 +22,10 @@ public class WebMvcConfig implements WebMvcConfigurer  {
 	}
 
 
+	@Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	}
+
     /**
      * Provide a view resolver to map views to the correct template files.
      *

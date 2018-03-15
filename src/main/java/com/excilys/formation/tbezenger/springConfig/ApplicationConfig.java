@@ -12,7 +12,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
-@ComponentScan(basePackages = "com.excilys.formation.tbezenger")
+@ComponentScan(basePackages = {"com.excilys.formation.tbezenger.GUI",
+							   "com.excilys.formation.tbezenger.services",
+							   "com.excilys.formation.tbezenger.DAO"})
 @PropertySource(value = { "classpath:application.properties" })
 public class ApplicationConfig {
 
@@ -35,5 +37,4 @@ public class ApplicationConfig {
         jdbcTemplate.setResultsMapCaseInsensitive(true);
         return jdbcTemplate;
     }
-
 }
