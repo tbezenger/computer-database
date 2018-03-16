@@ -4,8 +4,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.formation.tbezenger.Model.Company;
-import com.excilys.formation.tbezenger.Model.Computer;
+import com.excilys.formation.tbezenger.model.Company;
+import com.excilys.formation.tbezenger.model.Computer;
 
 public class Mapper {
 

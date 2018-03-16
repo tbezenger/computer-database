@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.excilys.formation.tbezenger.DAO.CompanyManager;
-import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
+import com.excilys.formation.tbezenger.model.Company;
 
 @Service
 public class CompanyService implements IService<Company> {

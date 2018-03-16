@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.excilys.formation.tbezenger.Model.Company;
 import com.excilys.formation.tbezenger.exceptions.validator.CompanyFieldException;
 import com.excilys.formation.tbezenger.exceptions.validator.DiscontinuedFieldException;
 import com.excilys.formation.tbezenger.exceptions.validator.IntroducedFieldException;
 import com.excilys.formation.tbezenger.exceptions.validator.NameFieldException;
+import com.excilys.formation.tbezenger.model.Company;
 import com.excilys.formation.tbezenger.services.CompanyService;
 
 public class Validator {

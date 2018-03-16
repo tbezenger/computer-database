@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.excilys.formation.tbezenger.DAO.ComputerManager;
-import com.excilys.formation.tbezenger.Model.Computer;
-import com.excilys.formation.tbezenger.Model.ComputerPage;
 import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
+import com.excilys.formation.tbezenger.model.Computer;
+import com.excilys.formation.tbezenger.model.ComputerPage;
 
 @Service
 public class ComputerService implements IService<Computer> {
@@ -72,42 +72,13 @@ public class ComputerService implements IService<Computer> {
 		return computers;
 	}
 
-	public ComputerPage getPage(int numPage, int rowsByPage) {
+	public ComputerPage getPage(int numPage, int rowsByPage, String search, String orderBy, String order, boolean isAscending) {
 		ComputerPage computerPage = new ComputerPage();
 		try {
-			computerPage = computerManager.findPage(numPage, rowsByPage);
+			computerPage = computerManager.findPage(numPage, rowsByPage, search, orderBy, order, isAscending);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 		}
 		return computerPage;
-	}
-
-	public int getComputersNumber() {
-		int computersNumber = 0;
-		try {
-			computersNumber = computerManager.getComputersNumber();
-		} catch (DatabaseException e) {
-			LOGGER.error(e.getMessage());
-		}
-		return computersNumber;
-	}
-
-	public ComputerPage getComputersPagebySearch(String search, int rowsByPage, int numPage) {
-		ComputerPage page = null;
-		try {
-			page = computerManager.getComputersPageBySearch(search, rowsByPage, numPage);
-		} catch (DatabaseException e) {
-			LOGGER.error(e.getMessage());
-		}
-		return page;
-	}
-
-	public ComputerPage getOrderedPage(ComputerPage page, String orderBy, String search) {
-		try {
-			page = computerManager.getOrderedPage(page, orderBy, search);
-		} catch (DatabaseException e) {
-			LOGGER.error(e.getMessage());
-		}
-		return page;
 	}
 }

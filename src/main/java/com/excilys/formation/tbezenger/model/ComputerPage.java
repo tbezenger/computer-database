@@ -1,4 +1,4 @@
-package com.excilys.formation.tbezenger.Model;
+package com.excilys.formation.tbezenger.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,9 @@ public class ComputerPage {
 	private int maxPage;
 	private int rows = 10;
 	private int totalResults;
+	private String search = "";
+	private String orderBy = "";
+	private boolean isAscending = true;
 
 	public ComputerPage() { }
 
@@ -55,5 +58,30 @@ public class ComputerPage {
 	}
 	public void setTotalResults(int totalResults) {
 		this.totalResults = totalResults;
+	}
+	public String getSearch() {
+		return search;
+	}
+	public void setSearch(String search) {
+		this.search = search;
+	}
+	public String getOrderBy() {
+		return orderBy;
+	}
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
+	public boolean isAscending() {
+		return isAscending;
+	}
+	public void setAscending(boolean isAscending) {
+		this.isAscending = isAscending;
+	}
+
+	@Override
+	public String toString() {
+		return "ComputerPage [computers=" + computers + ", numPage=" + numPage + ", maxPage=" + maxPage + ", rows="
+				+ rows + ", totalResults=" + totalResults + ", search=" + search + ", orderBy=" + orderBy
+				+ ", isAscending=" + isAscending + "]";
 	}
 }

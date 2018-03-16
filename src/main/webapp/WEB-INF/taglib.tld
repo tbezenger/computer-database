@@ -12,15 +12,7 @@
       <tagclass>com.excilys.formation.tbezenger.tags.LinkTag</tagclass>
       <bodycontent>empty</bodycontent>
       <attribute>
-      	<name>minPage</name>
-      	<rtexprvalue>true</rtexprvalue>
-      </attribute>
-      <attribute>
-        <name>maxPage</name>
-        <rtexprvalue>true</rtexprvalue>
-      </attribute>
-      <attribute>
-        <name>current</name>
+        <name>page</name>
         <rtexprvalue>true</rtexprvalue>
       </attribute>
    </tag>

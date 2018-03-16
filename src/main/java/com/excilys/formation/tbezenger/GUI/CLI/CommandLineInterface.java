@@ -8,16 +8,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.stereotype.Component;
 
-import com.excilys.formation.tbezenger.Model.Company;
-import com.excilys.formation.tbezenger.Model.Computer;
-import com.excilys.formation.tbezenger.Model.ComputerPage;
+import com.excilys.formation.tbezenger.model.Company;
+import com.excilys.formation.tbezenger.model.Computer;
+import com.excilys.formation.tbezenger.model.ComputerPage;
 import com.excilys.formation.tbezenger.services.CompanyService;
 import com.excilys.formation.tbezenger.services.ComputerService;
 import com.excilys.formation.tbezenger.springConfig.ApplicationConfig;
 
-@Component
 public class CommandLineInterface {
 	private static final String HELPER = "commandes disponibles : \n"
 			+ "- create computer {name} {introduction date} {discontinuation date} {company id}\n"

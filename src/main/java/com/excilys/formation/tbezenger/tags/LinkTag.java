@@ -7,41 +7,41 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.logging.log4j.LogManager;
 
+import com.excilys.formation.tbezenger.model.ComputerPage;
+
 
 public class LinkTag extends TagSupport {
 	/**
 	 */
 	private static final long serialVersionUID = 1L;
-	private int minPage;
-	private int current;
-	private int maxPage;
 
+	private ComputerPage page;
 
 	public int doStartTag() throws JspException {
 
 		StringBuilder listPages = new StringBuilder();
-		if (maxPage == 1) {
-			listPages.append("<li><a href=\"dashboard?page=1\"><b><i>" + minPage + "</b></i></a></li>\n");
+		if (page.getMaxPage() == 1) {
+			listPages.append("<li><a href=\"dashboard?page=1&rows=" + page.getRows() + "&search=" + page.getSearch() + "&orderBy=" + page.getOrderBy() + "\"><b><i>" + 1 + "</b></i></a></li>\n");
 		} else {
-			if (current == 1) {
-				listPages.append("<li><a href=\"dashboard?page=1\"><b><i>" + minPage + "</b></i></a></li>\n");
+			if (page.getNumPage() == 1) {
+				listPages.append("<li><a href=\"dashboard?page=1&rows=" + page.getRows() + "&search=" + page.getSearch() + "&orderBy=" + page.getOrderBy() + "\"><b><i>" + 1 + "</b></i></a></li>\n");
 			} else {
-				listPages.append("<li><a href=\"dashboard?page=1\">" + minPage + "</a></li>\n");
+				listPages.append("<li><a href=\"dashboard?page=1&rows=" + page.getRows() + "&search=" + page.getSearch() + "&orderBy=" + page.getOrderBy() + "\">" + 1 + "</a></li>\n");
 			}
 			for (int i = -2; i < 3; i++) {
-				if (current + i > 1 && current + i < maxPage) {
-					if (i == 0 && current != 1) {
-						listPages.append("<li><a href=\"dashboard?page=" + (current + i) + " \"><b><i>" + (current + i) + "</i></b></a></li>\n");
+				if (page.getNumPage() + i > 1 && page.getNumPage() + i < page.getMaxPage()) {
+					if (i == 0 && page.getNumPage() != 1) {
+						listPages.append("<li><a href=\"dashboard?page=" + (page.getNumPage() + i) + "&rows=" + page.getRows() + "&search=" + page.getSearch() + "&orderBy=" + page.getOrderBy() + "\"><b><i>" + (page.getNumPage() + i) + "</i></b></a></li>\n");
 					} else {
-					listPages.append("<li><a href=\"dashboard?page=" + (current + i) + " \">" + (current + i) + "</a></li>\n");
+					listPages.append("<li><a href=\"dashboard?page=" + (page.getNumPage() + i) + "&rows=" + page.getRows() + "&search=" + page.getSearch() + "&orderBy=" + page.getOrderBy() + "\">" + (page.getNumPage() + i) + "</a></li>\n");
 					}
 				}
 			}
-			if (current == maxPage) {
-				listPages.append("<li><a href=\"dashboard?page=" + (maxPage) + "\"><b><i>" + maxPage + "</b></i></a></li>\n");
+			if (page.getNumPage() == page.getMaxPage()) {
+				listPages.append("<li><a href=\"dashboard?page=" + (page.getMaxPage()) + "&rows=" + page.getRows() + "&search=" + page.getSearch() + "&orderBy=" + page.getOrderBy() + "\"><b><i>" + page.getMaxPage() + "</b></i></a></li>\n");
 
 			} else {
-				listPages.append("<li><a href=\"dashboard?page=" + (maxPage) + "\">" + maxPage + "</a></li>\n");
+				listPages.append("<li><a href=\"dashboard?page=" + (page.getMaxPage()) + "&rows=" + page.getRows() + "&search=" + page.getSearch() + "&orderBy=" + page.getOrderBy() + "\">" + page.getMaxPage() + "</a></li>\n");
 			}
 		}
 		try {
@@ -53,27 +53,12 @@ public class LinkTag extends TagSupport {
 
 	}
 
-	public int getMinPage() {
-		return minPage;
+	public ComputerPage getPage() {
+		return page;
 	}
 
-	public void setMinPage(int minPage) {
-		this.minPage = minPage;
+	public void setPage(ComputerPage page) {
+		this.page = page;
 	}
 
-	public int getMaxPage() {
-		return maxPage;
-	}
-
-	public void setMaxPage(int maxPage) {
-		this.maxPage = maxPage;
-	}
-
-	public int getCurrent() {
-		return current;
-	}
-
-	public void setCurrent(int current) {
-		this.current = current;
-	}
 }

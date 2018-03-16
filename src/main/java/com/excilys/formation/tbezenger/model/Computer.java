@@ -1,4 +1,4 @@
-package com.excilys.formation.tbezenger.Model;
+package com.excilys.formation.tbezenger.model;
 
 import java.sql.Date;
 
