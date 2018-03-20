@@ -34,7 +34,7 @@ import static com.excilys.formation.tbezenger.Strings.COMPUTER_INTRODUCED;
 public class ComputerManager implements EntityManager<Computer> {
 
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
     @Autowired
 	public ComputerManager(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
@@ -64,7 +64,7 @@ public class ComputerManager implements EntityManager<Computer> {
 
 	private final String GET_COMPUTERS = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,"
 			+ "company.id,company.name FROM computer LEFT JOIN company ON company_id=company.id "
-			+ "WHERE computer.name LIKE ? OR company.name LIKE ? ORDER BY computer.name ASC LIMIT ?,?";
+			+ "WHERE computer.name LIKE ? OR company.name LIKE ? ORDER BY computer.id ASC LIMIT ?,?";
 
 
 	@Override
@@ -111,6 +111,9 @@ public class ComputerManager implements EntityManager<Computer> {
 	public ComputerPage findPage(int numpage, int rowsByPage, String search, String orderBy, String order, boolean isAscending) throws DatabaseException {
 		ComputerPage page = new ComputerPage();
 		try {
+			page.setTotalResults(jdbcTemplate.queryForObject(GET_COMPUTERS_COUNT, new Object[]{"%" + search + "%", "%" + search + "%"}, Integer.class));
+			page.setMaxPage(page.getTotalResults() / rowsByPage + 1);
+			numpage = numpage <= page.getMaxPage() ? numpage : page.getMaxPage();
 			page.setComputers(jdbcTemplate.query(GET_COMPUTERS, new Object[]{"%" + search + "%", "%" + search + "%"/*, orderBy, order*/, (numpage - 1) * rowsByPage, rowsByPage},
 												 new RowMapper<Computer>() {
 				public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -120,10 +123,8 @@ public class ComputerManager implements EntityManager<Computer> {
 					return computer;
 				}
 			}));
-			page.setTotalResults(jdbcTemplate.queryForObject(GET_COMPUTERS_COUNT, new Object[]{"%" + search + "%", "%" + search + "%"}, Integer.class));
-			page.setRows(rowsByPage);
-			page.setMaxPage(page.getTotalResults() / page.getRows() + 1);
 			page.setNumPage(numpage);
+			page.setRows(rowsByPage);
 			page.setSearch(search);
 			page.setOrderBy(orderBy);
 			page.setAscending(isAscending);
@@ -171,8 +172,8 @@ public class ComputerManager implements EntityManager<Computer> {
 	public boolean update(Computer computer) throws DatabaseException {
 		try {
 			jdbcTemplate.update(UPDATE_QUERY, computer.getName(), computer.getIntroduced(),
-								computer.getIntroduced(), computer.getDiscontinued(),
-								computer);
+								computer.getDiscontinued(),
+								computer.getCompany().getId(), computer.getId());
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 			LOGGER.error(e.toString());

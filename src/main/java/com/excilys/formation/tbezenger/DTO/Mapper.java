@@ -32,8 +32,11 @@ public class Mapper {
 	}
 
 	public static Computer toComputer(ComputerDTO computerDTO) {
-		return new Computer(computerDTO.getId(), computerDTO.getName(), Date.valueOf(computerDTO.getIntroduced()),
-							Date.valueOf(computerDTO.getDiscontinued()), toCompany(computerDTO.getCompany()));
+		return new Computer(computerDTO.getId(),
+							computerDTO.getName(),
+							computerDTO.getIntroduced() != "" ? Date.valueOf(computerDTO.getIntroduced()) : null,
+							computerDTO.getDiscontinued() != "" ? Date.valueOf(computerDTO.getDiscontinued()) : null,
+							toCompany(computerDTO.getCompany()));
 	}
 
 	public static List<CompanyDTO> toCompanyDTOList(List<Company> companies) {

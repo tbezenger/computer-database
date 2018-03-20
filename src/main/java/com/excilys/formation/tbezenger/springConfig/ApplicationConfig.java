@@ -3,18 +3,18 @@ package com.excilys.formation.tbezenger.springConfig;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
-@ComponentScan(basePackages = {"com.excilys.formation.tbezenger.GUI",
-							   "com.excilys.formation.tbezenger.services",
-							   "com.excilys.formation.tbezenger.DAO"})
+@ComponentScan(basePackages = "com.excilys.formation.tbezenger.DAO")
 @PropertySource(value = { "classpath:application.properties" })
 public class ApplicationConfig {
 
@@ -36,5 +36,12 @@ public class ApplicationConfig {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.setResultsMapCaseInsensitive(true);
         return jdbcTemplate;
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+         messageSource.setBasename("/WEB-INF/classes/messages");
+         return messageSource;
     }
 }

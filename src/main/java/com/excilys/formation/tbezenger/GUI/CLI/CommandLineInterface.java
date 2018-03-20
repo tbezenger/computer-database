@@ -93,7 +93,7 @@ public class CommandLineInterface {
 					}
 				} else if (parsedCommand.length == 3 && parsedCommand[1].equals(PAGE)) {
 					try {
-						computerPage = computerService.getPage(Integer.parseInt(parsedCommand[2]), ROWSBYPAGE);
+						computerPage = computerService.getPage(Integer.parseInt(parsedCommand[2]), ROWSBYPAGE, "", "", "", true);
 						List<Computer> computers = computerPage.getComputers();
 						if (computers.size() != 0) {
 							for (Computer c : computers) {

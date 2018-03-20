@@ -19,7 +19,7 @@ import com.excilys.formation.tbezenger.services.ComputerService;
 
 
 @Controller
-public class DashboardSpringMVC {
+public class DashboardSpringController {
 
 	@Autowired
 	private ComputerService computerService;
@@ -29,9 +29,8 @@ public class DashboardSpringMVC {
 		int rowsByPage = params.get("rows") != null ? Integer.parseInt(params.get("rows")) : 10;
 		int numPage = params.get("page") != null ? Integer.parseInt(params.get("page")) : 1;
 		String search = params.get("search") != null ? params.get("search") : "";
-		String orderBy = params.get("orderBy") != null ? params.get("orderBy") : "computer.name";
+		String orderBy = params.get("orderBy") != null ? params.get("orderBy") : "computer.id";
 		ComputerPage page = computerService.getPage(numPage, rowsByPage, search, orderBy, "DESC", true);
-		System.out.println(page);
 		model.addAttribute("computerPage", page);
 		return "dashboard";
 	}

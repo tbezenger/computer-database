@@ -28,7 +28,6 @@
 							class="form-control" placeholder="Search name"/>
 						<input	type="submit" id="searchsubmit" value="Filter by name"
 								class="btn btn-primary"/>
-
 					</form>
 				</div>
 				<div class="pull-right">
