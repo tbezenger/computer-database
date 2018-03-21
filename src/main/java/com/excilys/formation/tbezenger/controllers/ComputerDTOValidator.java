@@ -1,4 +1,4 @@
-package com.excilys.formation.tbezenger.servlets;
+package com.excilys.formation.tbezenger.controllers;
 
 import java.sql.Date;
 

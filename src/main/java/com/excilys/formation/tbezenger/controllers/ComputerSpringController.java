@@ -1,11 +1,10 @@
-package com.excilys.formation.tbezenger.servlets;
+package com.excilys.formation.tbezenger.controllers;
 
 import static com.excilys.formation.tbezenger.Strings.COMPANIES;
 import static com.excilys.formation.tbezenger.Strings.COMPUTER;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -27,12 +26,17 @@ import com.excilys.formation.tbezenger.services.ComputerService;
 
 @Controller
 public class ComputerSpringController {
-	@Autowired
+
 	private ComputerService computerService;
-	@Autowired
 	private CompanyService companyService;
-	@Autowired
 	private ComputerDTOValidator computerValidator;
+
+	private ComputerSpringController(ComputerService computerService, CompanyService companyService,
+									 ComputerDTOValidator computerValidator) {
+		this.computerService = computerService;
+		this.companyService = companyService;
+		this.computerValidator = computerValidator;
+	}
 
 	@InitBinder
 	private void initBinder(WebDataBinder binder) {

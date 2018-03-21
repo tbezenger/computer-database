@@ -1,9 +1,8 @@
-package com.excilys.formation.tbezenger.servlets;
+package com.excilys.formation.tbezenger.controllers;
 
 import java.util.Map;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +20,10 @@ import com.excilys.formation.tbezenger.services.ComputerService;
 @Controller
 public class DashboardSpringController {
 
-	@Autowired
 	private ComputerService computerService;
+	private DashboardSpringController(ComputerService computerService) {
+		this.computerService = computerService;
+	}
 
 	@GetMapping("dashboard")
 	public String getDashboardPage(ModelMap model, @RequestParam Map<String, String> params) {
