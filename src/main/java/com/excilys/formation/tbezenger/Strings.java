@@ -1,6 +1,8 @@
 package com.excilys.formation.tbezenger;
 
 public class Strings {
+	private Strings() { }
+
 	// CONEXION BDD
 	public static String url = "jdbc:mysql://127.0.0.1:3306/computer-database-db?useSSL=false";
 	public static String dbName = "admincdb";

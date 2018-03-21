@@ -9,6 +9,8 @@ import com.excilys.formation.tbezenger.model.Computer;
 
 public class Mapper {
 
+	private Mapper() { }
+
 	public static CompanyDTO toDTO(Company company) {
 		CompanyDTO companyDTO = new CompanyDTO();
 		companyDTO.setId(company.getId());

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.excilys.formation.tbezenger.DAO.CompanyManager;
@@ -15,7 +14,6 @@ import com.excilys.formation.tbezenger.model.Company;
 public class CompanyService implements IService<Company> {
 
 	private CompanyManager companyManager;
-	@Autowired
 	public CompanyService(CompanyManager companyManager) {
 		this.companyManager = companyManager;
 	}

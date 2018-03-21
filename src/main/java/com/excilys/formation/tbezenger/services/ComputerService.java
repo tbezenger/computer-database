@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.excilys.formation.tbezenger.DAO.ComputerManager;
@@ -17,7 +16,6 @@ public class ComputerService implements IService<Computer> {
 
 
 	private ComputerManager computerManager;
-	@Autowired
 	public ComputerService(ComputerManager computerManager) {
 		this.computerManager = computerManager;
 	}
