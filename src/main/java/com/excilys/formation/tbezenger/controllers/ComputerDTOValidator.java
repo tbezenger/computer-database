@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.excilys.formation.tbezenger.DTO.ComputerDTO;
+import com.excilys.formation.tbezenger.dto.ComputerDTO;
 
 @Component
 public class ComputerDTOValidator implements Validator {

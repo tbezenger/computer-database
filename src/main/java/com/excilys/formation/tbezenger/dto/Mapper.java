@@ -1,4 +1,4 @@
-package com.excilys.formation.tbezenger.DTO;
+package com.excilys.formation.tbezenger.dto;
 
 import java.sql.Date;
 import java.util.ArrayList;

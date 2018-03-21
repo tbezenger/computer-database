@@ -1,4 +1,4 @@
-package com.excilys.formation.tbezenger.DTO;
+package com.excilys.formation.tbezenger.dto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

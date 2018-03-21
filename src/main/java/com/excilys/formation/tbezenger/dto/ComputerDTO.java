@@ -1,4 +1,4 @@
-package com.excilys.formation.tbezenger.DTO;
+package com.excilys.formation.tbezenger.dto;
 
 public class ComputerDTO {
 	private int id;

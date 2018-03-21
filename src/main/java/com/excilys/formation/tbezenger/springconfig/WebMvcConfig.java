@@ -1,4 +1,4 @@
-package com.excilys.formation.tbezenger.springConfig;
+package com.excilys.formation.tbezenger.springconfig;
 
 
 import org.springframework.context.annotation.Bean;

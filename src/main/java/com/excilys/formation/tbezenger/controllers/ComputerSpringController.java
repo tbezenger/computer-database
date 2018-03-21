@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.excilys.formation.tbezenger.DTO.ComputerDTO;
-import com.excilys.formation.tbezenger.DTO.Mapper;
+import com.excilys.formation.tbezenger.dto.ComputerDTO;
+import com.excilys.formation.tbezenger.dto.Mapper;
 import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
 import com.excilys.formation.tbezenger.model.Company;
 import com.excilys.formation.tbezenger.model.Computer;

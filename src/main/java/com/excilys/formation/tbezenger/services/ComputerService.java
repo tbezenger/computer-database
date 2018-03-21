@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.excilys.formation.tbezenger.DAO.ComputerManager;
+import com.excilys.formation.tbezenger.dao.ComputerManager;
 import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
 import com.excilys.formation.tbezenger.model.Computer;
 import com.excilys.formation.tbezenger.model.ComputerPage;

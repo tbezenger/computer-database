@@ -1,4 +1,4 @@
-package com.excilys.formation.tbezenger.DAO;
+package com.excilys.formation.tbezenger.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

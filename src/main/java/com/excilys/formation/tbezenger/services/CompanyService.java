@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.excilys.formation.tbezenger.DAO.CompanyManager;
+import com.excilys.formation.tbezenger.dao.CompanyManager;
 import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
 import com.excilys.formation.tbezenger.model.Company;
 

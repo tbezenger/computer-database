@@ -1,4 +1,4 @@
-package com.excilys.formation.tbezenger.DAO;
+package com.excilys.formation.tbezenger.dao;
 
 import java.util.List;
 import java.util.Optional;
