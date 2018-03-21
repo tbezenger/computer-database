@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -43,14 +44,14 @@ public class AddComputerSpringController {
 
 
 	@PostMapping("addComputer")
-	public String addComputer(@ModelAttribute("addForm") @Valid ComputerDTO computerDTO, BindingResult bindingResult, ModelMap model) {
-		if (bindingResult.hasErrors()) {
-			System.out.println(bindingResult.getAllErrors());
-			return "addComputer";
+	public String addComputer(@ModelAttribute("addForm") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult bindingResult, ModelMap model) {
+		System.out.println(computerDTO);
+		if (!bindingResult.hasErrors()) {
+			if (createComputer(computerDTO.getName(), computerDTO.getIntroduced(), computerDTO.getDiscontinued(), Integer.toString(computerDTO.getCompany().getId()))) {
+				return "redirect:dashboard";
+			}
 		}
-		if (createComputer(computerDTO.getName(), computerDTO.getIntroduced(), computerDTO.getDiscontinued(), Integer.toString(computerDTO.getCompany().getId()))) {
-			return "redirect:dashboard";
-		}
+		model.addAttribute(COMPANIES, Mapper.toCompanyDTOList(companyService.getAll()));
 		return "addComputer";
 	}
 

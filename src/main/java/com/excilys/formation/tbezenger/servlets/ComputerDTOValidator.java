@@ -1,19 +1,16 @@
 package com.excilys.formation.tbezenger.servlets;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.sql.Date;
+
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.excilys.formation.tbezenger.services.CompanyService;
 import com.excilys.formation.tbezenger.DTO.ComputerDTO;
 
 @Component
 public class ComputerDTOValidator implements Validator {
-
-	@Autowired
-	public static CompanyService companyService;
 
 	@Override
 	public boolean supports(Class<?> paramClass) {
@@ -29,7 +26,13 @@ public class ComputerDTOValidator implements Validator {
 		} else if (computerDTO.getName().length() > 30) {
 			errors.rejectValue("name", "name.long");
 		}
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "company", "company required");
+		if (computerDTO.getCompany().getId() == 0) {
+			errors.rejectValue("company.id", "company.required");
+		}
+		if (!(computerDTO.getIntroduced().isEmpty() && computerDTO.getDiscontinued().isEmpty())) {
+			if (Date.valueOf(computerDTO.getIntroduced()).after(Date.valueOf(computerDTO.getDiscontinued()))) {
+				errors.rejectValue("discontinued", "discontinued.before");
+			}
+		}
 	}
-
 }
