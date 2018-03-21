@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.excilys.formation.tbezenger.DTO.ComputerDTO;
 import com.excilys.formation.tbezenger.DTO.Mapper;
+import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
 import com.excilys.formation.tbezenger.model.Company;
 import com.excilys.formation.tbezenger.services.CompanyService;
 import com.excilys.formation.tbezenger.services.ComputerService;
@@ -35,30 +36,39 @@ public class AddComputerSpringController {
 
 	@GetMapping("addComputer")
 	public String getAddComputerPage(ModelMap model) {
-		model.addAttribute(COMPANIES, Mapper.toCompanyDTOList(companyService.getAll()));
-		model.addAttribute("addForm", new ComputerDTO());
-		return ("addComputer");
+		try {
+			model.addAttribute(COMPANIES, Mapper.toCompanyDTOList(companyService.getAll()));
+			model.addAttribute("addForm", new ComputerDTO());
+			return ("addComputer");
+		} catch (DatabaseException e) {
+			return "500";
+		}
 	}
 
 
 	@PostMapping("addComputer")
 	public String addComputer(@ModelAttribute("addForm") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult bindingResult, ModelMap model) {
-		if (!bindingResult.hasErrors()) {
-			if (createComputer(computerDTO.getName(), computerDTO.getIntroduced(), computerDTO.getDiscontinued(), Integer.toString(computerDTO.getCompany().getId()))) {
-				return "redirect:dashboard";
+		try {
+			if (!bindingResult.hasErrors()) {
+				if (createComputer(computerDTO.getName(), computerDTO.getIntroduced(), computerDTO.getDiscontinued(), Integer.toString(computerDTO.getCompany().getId()))) {
+					return "redirect:dashboard";
+				}
 			}
+			model.addAttribute(COMPANIES, Mapper.toCompanyDTOList(companyService.getAll()));
+			return "addComputer";
+		} catch (DatabaseException e) {
+			return "500";
 		}
-		model.addAttribute(COMPANIES, Mapper.toCompanyDTOList(companyService.getAll()));
-		return "addComputer";
 	}
 
 
-	public boolean createComputer(String name, String introduced, String discontinued, String companyId) {
+	public boolean createComputer(String name, String introduced, String discontinued, String companyId) throws DatabaseException {
 		ComputerDTO computerDTO = new ComputerDTO();
 		computerDTO.setName(name);
 		computerDTO.setDiscontinued(discontinued);
 		computerDTO.setIntroduced(introduced);
 		computerDTO.setCompany(Mapper.toDTO(companyService.get(Integer.parseInt(companyId)).orElse(new Company())));
 		return computerService.create(Mapper.toComputer(computerDTO));
+
 	}
 }

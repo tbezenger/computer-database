@@ -22,35 +22,37 @@ public class CompanyService implements IService<Company> {
 
 
 	@Override
-	public Optional<Company> get(int id) {
+	public Optional<Company> get(int id) throws DatabaseException {
 		Optional<Company> company = Optional.ofNullable(new Company());
 		try {
 			company = companyManager.findById(id);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
+			throw e;
 		}
 		return company;
 	}
 
 	@Override
-	public List<Company> getAll() {
+	public List<Company> getAll() throws DatabaseException {
 		List<Company> companies = new ArrayList<Company>();
 		try {
 			companies = companyManager.findall();
 
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
+			throw e;
 		}
 		return companies;
 	}
 
-	public boolean delete(int id) {
+	public boolean delete(int id) throws DatabaseException {
 		try {
 			return companyManager.remove(id);
 
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
-			return false;
+			throw e;
 		}
 	}
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.formation.tbezenger.DTO.ComputerDTO;
 import com.excilys.formation.tbezenger.DTO.Mapper;
+import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
 import com.excilys.formation.tbezenger.model.Company;
 import com.excilys.formation.tbezenger.model.Computer;
 import com.excilys.formation.tbezenger.services.CompanyService;
@@ -41,26 +42,34 @@ public class EditComputerSpringController {
 
 	@GetMapping("editComputer")
 	public String getEditComputerPage(ModelMap model, @RequestParam Map<String, String> params) {
-		model.addAttribute(COMPUTER, Mapper.toDTO(computerService.get(Integer.parseInt(params.get("id"))).orElse(new Computer())));
-		model.addAttribute(COMPANIES, Mapper.toCompanyDTOList(companyService.getAll()));
-		model.addAttribute("editForm", new ComputerDTO());
-		return ("editComputer");
+		try {
+			model.addAttribute(COMPUTER, Mapper.toDTO(computerService.get(Integer.parseInt(params.get("id"))).orElse(new Computer())));
+			model.addAttribute(COMPANIES, Mapper.toCompanyDTOList(companyService.getAll()));
+			model.addAttribute("editForm", new ComputerDTO());
+			return ("editComputer");
+		} catch (DatabaseException e) {
+			return "500";
+		}
 	}
 
 	@PostMapping("editComputer")
 	public String addComputer(@ModelAttribute("editForm") @Validated(ComputerDTO.class) ComputerDTO computerDTO,
 			BindingResult bindingResult, ModelMap model, @RequestParam Map<String, String> params) {
-		if (!bindingResult.hasErrors()) {
-			if (editComputer(computerDTO.getId(), computerDTO.getName(), computerDTO.getIntroduced(), computerDTO.getDiscontinued(), computerDTO.getCompany().getId())) {
-				return "redirect:dashboard";
+		try {
+			if (!bindingResult.hasErrors()) {
+				if (editComputer(computerDTO.getId(), computerDTO.getName(), computerDTO.getIntroduced(), computerDTO.getDiscontinued(), computerDTO.getCompany().getId())) {
+					return "redirect:dashboard";
+				}
 			}
+			model.addAttribute(COMPUTER, Mapper.toDTO(computerService.get(Integer.parseInt(params.get("id"))).orElse(new Computer())));
+			model.addAttribute(COMPANIES, Mapper.toCompanyDTOList(companyService.getAll()));
+			return "editComputer";
+		} catch (DatabaseException e) {
+			return "500";
 		}
-		model.addAttribute(COMPUTER, Mapper.toDTO(computerService.get(Integer.parseInt(params.get("id"))).orElse(new Computer())));
-		model.addAttribute(COMPANIES, Mapper.toCompanyDTOList(companyService.getAll()));
-		return "editComputer";
 	}
 
-	public boolean editComputer(int id, String name, String introduced, String discontinued, int companyId) {
+	public boolean editComputer(int id, String name, String introduced, String discontinued, int companyId) throws DatabaseException {
 		ComputerDTO computerDTO = new ComputerDTO();
 		computerDTO.setId(id);
 		computerDTO.setName(name);

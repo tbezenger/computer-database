@@ -6,10 +6,12 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
+
 public interface IService<T> {
 	Logger LOGGER = LogManager.getLogger("STDOUT");
 
-	List<T> getAll();
+	List<T> getAll() throws DatabaseException;
 
-	Optional<T> get(int id);
+	Optional<T> get(int id) throws DatabaseException;
 }
