@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -33,9 +32,7 @@ import static com.excilys.formation.tbezenger.Strings.COMPUTER_INTRODUCED;
 @Repository
 public class ComputerManager implements EntityManager<Computer> {
 
-
     private final JdbcTemplate jdbcTemplate;
-    @Autowired
 	public ComputerManager(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}

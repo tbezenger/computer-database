@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
+import com.excilys.formation.tbezenger.exceptions.DAO.DatabaseException;
 import com.excilys.formation.tbezenger.model.Company;
 import com.excilys.formation.tbezenger.model.Computer;
 import com.excilys.formation.tbezenger.model.ComputerPage;
@@ -48,7 +49,7 @@ public class CommandLineInterface {
 	private static ComputerService computerService;
 	private static CompanyService companyService;
 
-	public static void launch() {
+	public static void launch() throws DatabaseException {
 	    AbstractApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 
 	    computerService = context.getBean(ComputerService.class);
@@ -192,7 +193,7 @@ public class CommandLineInterface {
 	}
 
 	public static boolean createComputer(String[] parsedCommand)
-			throws NumberFormatException, IllegalArgumentException {
+			throws NumberFormatException, IllegalArgumentException, DatabaseException {
 		// parsedCommand[2] = computer.name / parsedCommand[3] = computer.introduced
 		// parsedCommand[4] = computer.discontinued / parsedCommand[5] = company.id
 		if (Date.valueOf(parsedCommand[3]).before(Date.valueOf(parsedCommand[4]))) {
@@ -206,7 +207,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	public static void updateComputer(String[] parsedCommand) throws NumberFormatException, IllegalArgumentException {
+	public static void updateComputer(String[] parsedCommand) throws NumberFormatException, IllegalArgumentException, DatabaseException {
 		// parsedCommand[2] = computer.id / parsedCommand[3] = computer.name /
 		// parsedCommand[4] = computer.introduced
 		// parsedCommand[5] = computer.discontinued / parsedCommand[6] = company.id
