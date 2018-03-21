@@ -74,11 +74,11 @@ public class ComputerService implements IService<Computer> {
 	}
 
 	public ComputerPage getPage(int numPage, int rowsByPage, String search,
-								String orderBy, String order, boolean isAscending)
+								String orderBy, boolean isAscending)
 								throws DatabaseException {
 		ComputerPage computerPage = new ComputerPage();
 		try {
-			computerPage = computerManager.findPage(numPage, rowsByPage, search, orderBy, order, isAscending);
+			computerPage = computerManager.findPage(numPage, rowsByPage, search, orderBy, isAscending);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 			throw e;

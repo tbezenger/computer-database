@@ -20,14 +20,14 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${computerPage.totalResults} Computers found</h1>
+			<h1 id="homeTitle">${computerPage.totalResults}Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name"/>
-						<input	type="submit" id="searchsubmit" value="Filter by name"
-								class="btn btn-primary"/>
+							class="form-control" placeholder="Search name" /> <input
+							type="submit" id="searchsubmit" value="Filter by name"
+							class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
@@ -56,12 +56,17 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th><a href ="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=computer.name">Computer name</a></th>
-						<th>Introduced date</th>
-						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
-						<!-- Table header for Company -->
-						<th><a href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=company.name">Company</a></th>
+						<th><a
+							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=computer.name&isAscending=${not computerPage.isAscending}">Computer
+								name</a></th>
+						<th><a
+							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=computer.introduced&isAscending=${not computerPage.isAscending}">Introduced
+							date</a></th>
+						<th><a
+							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=computer.discontinued&isAscending=${not computerPage.isAscending}">Discontinued
+							date</a></th>
+						<th><a
+							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=company.name&isAscending=${not computerPage.isAscending}">Company</a></th>
 
 					</tr>
 				</thead>
@@ -87,24 +92,27 @@
 			<ul class="pagination">
 
 				<c:if test="${computerPage.numPage > 1}">
-					<li><a href="dashboard?page=${computerPage.numPage-1}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=${computerPage.orderBy}" aria-label="Previous">
-							<span aria-hidden="true">&laquo;</span>
+					<li><a
+						href="dashboard?page=${computerPage.numPage-1}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=${computerPage.orderBy}&isAscending=${computerPage.isAscending}"
+						aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 					</a></li>
 				</c:if>
-				<custom:Pagination page="${computerPage}"/>
+				<custom:Pagination page="${computerPage}" />
 				<c:if test="${computerPage.numPage < computerPage.maxPage}">
-					<li><a href="dashboard?page=${computerPage.numPage+1}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=${computerPage.orderBy}" aria-label="Previous">
-							<span aria-hidden="true">&raquo;</span>
+					<li><a
+						href="dashboard?page=${computerPage.numPage+1}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=${computerPage.orderBy}&isAscending=${computerPage.isAscending}"
+						aria-label="Previous"> <span aria-hidden="true">&raquo;</span>
 					</a></li>
 				</c:if>
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a href="dashboard?page=${computerPage.numPage}&rows=10&search=${computerPage.search}&orderBy=${computerPage.orderBy}"><button type="button"
-						class="btn btn-default">10</button></a> <a
-					href="dashboard?page=${computerPage.numPage}&rows=50&search=${computerPage.search}&orderBy=${computerPage.orderBy}"><button type="button"
-						class="btn btn-default">50</button></a> <a
-					href="dashboard?page=${computerPage.numPage}&rows=100&search=${computerPage.search}&orderBy=${computerPage.orderBy}"><button type="button"
-						class="btn btn-default">100</button></a>
+				<a
+					href="dashboard?page=${computerPage.numPage}&rows=10&search=${computerPage.search}&orderBy=${computerPage.orderBy}&isAscending=${computerPage.isAscending}"><button
+						type="button" class="btn btn-default">10</button></a> <a
+					href="dashboard?page=${computerPage.numPage}&rows=50&search=${computerPage.search}&orderBy=${computerPage.orderBy}&isAscending=${computerPage.isAscending}"><button
+						type="button" class="btn btn-default">50</button></a> <a
+					href="dashboard?page=${computerPage.numPage}&rows=100&search=${computerPage.search}&orderBy=${computerPage.orderBy}&isAscending=${computerPage.isAscending}"><button
+						type="button" class="btn btn-default">100</button></a>
 			</div>
 		</div>
 

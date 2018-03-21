@@ -61,7 +61,7 @@ public class ComputerManager implements EntityManager<Computer> {
 
 	private final String GET_COMPUTERS = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,"
 			+ "company.id,company.name FROM computer LEFT JOIN company ON company_id=company.id "
-			+ "WHERE computer.name LIKE ? OR company.name LIKE ? ORDER BY computer.id ASC LIMIT ?,?";
+			+ "WHERE computer.name LIKE ? OR company.name LIKE ? ORDER BY %s %s LIMIT ?,?";
 
 
 	@Override
@@ -105,13 +105,14 @@ public class ComputerManager implements EntityManager<Computer> {
 	}
 
 	@Transactional
-	public ComputerPage findPage(int numpage, int rowsByPage, String search, String orderBy, String order, boolean isAscending) throws DatabaseException {
+	public ComputerPage findPage(int numpage, int rowsByPage, String search, String orderBy, boolean isAscending) throws DatabaseException {
+		String getQuery = String.format(GET_COMPUTERS, orderBy, isAscending ? "ASC" : "DESC");
 		ComputerPage page = new ComputerPage();
 		try {
 			page.setTotalResults(jdbcTemplate.queryForObject(GET_COMPUTERS_COUNT, new Object[]{"%" + search + "%", "%" + search + "%"}, Integer.class));
 			page.setMaxPage(page.getTotalResults() / rowsByPage + 1);
 			numpage = numpage <= page.getMaxPage() ? numpage : page.getMaxPage();
-			page.setComputers(jdbcTemplate.query(GET_COMPUTERS, new Object[]{"%" + search + "%", "%" + search + "%"/*, orderBy, order*/, (numpage - 1) * rowsByPage, rowsByPage},
+			page.setComputers(jdbcTemplate.query(getQuery, new Object[]{"%" + search + "%", "%" + search + "%"/*, orderBy, order*/, (numpage - 1) * rowsByPage, rowsByPage},
 												 new RowMapper<Computer>() {
 				public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
 					Company company = new Company(rs.getInt(COMPANY_ID), rs.getString(COMPANY_NAME));
@@ -124,7 +125,7 @@ public class ComputerManager implements EntityManager<Computer> {
 			page.setRows(rowsByPage);
 			page.setSearch(search);
 			page.setOrderBy(orderBy);
-			page.setAscending(isAscending);
+			page.setIsAscending(isAscending);
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 			LOGGER.error(e.toString());

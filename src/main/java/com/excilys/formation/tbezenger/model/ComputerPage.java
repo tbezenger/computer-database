@@ -71,10 +71,10 @@ public class ComputerPage {
 	public void setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
 	}
-	public boolean isAscending() {
+	public boolean getIsAscending() {
 		return isAscending;
 	}
-	public void setAscending(boolean isAscending) {
+	public void setIsAscending(boolean isAscending) {
 		this.isAscending = isAscending;
 	}
 
