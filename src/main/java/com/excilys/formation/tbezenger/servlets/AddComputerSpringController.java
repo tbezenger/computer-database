@@ -19,8 +19,6 @@ import com.excilys.formation.tbezenger.model.Company;
 import com.excilys.formation.tbezenger.services.CompanyService;
 import com.excilys.formation.tbezenger.services.ComputerService;
 
-import javax.validation.Valid;
-
 @Controller
 public class AddComputerSpringController {
 	@Autowired
@@ -45,7 +43,6 @@ public class AddComputerSpringController {
 
 	@PostMapping("addComputer")
 	public String addComputer(@ModelAttribute("addForm") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult bindingResult, ModelMap model) {
-		System.out.println(computerDTO);
 		if (!bindingResult.hasErrors()) {
 			if (createComputer(computerDTO.getName(), computerDTO.getIntroduced(), computerDTO.getDiscontinued(), Integer.toString(computerDTO.getCompany().getId()))) {
 				return "redirect:dashboard";
