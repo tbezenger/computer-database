@@ -1,13 +1,8 @@
 package com.excilys.formation.tbezenger.dto;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 public class CompanyDTO {
 	private int id;
 
-	@NotNull
-	@Size(min = 5, max = 5)
 	private String name;
 
 	public int getId() {

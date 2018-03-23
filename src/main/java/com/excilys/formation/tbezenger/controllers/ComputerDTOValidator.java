@@ -29,7 +29,7 @@ public class ComputerDTOValidator implements Validator {
 		if (computerDTO.getCompany().getId() == 0) {
 			errors.rejectValue("company.id", "company.required");
 		}
-		if (!(computerDTO.getIntroduced().isEmpty() && computerDTO.getDiscontinued().isEmpty())) {
+		if (!computerDTO.getIntroduced().isEmpty() && !computerDTO.getDiscontinued().isEmpty()) {
 			if (Date.valueOf(computerDTO.getIntroduced()).after(Date.valueOf(computerDTO.getDiscontinued()))) {
 				errors.rejectValue("discontinued", "discontinued.before");
 			}

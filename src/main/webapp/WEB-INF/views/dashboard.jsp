@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="custom" uri="/WEB-INF/taglib.tld"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,11 +18,15 @@
 		<div class="container">
 			<a class="navbar-brand" href="dashboard"> Application - Computer
 				Database </a>
+			<div class="pull-right" role="group">
+                <a href="dashboard?lang=fr">fr</a>
+                <a href="dashboard?lang=en">en</a>
+            </div>
 		</div>
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${computerPage.totalResults}Computers found</h1>
+			<h1 id="homeTitle">${computerPage.totalResults} <spring:message code="computer.found" /></h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">

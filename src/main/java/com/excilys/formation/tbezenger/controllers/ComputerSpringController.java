@@ -3,6 +3,7 @@ package com.excilys.formation.tbezenger.controllers;
 import static com.excilys.formation.tbezenger.Strings.COMPANIES;
 import static com.excilys.formation.tbezenger.Strings.COMPUTER;
 
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -56,7 +57,7 @@ public class ComputerSpringController {
 
 
 	@PostMapping("addComputer")
-	public String addComputer(@ModelAttribute("addForm") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult bindingResult, ModelMap model) {
+	public String addComputer(Locale locale, @ModelAttribute("addForm") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult bindingResult, ModelMap model) {
 		try {
 			if (!bindingResult.hasErrors()) {
 				if (createComputer(computerDTO.getName(), computerDTO.getIntroduced(), computerDTO.getDiscontinued(), Integer.toString(computerDTO.getCompany().getId()))) {
@@ -78,11 +79,10 @@ public class ComputerSpringController {
 		computerDTO.setIntroduced(introduced);
 		computerDTO.setCompany(Mapper.toDTO(companyService.get(Integer.parseInt(companyId)).orElse(new Company())));
 		return computerService.create(Mapper.toComputer(computerDTO));
-
 	}
 
 	@GetMapping("editComputer")
-	public String getEditComputerPage(ModelMap model, @RequestParam Map<String, String> params) {
+	public String getEditComputerPage(Locale locale, ModelMap model, @RequestParam Map<String, String> params) {
 		try {
 			model.addAttribute(COMPUTER, Mapper.toDTO(computerService.get(Integer.parseInt(params.get("id"))).orElse(new Computer())));
 			model.addAttribute(COMPANIES, Mapper.toCompanyDTOList(companyService.getAll()));
@@ -94,7 +94,7 @@ public class ComputerSpringController {
 	}
 
 	@PostMapping("editComputer")
-	public String addComputer(@ModelAttribute("editForm") @Validated(ComputerDTO.class) ComputerDTO computerDTO,
+	public String editComputer(Locale locale, @ModelAttribute("editForm") @Validated(ComputerDTO.class) ComputerDTO computerDTO,
 			BindingResult bindingResult, ModelMap model, @RequestParam Map<String, String> params) {
 		try {
 			if (!bindingResult.hasErrors()) {
