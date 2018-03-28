@@ -9,7 +9,7 @@
 
    <tag>
       <name>Pagination</name>
-      <tagclass>com.excilys.formation.tbezenger.tags.LinkTag</tagclass>
+      <tagclass>com.excilys.formation.tbezenger.cdb.tags.LinkTag</tagclass>
       <bodycontent>empty</bodycontent>
       <attribute>
         <name>page</name>
