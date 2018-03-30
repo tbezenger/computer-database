@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.formation.tbezenger.cdb.dao.ComputerManager;
+import com.excilys.formation.tbezenger.cdb.dao.ComputerDAO;
 import com.excilys.formation.tbezenger.cdb.model.Computer;
 import com.excilys.formation.tbezenger.cdb.model.ComputerPage;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ import com.excilys.formation.tbezenger.cdb.exceptions.DAO.DatabaseException;
 public class ComputerService implements IService<Computer> {
 
 
-	private ComputerManager computerManager;
-	public ComputerService(ComputerManager computerManager) {
+	private ComputerDAO computerManager;
+	public ComputerService(ComputerDAO computerManager) {
 		this.computerManager = computerManager;
 	}
 

@@ -1,29 +1,24 @@
 package com.excilys.formation.tbezenger.cdb.springconfig;
 
-import java.util.Collections;
-import java.util.Properties;
 
-import com.excilys.formation.tbezenger.cdb.model.Company;
-import com.excilys.formation.tbezenger.cdb.model.Computer;
-import org.hibernate.jpa.HibernatePersistenceProvider;
-import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
-import org.hibernate.jpa.boot.internal.PersistenceUnitInfoDescriptor;
-import org.hibernate.jpa.boot.spi.EntityManagerFactoryBuilder;
-import org.hibernate.jpa.boot.spi.PersistenceUnitDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import static org.hibernate.cfg.Environment.*;
 
 @Configuration
+@EnableTransactionManagement(proxyTargetClass = true)
 @PropertySource("classpath:application.properties")
 @ComponentScan("com.excilys.formation.tbezenger.cdb.model")
 public class HibernateConf {
@@ -32,37 +27,28 @@ public class HibernateConf {
     private Environment env;
 
     @Bean
-    public EntityManager createEntityManager() {
+    public DriverManagerDataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-        MutablePersistenceUnitInfo mutablePersistenceUnitInfo = new MutablePersistenceUnitInfo() {
-            @Override
-            public ClassLoader getNewTempClassLoader() {
-                return null;
-            }
-        };
+        dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
+        dataSource.setUrl(env.getProperty("jdbc.url"));
+        dataSource.setUsername(env.getProperty("jdbc.username"));
+        dataSource.setPassword(env.getProperty("jdbc.password"));
 
-        mutablePersistenceUnitInfo.setPersistenceUnitName("persistence");
-        mutablePersistenceUnitInfo.setPersistenceProviderClassName(HibernatePersistenceProvider.class.getName());
-
-        Properties props = new Properties();
-        props.put("hibernate.connection.driver", env.getProperty("jdbc.driverClassName"));
-        props.put("hibernate.connection.url", env.getProperty("jdbc.url"));
-        props.put("hibernate.connection.username", env.getProperty("jdbc.username"));
-        props.put("hibernate.connection.password", env.getProperty("jdbc.password"));
-
-        mutablePersistenceUnitInfo.setProperties(props);
-
-        mutablePersistenceUnitInfo.addManagedClassName(Computer.class.getName());
-        mutablePersistenceUnitInfo.addManagedClassName(Company.class.getName());
-
-        PersistenceUnitDescriptor persistenceUnitDescriptor = new PersistenceUnitInfoDescriptor(
-                mutablePersistenceUnitInfo);
-
-        EntityManagerFactoryBuilder entityManagerFactoryBuilder = new EntityManagerFactoryBuilderImpl(
-                persistenceUnitDescriptor, Collections.EMPTY_MAP);
-
-        EntityManagerFactory entityManagerFactory = entityManagerFactoryBuilder.build();
-
-        return entityManagerFactory.createEntityManager();
+        return dataSource;
     }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DriverManagerDataSource dataSource) {
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        emf.setDataSource(dataSource);
+        emf.setPackagesToScan("com.excilys.formation.tbezenger.cdb.model");
+        emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        return emf;
+}
 }

@@ -21,11 +21,11 @@ import static com.excilys.formation.tbezenger.cdb.Strings.COMPANY_ID;
 import static com.excilys.formation.tbezenger.cdb.Strings.COMPANY_NAME;
 
 @Repository
-public class CompanyManager implements EntityManager<Company> {
+public class CompanyDAO implements DAO<Company> {
 
     private JdbcTemplate jdbcTemplate;
-    private ComputerManager computerManager;
-	public CompanyManager(JdbcTemplate jdbcTemplate, ComputerManager computerManager) {
+    private ComputerDAO computerManager;
+	public CompanyDAO(JdbcTemplate jdbcTemplate, ComputerDAO computerManager) {
 		this.jdbcTemplate = jdbcTemplate;
 		this.computerManager = computerManager;
 	}
@@ -66,7 +66,6 @@ public class CompanyManager implements EntityManager<Company> {
 		return Optional.ofNullable(company);
 	}
 
-	@Transactional
 	public boolean remove(int id) throws DatabaseException {
 		try {
 			computerManager.removeByCompanyId(id);

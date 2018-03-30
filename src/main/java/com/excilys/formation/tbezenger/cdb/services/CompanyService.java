@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.formation.tbezenger.cdb.dao.CompanyManager;
+import com.excilys.formation.tbezenger.cdb.dao.CompanyDAO;
 import org.springframework.stereotype.Service;
 
 import com.excilys.formation.tbezenger.cdb.exceptions.DAO.DatabaseException;
@@ -13,8 +13,8 @@ import com.excilys.formation.tbezenger.cdb.model.Company;
 @Service
 public class CompanyService implements IService<Company> {
 
-	private CompanyManager companyManager;
-	public CompanyService(CompanyManager companyManager) {
+	private CompanyDAO companyManager;
+	public CompanyService(CompanyDAO companyManager) {
 		this.companyManager = companyManager;
 	}
 

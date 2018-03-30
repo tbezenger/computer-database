@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import com.excilys.formation.tbezenger.cdb.exceptions.DAO.DatabaseException;
 
 
-public interface EntityManager<T> {
+public interface DAO<T> {
 
     Logger LOGGER = LogManager.getLogger("roll");
 

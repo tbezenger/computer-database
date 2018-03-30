@@ -33,7 +33,6 @@ public class DashboardSpringController {
 			boolean isAscending = params.get("isAscending") != null ? Boolean.valueOf(params.get("isAscending")) : true;
 			ComputerPage page = computerService.getPage(numPage, rowsByPage, search, orderBy, isAscending);
 			model.addAttribute("computerPage", page);
-            System.out.println(computerService.get(55));
             return "dashboard";
 		} catch (DatabaseException e) {
 			return "500";

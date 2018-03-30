@@ -1,17 +1,26 @@
 package com.excilys.formation.tbezenger.cdb.model;
 
-import javax.persistence.*;
 import java.sql.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 @Entity
+@Table(name = "computer")
 public class Computer {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
 	private Date introduced;
 	private Date discontinued;
 	@ManyToOne
+	@JoinColumn(name = "company_id")
 	private Company company;
 
 	public Computer() {
