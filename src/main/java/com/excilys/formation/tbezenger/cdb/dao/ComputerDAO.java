@@ -107,16 +107,9 @@ public class ComputerDAO implements DAO<Computer> {
 	public List<Computer> findall() throws DatabaseException {
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
-			CriteriaQuery<List<Computer> criteriaQuery = cb.createQuery(Computer.class);
-			
-	        computers = jdbcTemplate.query(FIND_ALL_QUERY, new RowMapper<Computer>() {
-							public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
-								Company company = new Company(rs.getInt(COMPANY_ID), rs.getString(COMPANY_NAME));
-								Computer computer = new Computer(rs.getInt(COMPUTER_ID), rs.getString(COMPUTER_NAME), rs.getDate(COMPUTER_INTRODUCED),
-										rs.getDate(COMPUTER_DISCONTINUED), company);
-								return computer;
-							}
-						});
+			CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
+			Root<Computer> model = criteriaQuery.from(Computer.class);
+			computers = em.createQuery(criteriaQuery).getResultList();
 		} catch (DataAccessException e) {
 			LOGGER.error(e.toString());
 			throw (new GetException());

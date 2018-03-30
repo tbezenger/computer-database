@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.tbezenger.cdb.exceptions.DAO.DatabaseException;
 import com.excilys.formation.tbezenger.cdb.model.Company;
