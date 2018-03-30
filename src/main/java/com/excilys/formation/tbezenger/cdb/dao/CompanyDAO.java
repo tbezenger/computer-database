@@ -1,47 +1,49 @@
 package com.excilys.formation.tbezenger.cdb.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.PostConstruct;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import com.excilys.formation.tbezenger.cdb.exceptions.DAO.GetException;
-import org.springframework.jdbc.core.RowMapper;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.tbezenger.cdb.exceptions.DAO.DatabaseException;
 import com.excilys.formation.tbezenger.cdb.model.Company;
 
-import static com.excilys.formation.tbezenger.cdb.Strings.COMPANY_ID;
-import static com.excilys.formation.tbezenger.cdb.Strings.COMPANY_NAME;
-
 @Repository
 public class CompanyDAO implements DAO<Company> {
 
-    private JdbcTemplate jdbcTemplate;
-    private ComputerDAO computerManager;
-	public CompanyDAO(JdbcTemplate jdbcTemplate, ComputerDAO computerManager) {
-		this.jdbcTemplate = jdbcTemplate;
-		this.computerManager = computerManager;
+	@PersistenceContext
+    private javax.persistence.EntityManager em;
+
+    private ComputerDAO computerDAO;
+	public CompanyDAO(ComputerDAO computerDAO) {
+		this.computerDAO = computerDAO;
 	}
 
-    private final String FIND_ALL_QUERY = "SELECT id,name FROM company";
-    private final String FIND_BY_ID_QUERY = "SELECT id,name FROM company WHERE id=?";
-    private final String DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE id=?";
+	private CriteriaBuilder cb;
+
+    @PostConstruct
+    public void init() {
+        this.cb = em.getCriteriaBuilder();
+    }
 
     @Override
     public List<Company> findall() throws DatabaseException {
         List<Company> companies = new ArrayList<Company>();
         try {
-        	companies = jdbcTemplate.query(FIND_ALL_QUERY, new RowMapper<Company>() {
-        								public Company mapRow(ResultSet rs, int rownum) throws SQLException {
-        									return new Company(rs.getInt(COMPANY_ID), rs.getString(COMPANY_NAME));
-        								}
-        	});
+        	CriteriaQuery<Company> criteriaQuery = cb.createQuery(Company.class);
+			criteriaQuery.from(Company.class);
+			companies = em.createQuery(criteriaQuery).getResultList();
 		} catch (DataAccessException e) {
 			LOGGER.error(e.toString());
 			throw (new GetException());
@@ -53,11 +55,10 @@ public class CompanyDAO implements DAO<Company> {
 	public Optional<Company> findById(int id) throws DatabaseException {
 		Company company = null;
 		try {
-			company = jdbcTemplate.queryForObject(FIND_BY_ID_QUERY, new Object[] {id}, new RowMapper<Company>() {
-											public Company mapRow(ResultSet rs, int rowNum) throws SQLException {
-												return new Company(rs.getInt(COMPANY_ID), rs.getString(COMPANY_NAME));
-											}
-			});
+			CriteriaQuery<Company> criteriaQuery = cb.createQuery(Company.class);
+			Root<Company> model = criteriaQuery.from(Company.class);
+			criteriaQuery.where(cb.equal(model.get("id"), id));
+			company = em.createQuery(criteriaQuery).getSingleResult();
 		} catch (DataAccessException e) {
 			LOGGER.error(e.toString());
 			throw (new GetException());
@@ -67,8 +68,11 @@ public class CompanyDAO implements DAO<Company> {
 
 	public boolean remove(int id) throws DatabaseException {
 		try {
-			computerManager.removeByCompanyId(id);
-			jdbcTemplate.update(DELETE_COMPANY_BY_ID, id);
+			computerDAO.removeByCompanyId(id);
+			CriteriaDelete<Company> criteriaQuery = cb.createCriteriaDelete(Company.class);
+			Root<Company> model = criteriaQuery.from(Company.class);
+			criteriaQuery.where(cb.equal(model.get("id"), id));
+			em.createQuery(criteriaQuery).executeUpdate();
 		} catch (DataAccessException e) {
 			LOGGER.error(e.toString());
 			throw (new GetException());

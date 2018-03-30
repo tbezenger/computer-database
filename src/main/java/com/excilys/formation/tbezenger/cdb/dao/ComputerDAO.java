@@ -11,6 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
@@ -56,24 +57,6 @@ public class ComputerDAO implements DAO<Computer> {
         this.cb = em.getCriteriaBuilder();
     }
 
-	private final String FIND_BY_ID_QUERY = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,"
-			+ "company.id,company.name FROM computer "
-			+ "LEFT JOIN company ON company_id=company.id WHERE computer.id=?";
-
-	private final String FIND_ALL_QUERY = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,"
-			+ "company.id,company.name FROM computer " + "LEFT JOIN company ON company_id=company.id";
-
-	private final String PERSIST_QUERY = "INSERT INTO computer (name,introduced,discontinued,company_id) values"
-			+ "(?,?,?,?);";
-
-	private final String DELETE_QUERY = "DELETE FROM computer WHERE id=?";
-
-	private final String DELETE_QUERY_BY_COMPANY_ID = "DELETE FROM computer WHERE company_id=?";
-
-	private final String UPDATE_QUERY = "UPDATE computer SET name=?,introduced=?,discontinued=?,company_id=? "
-			+ "WHERE id=?";
-
-
 	private final String GET_COMPUTERS_COUNT = "SELECT count(*) FROM computer LEFT JOIN company ON company_id=company.id"
 			+ " WHERE computer.name LIKE ? OR "
 			+ "company.name LIKE ?";
@@ -100,15 +83,13 @@ public class ComputerDAO implements DAO<Computer> {
 		return Optional.ofNullable(computer);
 	}
 
-
-	// TODO
 	@Override
 	@Transactional
 	public List<Computer> findall() throws DatabaseException {
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
 			CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
-			Root<Computer> model = criteriaQuery.from(Computer.class);
+			criteriaQuery.from(Computer.class);
 			computers = em.createQuery(criteriaQuery).getResultList();
 		} catch (DataAccessException e) {
 			LOGGER.error(e.toString());
@@ -158,11 +139,13 @@ public class ComputerDAO implements DAO<Computer> {
 		return true;
 	}
 
-	//TODO
 	@Transactional
 	public boolean remove(int id) throws DatabaseException {
 		try {
-			jdbcTemplate.update(DELETE_QUERY, id);
+			CriteriaDelete<Computer> criteriaQuery = cb.createCriteriaDelete(Computer.class);
+			Root<Computer> model = criteriaQuery.from(Computer.class);
+			criteriaQuery.where(cb.equal(model.get("id"), id));
+			em.createQuery(criteriaQuery).executeUpdate();
 		} catch (DataAccessException e) {
 			LOGGER.error(e.toString());
 			throw (new DeleteException());
@@ -170,10 +153,12 @@ public class ComputerDAO implements DAO<Computer> {
 		return true;
 	}
 
-	//TODO
 	boolean removeByCompanyId(int companyId) throws DatabaseException {
 		try {
-			jdbcTemplate.update(DELETE_QUERY_BY_COMPANY_ID, companyId);
+			CriteriaDelete<Computer> criteriaQuery = cb.createCriteriaDelete(Computer.class);
+			Root<Computer> model = criteriaQuery.from(Computer.class);
+			criteriaQuery.where(cb.equal(model.get("company_id"), companyId));
+			em.createQuery(criteriaQuery).executeUpdate();
 		} catch (DataAccessException e) {
 			LOGGER.error(e.toString());
 			throw (new DeleteException());
