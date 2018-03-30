@@ -14,7 +14,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.Attribute;
 
 import com.excilys.formation.tbezenger.cdb.exceptions.DAO.GetException;
 import com.excilys.formation.tbezenger.cdb.exceptions.DAO.PersistException;
@@ -107,15 +109,22 @@ public class ComputerDAO implements DAO<Computer> {
 			page.setTotalResults(jdbcTemplate.queryForObject(GET_COMPUTERS_COUNT, new Object[]{"%" + search + "%", "%" + search + "%"}, Integer.class));
 			page.setMaxPage(page.getTotalResults() / rowsByPage + 1);
 			numpage = numpage <= page.getMaxPage() ? numpage : page.getMaxPage();
-			page.setComputers(jdbcTemplate.query(getQuery, new Object[]{"%" + search + "%", "%" + search + "%"/*, orderBy, order*/, (numpage - 1) * rowsByPage, rowsByPage},
-												 new RowMapper<Computer>() {
-				public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
-					Company company = new Company(rs.getInt(COMPANY_ID), rs.getString(COMPANY_NAME));
-					Computer computer = new Computer(rs.getInt(COMPUTER_ID), rs.getString(COMPUTER_NAME), rs.getDate(COMPUTER_INTRODUCED),
-							rs.getDate(COMPUTER_DISCONTINUED), company);
-					return computer;
-				}
-			}));
+
+
+			CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
+			Root<Computer> model = criteriaQuery.from(Computer.class);
+			if (isAscending) {
+				criteriaQuery.orderBy(cb.asc(model.get(orderBy)));
+			} else {
+				criteriaQuery.orderBy(cb.desc(model.get(orderBy)));
+			}
+			criteriaQuery.where(cb.like(model.get("name"), "%" + search + "%"));
+			TypedQuery<Computer> query = em.createQuery(criteriaQuery);
+			query.setFirstResult((numpage - 1) * rowsByPage);
+			query.setMaxResults(numpage * rowsByPage);
+			page.setComputers(query.getResultList());
+
+
 			page.setNumPage(numpage);
 			page.setRows(rowsByPage);
 			page.setSearch(search);

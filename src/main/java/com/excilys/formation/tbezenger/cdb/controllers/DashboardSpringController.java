@@ -29,7 +29,7 @@ public class DashboardSpringController {
 			int rowsByPage = params.get("rows") != null ? Integer.parseInt(params.get("rows")) : 10;
 			int numPage = params.get("page") != null ? Integer.parseInt(params.get("page")) : 1;
 			String search = params.get("search") != null ? params.get("search") : "";
-			String orderBy = params.get("orderBy") != null ? params.get("orderBy") : "computer.id";
+			String orderBy = params.get("orderBy") != null ? params.get("orderBy") : "id";
 			boolean isAscending = params.get("isAscending") != null ? Boolean.valueOf(params.get("isAscending")) : true;
 			ComputerPage page = computerService.getPage(numPage, rowsByPage, search, orderBy, isAscending);
 			model.addAttribute("computerPage", page);

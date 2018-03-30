@@ -63,16 +63,16 @@
 							</a>
 						</span></th>
 						<th><a
-							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=computer.name&isAscending=${not computerPage.isAscending}">Computer
+							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=name&isAscending=${not computerPage.isAscending}">Computer
 								name</a></th>
 						<th><a
-							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=computer.introduced&isAscending=${not computerPage.isAscending}">Introduced
+							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=introduced&isAscending=${not computerPage.isAscending}">Introduced
 							date</a></th>
 						<th><a
-							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=computer.discontinued&isAscending=${not computerPage.isAscending}">Discontinued
+							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=discontinued&isAscending=${not computerPage.isAscending}">Discontinued
 							date</a></th>
 						<th><a
-							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=company.name&isAscending=${not computerPage.isAscending}">Company</a></th>
+							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=company&isAscending=${not computerPage.isAscending}">Company</a></th>
 
 					</tr>
 				</thead>
