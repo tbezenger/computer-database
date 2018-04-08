@@ -46,12 +46,6 @@ import static com.excilys.formation.tbezenger.cdb.Strings.COMPUTER_INTRODUCED;
 public class ComputerDAO implements DAO<Computer> {
 	@PersistenceContext
     private javax.persistence.EntityManager em;
-
-    private final JdbcTemplate jdbcTemplate;
-	public ComputerDAO(JdbcTemplate jdbcTemplate, EntityManagerFactory entityManagerFactory) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-
 	private CriteriaBuilder cb;
 
     @PostConstruct
@@ -59,19 +53,10 @@ public class ComputerDAO implements DAO<Computer> {
         this.cb = em.getCriteriaBuilder();
     }
 
-	private final String GET_COMPUTERS_COUNT = "SELECT count(*) FROM computer LEFT JOIN company ON company_id=company.id"
-			+ " WHERE computer.name LIKE ? OR "
-			+ "company.name LIKE ?";
-
-	private final String GET_COMPUTERS = "SELECT computer.id,computer.name,computer.introduced,computer.discontinued,"
-			+ "company.id,company.name FROM computer LEFT JOIN company ON company_id=company.id "
-			+ "WHERE computer.name LIKE ? OR company.name LIKE ? ORDER BY %s %s LIMIT ?,?";
-
-
 	@Override
 	@Transactional
 	public Optional<Computer> findById(int id) throws DatabaseException {
-		Computer computer = null;
+		Computer computer;
 		try {
 			CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
 			Root<Computer> model = criteriaQuery.from(Computer.class);
@@ -100,32 +85,42 @@ public class ComputerDAO implements DAO<Computer> {
 		return computers;
 	}
 
-	//TODO
 	@Transactional
-	public ComputerPage findPage(int numpage, int rowsByPage, String search, String orderBy, boolean isAscending) throws DatabaseException {
-		String getQuery = String.format(GET_COMPUTERS, orderBy, isAscending ? "ASC" : "DESC");
+	public ComputerPage findPage(int numPage, int rowsByPage, String search, String orderBy, boolean isAscending) throws DatabaseException {
 		ComputerPage page = new ComputerPage();
         try {
-			page.setTotalResults(jdbcTemplate.queryForObject(GET_COMPUTERS_COUNT, new Object[]{"%" + search + "%", "%" + search + "%"}, Integer.class));
+			CriteriaQuery<Long> criteriaQuery2 = cb.createQuery(Long.class);
+			Root<Computer> model = criteriaQuery2.from(Computer.class);
+			criteriaQuery2.select(cb.count(model));
+			criteriaQuery2.where(cb.like(model.get("name"), "%" + search + "%"));
+			TypedQuery<Long> query2 = em.createQuery(criteriaQuery2);
+			page.setTotalResults(query2.getSingleResult().intValue());
 			page.setMaxPage(page.getTotalResults() / rowsByPage + 1);
-			numpage = numpage <= page.getMaxPage() ? numpage : page.getMaxPage();
+			numPage = numPage <= page.getMaxPage() ? numPage : page.getMaxPage();
 
 
 			CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
-			Root<Computer> model = criteriaQuery.from(Computer.class);
+			model = criteriaQuery.from(Computer.class);
 			if (isAscending) {
-				criteriaQuery.orderBy(cb.asc(model.get(orderBy)));
+				if (orderBy.equals("company")){
+					criteriaQuery.orderBy(cb.asc(model.get("company").get("name")));
+				} else {
+					criteriaQuery.orderBy(cb.asc(model.get(orderBy)));
+				}
 			} else {
-				criteriaQuery.orderBy(cb.desc(model.get(orderBy)));
+				if (orderBy.equals("company")){
+					criteriaQuery.orderBy(cb.asc(model.get("company").get("name")));
+				} else {
+					criteriaQuery.orderBy(cb.asc(model.get(orderBy)));
+				}
 			}
 			criteriaQuery.where(cb.like(model.get("name"), "%" + search + "%"));
 			TypedQuery<Computer> query = em.createQuery(criteriaQuery);
-			query.setFirstResult((numpage - 1) * rowsByPage);
-			query.setMaxResults(numpage * rowsByPage);
+			query.setFirstResult((numPage - 1) * rowsByPage);
+			query.setMaxResults(rowsByPage);
 			page.setComputers(query.getResultList());
 
-
-			page.setNumPage(numpage);
+			page.setNumPage(numPage);
 			page.setRows(rowsByPage);
 			page.setSearch(search);
 			page.setOrderBy(orderBy);
