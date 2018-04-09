@@ -8,6 +8,7 @@ import com.excilys.formation.tbezenger.cdb.dao.ComputerDAO;
 import com.excilys.formation.tbezenger.cdb.model.Computer;
 import com.excilys.formation.tbezenger.cdb.model.ComputerPage;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.tbezenger.cdb.exceptions.DAO.DatabaseException;
 
@@ -15,15 +16,15 @@ import com.excilys.formation.tbezenger.cdb.exceptions.DAO.DatabaseException;
 public class ComputerService implements IService<Computer> {
 
 
-	private ComputerDAO computerManager;
-	public ComputerService(ComputerDAO computerManager) {
-		this.computerManager = computerManager;
+	private ComputerDAO computerDAO;
+	public ComputerService(ComputerDAO computerDAO) {
+		this.computerDAO = computerDAO;
 	}
 
-
+	@Transactional
 	public boolean create(Computer computer) throws DatabaseException {
 		try {
-			computerManager.persist(computer);
+			computerDAO.persist(computer);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 			throw e;
@@ -35,7 +36,7 @@ public class ComputerService implements IService<Computer> {
 	public Optional<Computer> get(int id) throws DatabaseException {
 		Optional<Computer> computer = Optional.ofNullable(new Computer());
 		try {
-			computer = computerManager.findById(id);
+			computer = computerDAO.findById(id);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 			throw e;
@@ -43,18 +44,20 @@ public class ComputerService implements IService<Computer> {
 		return computer;
 	}
 
+	@Transactional
 	public boolean update(Computer computer) throws DatabaseException {
 		try {
-			return computerManager.update(computer);
+			return computerDAO.update(computer);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 			throw e;
 		}
 	}
 
+	@Transactional
 	public boolean delete(int id) throws DatabaseException {
 		try {
-			return computerManager.remove(id);
+			return computerDAO.remove(id);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 			throw e;
@@ -65,7 +68,7 @@ public class ComputerService implements IService<Computer> {
 	public List<Computer> getAll() throws DatabaseException {
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
-			computers = computerManager.findall();
+			computers = computerDAO.findall();
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 			throw e;
@@ -73,16 +76,28 @@ public class ComputerService implements IService<Computer> {
 		return computers;
 	}
 
-	public ComputerPage getPage(int numPage, int rowsByPage, String search,
-                                String orderBy, boolean isAscending)
+	@Transactional
+	public ComputerPage getPage(ComputerPage page)
 								throws DatabaseException {
-		ComputerPage computerPage = new ComputerPage();
 		try {
-			computerPage = computerManager.findPage(numPage, rowsByPage, search, orderBy, isAscending);
+			page.setTotalResults(computerDAO.findRelevantComputersCount(page.getSearch()));
+			page.setMaxPage((int) ((page.getTotalResults() - 1) / page.getRows() + 1));
+			page.setNumPage(page.getNumPage() <= page.getMaxPage() ? page.getNumPage() : page.getMaxPage());
+			page.setComputers(computerDAO.findRelevantComputers(page));
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 			throw e;
 		}
-		return computerPage;
+		return page;
 	}
+
+	public boolean removeByCompanyId(int companyId) throws DatabaseException {
+		try {
+			return computerDAO.removeByCompanyId(companyId);
+		} catch (DatabaseException e) {
+			LOGGER.error(e.getMessage());
+			throw e;
+		}
+	}
+
 }

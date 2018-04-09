@@ -25,11 +25,6 @@ public class CompanyDAO implements DAO<Company> {
 	@PersistenceContext
     private javax.persistence.EntityManager em;
 
-    private ComputerDAO computerDAO;
-	public CompanyDAO(ComputerDAO computerDAO) {
-		this.computerDAO = computerDAO;
-	}
-
 	private CriteriaBuilder cb;
 
     @PostConstruct
@@ -68,7 +63,6 @@ public class CompanyDAO implements DAO<Company> {
 
 	public boolean remove(int id) throws DatabaseException {
 		try {
-			computerDAO.removeByCompanyId(id);
 			CriteriaDelete<Company> criteriaQuery = cb.createCriteriaDelete(Company.class);
 			Root<Company> model = criteriaQuery.from(Company.class);
 			criteriaQuery.where(cb.equal(model.get("id"), id));

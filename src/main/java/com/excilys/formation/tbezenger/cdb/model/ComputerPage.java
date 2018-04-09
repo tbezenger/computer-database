@@ -14,7 +14,7 @@ public class ComputerPage {
 	private int numPage = 1;
 	private int maxPage;
 	private int rows = 10;
-	private int totalResults;
+	private long totalResults;
 	private String search = "";
 	private String orderBy = "";
 	private boolean isAscending = true;
@@ -26,6 +26,14 @@ public class ComputerPage {
 		this.numPage = numPage;
 		this.maxPage = maxPage;
 		this.rows = rows;
+	}
+
+	public ComputerPage(int numPage, int rows, String search, String orderBy, boolean isAscending) {
+		this.numPage = numPage;
+		this.rows = rows;
+		this.search = search;
+		this.orderBy = orderBy;
+		this.isAscending = isAscending;
 	}
 
 	public List<Computer> getComputers() {
@@ -53,10 +61,10 @@ public class ComputerPage {
 	public void setRows(int rows) {
 		this.rows = rows;
 	}
-	public int getTotalResults() {
+	public long getTotalResults() {
 		return totalResults;
 	}
-	public void setTotalResults(int totalResults) {
+	public void setTotalResults(long totalResults) {
 		this.totalResults = totalResults;
 	}
 	public String getSearch() {

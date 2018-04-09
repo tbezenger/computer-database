@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
@@ -15,7 +16,8 @@ import com.excilys.formation.tbezenger.cdb.model.Computer;
 import com.excilys.formation.tbezenger.cdb.model.ComputerPage;
 import com.excilys.formation.tbezenger.cdb.services.CompanyService;
 import com.excilys.formation.tbezenger.cdb.services.ComputerService;
-import com.excilys.formation.tbezenger.cdb.springconfig.ApplicationConfig;
+import com.excilys.formation.tbezenger.cdb.springconfig.ApplicationAnnotationConfig;
+import com.excilys.formation.tbezenger.cdb.springconfig.HibernateConf;
 
 public class CommandLineInterface {
 	private static final String HELPER = "commandes disponibles : \n"
@@ -45,12 +47,11 @@ public class CommandLineInterface {
 
 	private static final Logger LOGGER = LogManager.getLogger(CommandLineInterface.class);
 
-
 	private static ComputerService computerService;
 	private static CompanyService companyService;
 
 	public static void launch() throws DatabaseException {
-	    AbstractApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+	    AbstractApplicationContext context = new AnnotationConfigApplicationContext(HibernateConf.class);
 
 	    computerService = context.getBean(ComputerService.class);
 	    companyService = context.getBean(CompanyService.class);
@@ -94,7 +95,7 @@ public class CommandLineInterface {
 					}
 				} else if (parsedCommand.length == 3 && parsedCommand[1].equals(PAGE)) {
 					try {
-						computerPage = computerService.getPage(Integer.parseInt(parsedCommand[2]), ROWSBYPAGE, "", "", true);
+						computerPage = computerService.getPage(new ComputerPage(Integer.parseInt(parsedCommand[2]), ROWSBYPAGE, "", "", true));
 						List<Computer> computers = computerPage.getComputers();
 						if (computers.size() != 0) {
 							for (Computer c : computers) {

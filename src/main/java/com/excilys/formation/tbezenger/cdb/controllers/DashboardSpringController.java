@@ -4,6 +4,7 @@ import java.util.Map;
 
 
 import com.excilys.formation.tbezenger.cdb.Strings;
+import com.excilys.formation.tbezenger.cdb.dto.Mapper;
 import com.excilys.formation.tbezenger.cdb.model.ComputerPage;
 import com.excilys.formation.tbezenger.cdb.services.ComputerService;
 import org.springframework.stereotype.Controller;
@@ -31,8 +32,9 @@ public class DashboardSpringController {
 			String search = params.get("search") != null ? params.get("search") : "";
 			String orderBy = params.get("orderBy") != null ? params.get("orderBy") : "id";
 			boolean isAscending = params.get("isAscending") != null ? Boolean.valueOf(params.get("isAscending")) : true;
-			ComputerPage page = computerService.getPage(numPage, rowsByPage, search, orderBy, isAscending);
-			model.addAttribute("computerPage", page);
+			ComputerPage page = new ComputerPage(numPage, rowsByPage, search, orderBy, isAscending);
+			page = computerService.getPage(page);
+			model.addAttribute("page", Mapper.toDTO(page));
             return "dashboard";
 		} catch (DatabaseException e) {
 			return "500";
@@ -45,7 +47,7 @@ public class DashboardSpringController {
 			for (String s : params.get(Strings.SELECTION).split(Strings.SELECTION_SEPARATOR)) {
 				computerService.delete(Integer.parseInt(s));
 			}
-			return "dashboard";
+			return getDashboardPage(model, params);
 		} catch (DatabaseException e) {
 			return "500";
 		}

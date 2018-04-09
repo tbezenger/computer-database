@@ -8,7 +8,7 @@ public class ApplicationAnnotationConfig extends AbstractAnnotationConfigDispatc
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[] {ApplicationConfig.class};
+        return new Class<?>[] {HibernateConf.class};
     }
 
     @Override

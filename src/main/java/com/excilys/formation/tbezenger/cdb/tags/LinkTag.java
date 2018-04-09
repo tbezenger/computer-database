@@ -7,7 +7,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.logging.log4j.LogManager;
 
-import com.excilys.formation.tbezenger.cdb.model.ComputerPage;
+import com.excilys.formation.tbezenger.cdb.dto.ComputerPageDTO;
 
 
 public class LinkTag extends TagSupport {
@@ -15,8 +15,9 @@ public class LinkTag extends TagSupport {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private ComputerPage page;
+	private ComputerPageDTO page;
 
+	@Override
 	public int doStartTag() throws JspException {
 
 		StringBuilder listPages = new StringBuilder();
@@ -53,11 +54,11 @@ public class LinkTag extends TagSupport {
 
 	}
 
-	public ComputerPage getPage() {
+	public ComputerPageDTO getPage() {
 		return page;
 	}
 
-	public void setPage(ComputerPage page) {
+	public void setPage(ComputerPageDTO page) {
 		this.page = page;
 	}
 

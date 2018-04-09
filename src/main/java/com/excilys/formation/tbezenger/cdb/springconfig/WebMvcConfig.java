@@ -3,9 +3,11 @@ package com.excilys.formation.tbezenger.cdb.springconfig;
 
 import java.util.Locale;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -54,5 +56,12 @@ public class WebMvcConfig implements WebMvcConfigurer  {
     LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
     interceptor.setParamName("lang");
     registry.addInterceptor(interceptor);
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+         messageSource.setBasename("/WEB-INF/classes/messages");
+         return messageSource;
     }
 }

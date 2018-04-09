@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.excilys.formation.tbezenger.cdb.model.Company;
 import com.excilys.formation.tbezenger.cdb.model.Computer;
+import com.excilys.formation.tbezenger.cdb.model.ComputerPage;
 
 public class Mapper {
 
@@ -13,8 +14,13 @@ public class Mapper {
 
 	public static CompanyDTO toDTO(Company company) {
 		CompanyDTO companyDTO = new CompanyDTO();
-		companyDTO.setId(company.getId());
-		companyDTO.setName(company.getName());
+		if (company == null) {
+			companyDTO.setId(0);
+			companyDTO.setName("");
+		} else {
+			companyDTO.setId(company.getId());
+			companyDTO.setName(company.getName());
+		}
 		return companyDTO;
 	}
 
@@ -55,5 +61,18 @@ public class Mapper {
 			computersDTO.add(Mapper.toDTO(computer));
 		}
 		return computersDTO;
+	}
+
+	public static ComputerPageDTO toDTO(ComputerPage page) {
+		ComputerPageDTO pageDTO = new ComputerPageDTO();
+		pageDTO.setComputers(toComputerDTOList(page.getComputers()));
+		pageDTO.setNumPage(page.getNumPage());
+		pageDTO.setMaxPage(page.getMaxPage());
+		pageDTO.setRows(page.getRows());
+		pageDTO.setTotalResults(page.getTotalResults());
+		pageDTO.setSearch(page.getSearch());
+		pageDTO.setOrderBy(page.getOrderBy());
+		pageDTO.setIsAscending(page.getIsAscending());
+		return pageDTO;
 	}
 }

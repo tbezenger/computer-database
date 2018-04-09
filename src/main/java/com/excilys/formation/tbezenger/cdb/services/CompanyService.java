@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.excilys.formation.tbezenger.cdb.dao.CompanyDAO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.tbezenger.cdb.exceptions.DAO.DatabaseException;
 import com.excilys.formation.tbezenger.cdb.model.Company;
@@ -13,9 +14,11 @@ import com.excilys.formation.tbezenger.cdb.model.Company;
 @Service
 public class CompanyService implements IService<Company> {
 
-	private CompanyDAO companyManager;
-	public CompanyService(CompanyDAO companyManager) {
-		this.companyManager = companyManager;
+	private CompanyDAO companyDAO;
+	private ComputerService computerService;
+	public CompanyService(CompanyDAO companyDAO, ComputerService computerService) {
+		this.companyDAO = companyDAO;
+		this.computerService = computerService;
 	}
 
 
@@ -23,7 +26,7 @@ public class CompanyService implements IService<Company> {
 	public Optional<Company> get(int id) throws DatabaseException {
 		Optional<Company> company = Optional.ofNullable(new Company());
 		try {
-			company = companyManager.findById(id);
+			company = companyDAO.findById(id);
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
 			throw e;
@@ -35,7 +38,7 @@ public class CompanyService implements IService<Company> {
 	public List<Company> getAll() throws DatabaseException {
 		List<Company> companies = new ArrayList<Company>();
 		try {
-			companies = companyManager.findall();
+			companies = companyDAO.findall();
 
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());
@@ -44,9 +47,11 @@ public class CompanyService implements IService<Company> {
 		return companies;
 	}
 
+	@Transactional
 	public boolean delete(int id) throws DatabaseException {
 		try {
-			return companyManager.remove(id);
+			computerService.removeByCompanyId(id);
+			return companyDAO.remove(id);
 
 		} catch (DatabaseException e) {
 			LOGGER.error(e.getMessage());

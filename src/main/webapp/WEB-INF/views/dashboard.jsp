@@ -26,7 +26,7 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${computerPage.totalResults} <spring:message code="computer.found" /></h1>
+			<h1 id="homeTitle">${page.totalResults} <spring:message code="computer.found" /></h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -63,22 +63,22 @@
 							</a>
 						</span></th>
 						<th><a
-							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=name&isAscending=${not computerPage.isAscending}">Computer
+							href="dashboard?page=${page.numPage}&rows=${page.rows}&search=${page.search}&orderBy=name&isAscending=${not page.isAscending}">Computer
 								name</a></th>
 						<th><a
-							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=introduced&isAscending=${not computerPage.isAscending}">Introduced
+							href="dashboard?page=${page.numPage}&rows=${page.rows}&search=${page.search}&orderBy=introduced&isAscending=${not page.isAscending}">Introduced
 							date</a></th>
 						<th><a
-							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=discontinued&isAscending=${not computerPage.isAscending}">Discontinued
+							href="dashboard?page=${page.numPage}&rows=${page.rows}&search=${page.search}&orderBy=discontinued&isAscending=${not page.isAscending}">Discontinued
 							date</a></th>
 						<th><a
-							href="dashboard?page=${computerPage.numPage}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=company&isAscending=${not computerPage.isAscending}">Company</a></th>
+							href="dashboard?page=${page.numPage}&rows=${page.rows}&search=${page.search}&orderBy=company&isAscending=${not page.isAscending}">Company</a></th>
 
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach items="${computerPage.computers}" var="computer">
+					<c:forEach items="${page.computers}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								value="${computer.id}" class="cb"></td>
@@ -97,27 +97,27 @@
 		<div class="container text-center">
 			<ul class="pagination">
 
-				<c:if test="${computerPage.numPage > 1}">
+				<c:if test="${page.numPage > 1}">
 					<li><a
-						href="dashboard?page=${computerPage.numPage-1}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=${computerPage.orderBy}&isAscending=${computerPage.isAscending}"
+						href="dashboard?page=${page.numPage-1}&rows=${page.rows}&search=${page.search}&orderBy=${page.orderBy}&isAscending=${page.isAscending}"
 						aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 					</a></li>
 				</c:if>
-				<custom:Pagination page="${computerPage}" />
-				<c:if test="${computerPage.numPage < computerPage.maxPage}">
+				<custom:Pagination page="${page}" />
+				<c:if test="${page.numPage < page.maxPage}">
 					<li><a
-						href="dashboard?page=${computerPage.numPage+1}&rows=${computerPage.rows}&search=${computerPage.search}&orderBy=${computerPage.orderBy}&isAscending=${computerPage.isAscending}"
+						href="dashboard?page=${page.numPage+1}&rows=${page.rows}&search=${page.search}&orderBy=${page.orderBy}&isAscending=${page.isAscending}"
 						aria-label="Previous"> <span aria-hidden="true">&raquo;</span>
 					</a></li>
 				</c:if>
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
 				<a
-					href="dashboard?page=${computerPage.numPage}&rows=10&search=${computerPage.search}&orderBy=${computerPage.orderBy}&isAscending=${computerPage.isAscending}"><button
+					href="dashboard?page=${page.numPage}&rows=10&search=${page.search}&orderBy=${page.orderBy}&isAscending=${page.isAscending}"><button
 						type="button" class="btn btn-default">10</button></a> <a
-					href="dashboard?page=${computerPage.numPage}&rows=50&search=${computerPage.search}&orderBy=${computerPage.orderBy}&isAscending=${computerPage.isAscending}"><button
+					href="dashboard?page=${page.numPage}&rows=50&search=${page.search}&orderBy=${page.orderBy}&isAscending=${page.isAscending}"><button
 						type="button" class="btn btn-default">50</button></a> <a
-					href="dashboard?page=${computerPage.numPage}&rows=100&search=${computerPage.search}&orderBy=${computerPage.orderBy}&isAscending=${computerPage.isAscending}"><button
+					href="dashboard?page=${page.numPage}&rows=100&search=${page.search}&orderBy=${page.orderBy}&isAscending=${page.isAscending}"><button
 						type="button" class="btn btn-default">100</button></a>
 			</div>
 		</div>
