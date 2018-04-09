@@ -20,7 +20,9 @@ import javax.persistence.EntityManagerFactory;
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
 @PropertySource("classpath:application.properties")
-@ComponentScan(basePackages = {"com.excilys.formation.tbezenger.cdb.model", "com.excilys.formation.tbezenger.cdb.DAO"})
+@ComponentScan(basePackages = {"com.excilys.formation.tbezenger.cdb.model",
+							   "com.excilys.formation.tbezenger.cdb.dao",
+							   "com.excilys.formation.tbezenger.cdb.services"})
 public class HibernateConf {
 
     @Autowired

@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
@@ -16,7 +15,6 @@ import com.excilys.formation.tbezenger.cdb.model.Computer;
 import com.excilys.formation.tbezenger.cdb.model.ComputerPage;
 import com.excilys.formation.tbezenger.cdb.services.CompanyService;
 import com.excilys.formation.tbezenger.cdb.services.ComputerService;
-import com.excilys.formation.tbezenger.cdb.springconfig.ApplicationAnnotationConfig;
 import com.excilys.formation.tbezenger.cdb.springconfig.HibernateConf;
 
 public class CommandLineInterface {
