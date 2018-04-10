@@ -1,0 +1,10 @@
+/home/excilys/Documents/ComputerDatabase/ComputerDatabase/persistence/src/main/java/com/excilys/formation/tbezenger/cdb/springconfig/HibernateConf.java
+/home/excilys/Documents/ComputerDatabase/ComputerDatabase/persistence/src/main/java/com/excilys/formation/tbezenger/cdb/exceptions/DAO/PersistException.java
+/home/excilys/Documents/ComputerDatabase/ComputerDatabase/persistence/src/main/java/com/excilys/formation/tbezenger/cdb/dao/DAO.java
+/home/excilys/Documents/ComputerDatabase/ComputerDatabase/persistence/src/main/java/com/excilys/formation/tbezenger/cdb/dao/ComputerDAO.java
+/home/excilys/Documents/ComputerDatabase/ComputerDatabase/persistence/src/main/java/com/excilys/formation/tbezenger/cdb/dao/CompanyDAO.java
+/home/excilys/Documents/ComputerDatabase/ComputerDatabase/persistence/src/main/java/com/excilys/formation/tbezenger/cdb/exceptions/DAO/DatabaseException.java
+/home/excilys/Documents/ComputerDatabase/ComputerDatabase/persistence/src/main/java/com/excilys/formation/tbezenger/cdb/exceptions/DAO/DeleteException.java
+/home/excilys/Documents/ComputerDatabase/ComputerDatabase/persistence/src/main/java/com/excilys/formation/tbezenger/cdb/exceptions/DAO/ConnectionException.java
+/home/excilys/Documents/ComputerDatabase/ComputerDatabase/persistence/src/main/java/com/excilys/formation/tbezenger/cdb/exceptions/DAO/UpdateException.java
+/home/excilys/Documents/ComputerDatabase/ComputerDatabase/persistence/src/main/java/com/excilys/formation/tbezenger/cdb/exceptions/DAO/GetException.java
