@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -21,6 +22,7 @@ import com.excilys.formation.tbezenger.cdb.model.ComputerPage;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.tbezenger.cdb.exceptions.DAO.DatabaseException;
 import com.excilys.formation.tbezenger.cdb.exceptions.DAO.DeleteException;
@@ -112,6 +114,7 @@ public class ComputerDAO implements DAO<Computer> {
 		}
 	}
 
+	
 	public boolean persist(Computer computer) throws DatabaseException {
 		try {
 			em.persist(computer);

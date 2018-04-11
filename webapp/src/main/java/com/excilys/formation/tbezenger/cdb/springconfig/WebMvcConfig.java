@@ -20,10 +20,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "com.excilys.formation.tbezenger.cdb.controllers",
-								"com.excilys.formation.tbezenger.cdb.services",
-								"com.excilys.formation.tbezenger.cdb.model",
-								"com.excilys.formation.tbezenger.cdb.dao"})
+@ComponentScan(basePackages = { "com.excilys.formation.tbezenger.cdb.controllers" })
 public class WebMvcConfig implements WebMvcConfigurer  {
 
 	@Override
