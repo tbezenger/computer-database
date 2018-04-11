@@ -1,5 +1,6 @@
 com/excilys/formation/tbezenger/cdb/springconfig/WebMvcConfig.class
 com/excilys/formation/tbezenger/cdb/exceptions/validator/DiscontinuedFieldException.class
+com/excilys/formation/tbezenger/cdb/springconfig/ApplicationAnnotationConfig.class
 com/excilys/formation/tbezenger/cdb/exceptions/validator/CompanyFieldException.class
 com/excilys/formation/tbezenger/cdb/controllers/ComputerDTOValidator.class
 com/excilys/formation/tbezenger/cdb/controllers/ComputerSpringController.class

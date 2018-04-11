@@ -12,7 +12,7 @@ import com.excilys.formation.tbezenger.cdb.dto.ComputerDTO;
 @Component
 public class ComputerDTOValidator implements Validator {
 
-	@Override
+    @Override
 	public boolean supports(Class<?> paramClass) {
 		return ComputerDTO.class.equals(paramClass);
 	}

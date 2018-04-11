@@ -1,6 +1,5 @@
 package com.excilys.formation.tbezenger.cdb.springconfig;
 
-
 import java.util.Locale;
 
 import org.springframework.context.MessageSource;
