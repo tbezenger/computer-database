@@ -22,9 +22,11 @@
 hs_err_pid*
 
 */.settings/*
+.settings/*
 .classpath
 .project
 .checkstyle
 
 bin/*
 */target/*
+target/*
