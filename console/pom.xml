@@ -7,19 +7,18 @@
     
     <parent>
         <artifactId>ComputerDatabase</artifactId>
-        <groupId>com.excilys.formation.tbezenger.ComputerDatabase</groupId>
-        <relativePath>../pom.xml</relativePath>
+        <groupId>${cdb-group-id}</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     
     <dependencies>
         <dependency>
-            <groupId>com.excilys.formation.tbezenger.ComputerDatabase</groupId>
+            <groupId>${cdb-group-id}</groupId>
             <artifactId>service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.excilys.formation.tbezenger.ComputerDatabase</groupId>
+            <groupId>${cdb-group-id}</groupId>
             <artifactId>core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
