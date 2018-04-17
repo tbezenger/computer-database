@@ -8,6 +8,10 @@ import com.excilys.formation.tbezenger.cdb.Strings;
 import com.excilys.formation.tbezenger.cdb.dto.Mapper;
 import com.excilys.formation.tbezenger.cdb.model.ComputerPage;
 import com.excilys.formation.tbezenger.cdb.services.ComputerService;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -37,7 +41,7 @@ public class DashboardSpringController {
 			ComputerPage page = new ComputerPage(numPage, rowsByPage, search, orderBy, isAscending);
 			page = computerService.getPage(page);
 			model.addAttribute("page", Mapper.toDTO(page));
-            return "dashboard";
+			return "dashboard";
 		} catch (DatabaseException e) {
 			return "500";
 		}
@@ -54,31 +58,21 @@ public class DashboardSpringController {
 			return "500";
 		}
 	}
-	
-	
-	  @GetMapping("/")
-	  public String index(Model model, Principal principal) {
-	    model.addAttribute("message", "You are logged in as " + principal.getName());
-	    return "redirect:dashboard";
-	  }
 
 
-	@GetMapping("/login")
+	@GetMapping("login")
 	public String login(ModelMap model, @RequestParam(value = "error", required = false) String error,
-		@RequestParam(value = "logout", required = false) String logout) {
-	  if (error != null) {
-		  System.out.println("noob");
-		model.addAttribute("error", "Invalid username and password!");
-		
-	  }
+			@RequestParam(value = "logout", required = false) String logout) {
+		if (error != null) {
+			model.addAttribute("msg", "Invalid username and password!");
+		}
 
-	  if (logout != null) {
-		  System.out.println("gg");
-		model.addAttribute("msg", "You've been logged out successfully.");
-	  }
-	  return "login";
+		else if (logout != null) {
+			model.addAttribute("msg", "You've been logged out successfully.");
+		}
+		return "login";
 
 	}
-	
-	
+
+
 }

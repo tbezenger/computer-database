@@ -13,20 +13,33 @@
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
 </head>
+                <form action="logout" method="POST" id="logoutForm">
+                    <input hidden="true"
+                        value="${_csrf.token}" name="${_csrf.parameterName}">
+                </form>
+<script>
+    function formSubmit() {
+        document.getElementById("logoutForm").submit();
+    }
+</script>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<a class="navbar-brand" href="dashboard"> Application - Computer
 				Database </a>
 			<div class="pull-right" role="group">
-                <a href="dashboard?lang=fr">fr</a>
-                <a href="dashboard?lang=en">en</a>
-            </div>
+				<a href="dashboard?lang=fr">fr</a> <a href="dashboard?lang=en">en</a>
+				<a href="javascript:formSubmit()">logout</a>
+				
+
+			</div>
 		</div>
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.totalResults} <spring:message code="computer.found" /></h1>
+			<h1 id="homeTitle">${page.totalResults}
+				<spring:message code="computer.found" />
+			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -67,10 +80,10 @@
 								name</a></th>
 						<th><a
 							href="dashboard?page=${page.numPage}&rows=${page.rows}&search=${page.search}&orderBy=introduced&isAscending=${not page.isAscending}">Introduced
-							date</a></th>
+								date</a></th>
 						<th><a
 							href="dashboard?page=${page.numPage}&rows=${page.rows}&search=${page.search}&orderBy=discontinued&isAscending=${not page.isAscending}">Discontinued
-							date</a></th>
+								date</a></th>
 						<th><a
 							href="dashboard?page=${page.numPage}&rows=${page.rows}&search=${page.search}&orderBy=company&isAscending=${not page.isAscending}">Company</a></th>
 

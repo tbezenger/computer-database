@@ -1,13 +1,18 @@
 package com.excilys.formation.tbezenger.cdb.springconfig;
 
+
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+
+
 
 @Configuration
 @EnableWebSecurity
@@ -26,13 +31,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 + "from authorities where username=?")
     	.passwordEncoder(new BCryptPasswordEncoder());
   }
+  
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
     http.authorizeRequests().anyRequest().hasAnyRole("ADMIN", "USER")
-    .and()
-    .httpBasic(); // Authenticate users with HTTP basic authentication
-  }
+	    .and().formLogin().loginPage("/login").defaultSuccessUrl("/dashboard")
+	    .and().logout()
+			  .logoutUrl("/logout")
+			  .logoutSuccessUrl("/login?logout");
+  }  
+  
 }
 
