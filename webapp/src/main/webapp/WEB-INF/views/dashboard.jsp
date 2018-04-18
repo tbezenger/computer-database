@@ -29,6 +29,8 @@
 				Database </a>
 			<div class="pull-right" role="group">
 				<a href="dashboard?lang=fr">fr</a> <a href="dashboard?lang=en">en</a>
+				
+				<a href="updateUser?username=${username}">${username}</a>
 				<a href="javascript:formSubmit()">logout</a>
 				
 

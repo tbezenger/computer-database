@@ -3,15 +3,12 @@ package com.excilys.formation.tbezenger.cdb.controllers;
 import java.security.Principal;
 import java.util.Map;
 
-
 import com.excilys.formation.tbezenger.cdb.Strings;
 import com.excilys.formation.tbezenger.cdb.dto.Mapper;
 import com.excilys.formation.tbezenger.cdb.model.ComputerPage;
 import com.excilys.formation.tbezenger.cdb.services.ComputerService;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -60,6 +57,11 @@ public class DashboardSpringController {
 	}
 
 
+	@GetMapping("/")
+    public String index(Model model, Principal principal) {
+        return "redirect:dashboard";
+    }
+	
 	@GetMapping("login")
 	public String login(ModelMap model, @RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout) {
