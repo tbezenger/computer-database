@@ -17,6 +17,7 @@
 			<artifactId>binding</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>${cdb-group-id}</groupId>
 			<artifactId>service</artifactId>
@@ -27,21 +28,26 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/taglibs/standard -->
+
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/jstl -->
+		
 		<dependency>
 			<groupId>javax.servlet.jsp.jstl</groupId>
 			<artifactId>jstl-api</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>jstl-impl</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

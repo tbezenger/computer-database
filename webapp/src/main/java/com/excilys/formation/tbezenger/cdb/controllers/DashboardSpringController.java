@@ -8,7 +8,7 @@ import com.excilys.formation.tbezenger.cdb.dto.Mapper;
 import com.excilys.formation.tbezenger.cdb.model.ComputerPage;
 import com.excilys.formation.tbezenger.cdb.services.ComputerService;
 
-
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;

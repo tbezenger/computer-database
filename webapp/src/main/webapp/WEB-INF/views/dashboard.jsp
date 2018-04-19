@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="custom" uri="/WEB-INF/taglib.tld"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -53,8 +55,11 @@
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer" href="addComputer">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
+						Computer</a>
+					<sec:authorize access="hasRole('ADMIN')">
+					<a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
+					</sec:authorize>
 				</div>
 			</div>
 		</div>
@@ -97,7 +102,14 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								value="${computer.id}" class="cb"></td>
-							<td><a href="editComputer?id=${computer.id}" onclick="">${computer.name}</a></td>
+							<td>
+							 <sec:authorize access="hasRole('ADMIN')">
+							 <a href="editComputer?id=${computer.id}" onclick="">${computer.name}</a>
+							 </sec:authorize>
+							 <sec:authorize access="hasRole('USER')">
+							 ${computer.name}
+							 </sec:authorize>
+							 </td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinued}</td>
 							<td>${computer.company.name}</td>

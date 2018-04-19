@@ -10,6 +10,8 @@ import com.excilys.formation.tbezenger.cdb.model.Company;
 import com.excilys.formation.tbezenger.cdb.model.Computer;
 import com.excilys.formation.tbezenger.cdb.services.CompanyService;
 import com.excilys.formation.tbezenger.cdb.services.ComputerService;
+
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;

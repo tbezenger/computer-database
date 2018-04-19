@@ -7,6 +7,9 @@ import java.util.Optional;
 import com.excilys.formation.tbezenger.cdb.dao.ComputerDAO;
 import com.excilys.formation.tbezenger.cdb.model.Computer;
 import com.excilys.formation.tbezenger.cdb.model.ComputerPage;
+
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +48,7 @@ public class ComputerService implements IService<Computer> {
 	}
 
 	@Transactional
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public boolean update(Computer computer) throws DatabaseException {
 		try {
 			return computerDAO.update(computer);
@@ -55,6 +59,7 @@ public class ComputerService implements IService<Computer> {
 	}
 
 	@Transactional
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public boolean delete(int id) throws DatabaseException {
 		try {
 			return computerDAO.remove(id);
